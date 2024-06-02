@@ -20,6 +20,7 @@ namespace Common.Core.Loading
         
         public LoadingManager(IContainer container, IEnumerable<CommandItem> commands)
         {
+            m_Container = container;
             m_Commands = commands.ToList();
         }
 
@@ -94,6 +95,7 @@ namespace Common.Core.Loading
                     {
                         foreach (var iter in commands)
                         {
+                            m_Container.Inject(iter.Command);
                             iter.Dependency.Rebuild(this);
                         }
                             

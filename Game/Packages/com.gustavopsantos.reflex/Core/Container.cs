@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Common.Core;
+
 using Reflex.Exceptions;
 using Reflex.Extensions;
 using Reflex.Generics;
@@ -10,7 +13,7 @@ using Reflex.Resolvers;
 
 namespace Reflex.Core
 {
-    public sealed class Container : IDisposable
+    public sealed class Container : IDisposable, IContainer
     {
         private readonly DisposableCollection _disposables;
 
@@ -83,7 +86,12 @@ namespace Reflex.Core
             AttributeInjector.Inject(instance, this);   
             return instance;
         }
-        
+
+        public TContract ResolveId<TContract>(object identifier)
+        {
+            throw new NotImplementedException();
+        }
+
         public object Resolve(Type type)
         {
             if (type.IsEnumerable(out var elementType))
@@ -95,6 +103,36 @@ namespace Reflex.Core
             var lastResolver = resolvers.Last();
             var resolved = lastResolver.Resolve(this);
             return resolved;
+        }
+
+        public object ResolveId(Type contractType, object identifier)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Inject(object obj)
+        {
+            AttributeInjector.Inject(obj, this);   
+        }
+
+        public T Instantiate<T>()
+        {
+            return Construct<T>();
+        }
+
+        public T Instantiate<T>(IEnumerable<object> extraArgs)
+        {
+            return Construct<T>(extraArgs);
+        }
+
+        public object Instantiate(Type concreteType)
+        {
+            return Construct(concreteType);
+        }
+
+        public object Instantiate(Type concreteType, IEnumerable<object> extraArgs)
+        {
+            return Construct(concreteType, extraArgs);
         }
 
         public TContract Resolve<TContract>()

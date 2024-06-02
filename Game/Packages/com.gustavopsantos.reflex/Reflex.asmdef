@@ -1,7 +1,9 @@
 {
     "name": "Reflex",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:a3f50e7c4cfe08340a2ec11fbfab8499"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

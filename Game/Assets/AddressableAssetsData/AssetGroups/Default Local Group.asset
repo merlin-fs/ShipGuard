@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: 38fe1a49c3539d040836300cf74f2023
+  m_SerializeEntries:
+  - m_GUID: 55c4a49ed91d8a24294a50d06ea68958
+    m_Address: Assets/configs/DamageTypes/DamageConfig.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - defs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab4a4b41f2403bb45a73a2c124373e9e
+    m_Address: Assets/Prefabs/Dummy.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - defs
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 1dd52ba43ac92fd419a659f4b15f5863, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: de161305303b4c94ca140ec2aa44b883, type: 2}
+    - {fileID: 11400000, guid: 5fe27e6fa0e11f8489ffd30e07298165, type: 2}
