@@ -1,0 +1,18 @@
+{
+  "name": "com.gustavopsantos.reflex",
+  "displayName": "Reflex",
+  "version": "8.0.1",
+  "unity": "2021.1",
+  "description": "Minimal dependency injection framework for Unity",
+  "keywords": [
+    "Dependency Injection",
+    "IoC",
+    "DI",
+    "DI Container"
+  ],
+  "license": "MIT",
+  "documentationUrl": "https://github.com/gustavopsantos/reflex",
+  "changelogUrl": "https://github.com/gustavopsantos/reflex/releases",
+  "licensesUrl": "https://github.com/gustavopsantos/reflex/blob/main/LICENSE",
+  "_fingerprint": "07ab11fa2846464506e2a36f0acaa8269b1e25ac"
+}

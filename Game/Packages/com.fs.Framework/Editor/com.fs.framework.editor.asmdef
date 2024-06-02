@@ -1,0 +1,18 @@
+{
+    "name": "com.fs.framework.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1e94e5c23d910314e80b850e15fd13bc"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
