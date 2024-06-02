@@ -2,3 +2,7 @@
 /Game/Logs/
 /Game/Temp/
 /Game/UserSettings/
+/Game/.idea/
+/Game/obj/
+*.csproj
+*.sln
