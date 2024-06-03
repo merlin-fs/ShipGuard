@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 17245f7e3705df848b9194a91683de5f
+timeCreated: 1574423037
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 90079
+  packageName: Medieval Cartoon Warriors
+  packageVersion: 1.0
+  assetPath: Assets/Cartoon Heroes/Weapons/Sword_1/3D/Materials/Sword_1_Gray.mat
+  uploadId: 350153

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 2706ff3c7561e24428805984b884cdc9
+timeCreated: 1579460950
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 90079
+  packageName: Medieval Cartoon Warriors
+  packageVersion: 1.0
+  assetPath: Assets/Cartoon Heroes/Weapons/Sword_2/3D/Materials/Sword_2_Yellow.mat
+  uploadId: 350153

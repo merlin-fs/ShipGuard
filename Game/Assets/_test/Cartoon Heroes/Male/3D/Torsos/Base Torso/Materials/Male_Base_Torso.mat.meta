@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: dad6ecf4df825004897244446133fa7d
+timeCreated: 1579802222
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 90079
+  packageName: Medieval Cartoon Warriors
+  packageVersion: 1.0
+  assetPath: Assets/Cartoon Heroes/Male/3D/Torsos/Base Torso/Materials/Male_Base_Torso.mat
+  uploadId: 350153

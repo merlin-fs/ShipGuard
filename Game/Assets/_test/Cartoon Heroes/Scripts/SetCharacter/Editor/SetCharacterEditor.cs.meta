@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: fd027a1f114b03f468aea62fef4cf034
+timeCreated: 1573240657
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 90079
+  packageName: Medieval Cartoon Warriors
+  packageVersion: 1.0
+  assetPath: Assets/Cartoon Heroes/Scripts/SetCharacter/Editor/SetCharacterEditor.cs
+  uploadId: 350153

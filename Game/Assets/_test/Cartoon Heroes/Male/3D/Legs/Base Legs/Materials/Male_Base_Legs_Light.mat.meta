@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f7eb11e091042684182d66076672e377
+timeCreated: 1576439040
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 90079
+  packageName: Medieval Cartoon Warriors
+  packageVersion: 1.0
+  assetPath: Assets/Cartoon Heroes/Male/3D/Legs/Base Legs/Materials/Male_Base_Legs_Light.mat
+  uploadId: 350153
