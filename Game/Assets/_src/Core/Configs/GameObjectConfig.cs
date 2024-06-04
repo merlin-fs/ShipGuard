@@ -1,10 +1,6 @@
 using System;
 using Unity.Entities;
 
-using Common.Defs;
-
-using Game.Core.Prefabs;
-using Game.Model;
 using Game.Model.Stats;
 
 using Unity.Transforms;

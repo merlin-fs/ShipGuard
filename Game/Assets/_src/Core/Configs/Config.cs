@@ -1,7 +1,8 @@
-using System;
+using Common.Core;
+
 using Unity.Entities;
 
-namespace Common.Defs
+namespace Game.Core.Defs
 {
     using Core;
 

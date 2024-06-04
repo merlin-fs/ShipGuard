@@ -3,7 +3,7 @@ using System.Reflection;
 
 using Unity.Entities;
 
-namespace Common.Defs
+namespace Game.Core.Defs
 {
     public interface IDefinableContext
     {

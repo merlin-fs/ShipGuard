@@ -1,12 +1,8 @@
-using System;
-using System.Threading.Tasks;
 
 using Common.Core;
 using Unity.Entities;
 
-using UnityEngine;
-
-namespace Common.Defs
+namespace Game.Core.Defs
 {
     public interface IConfig: IIdentifiable<ObjectID>
     {

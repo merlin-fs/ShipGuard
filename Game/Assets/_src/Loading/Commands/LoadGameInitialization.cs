@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+
+using Common.Core;
 using Common.Core.Loading;
 using Cysharp.Threading.Tasks;
 using Reflex.Attributes;
@@ -20,7 +22,7 @@ namespace Game.Core.Loading
             return UniTask.Create(async () =>
             {
                 await UniTask.SwitchToMainThread();
-                m_Initialization.Initialization();
+                m_Initialization.Initialization(null);
             }).AsTask();
         }
     }

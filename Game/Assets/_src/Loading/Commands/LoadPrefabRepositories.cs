@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Common.Defs;
+
+using Game.Core.Defs;
 
 using UnityEngine;
 using UnityEngine.AddressableAssets;

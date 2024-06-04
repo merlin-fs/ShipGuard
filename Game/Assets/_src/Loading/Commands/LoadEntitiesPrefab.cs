@@ -1,15 +1,13 @@
 using System.Threading.Tasks;
 using Common.Core.Loading;
-using Common.Defs;
 
 using Cysharp.Threading.Tasks;
 
-using Game.Core.Prefabs;
+using Game.Core.Defs;
 using Game.Core.Repositories;
 
 using Reflex.Attributes;
 
-using Unity.Collections;
 using Unity.Entities;
 
 namespace Game

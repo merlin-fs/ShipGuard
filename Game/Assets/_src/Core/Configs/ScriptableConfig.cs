@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Common.Core;
+using Common.Defs;
 
 using UnityEngine;
 using Unity.Entities;
 
 using UnityEngine.AddressableAssets;
 
-namespace Common.Defs
+namespace Game.Core.Defs
 {
     [Serializable]
     public class ChildConfig

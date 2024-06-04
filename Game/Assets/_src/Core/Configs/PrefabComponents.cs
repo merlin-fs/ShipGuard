@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using Reflex.Core;
 
 
-namespace Game.Core.Prefabs
+namespace Game.Core.Defs
 {
     public partial struct PrefabInfo
     {

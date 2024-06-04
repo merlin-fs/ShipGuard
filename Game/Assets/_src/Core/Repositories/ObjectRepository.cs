@@ -4,8 +4,9 @@ using System.Collections.Concurrent;
 using System.Linq;
 
 using Common.Core;
-using Common.Defs;
 using Common.Repositories;
+
+using Game.Core.Defs;
 
 using Unity.Entities;
 

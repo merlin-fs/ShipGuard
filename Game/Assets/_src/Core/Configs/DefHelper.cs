@@ -3,9 +3,11 @@ using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
 
+using Common.Defs;
+
 using Unity.Entities;
 
-namespace Common.Defs
+namespace Game.Core.Defs
 {
     public static class DefHelper
     {

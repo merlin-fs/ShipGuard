@@ -6,7 +6,7 @@ using Reflex.Core;
 
 using UnityEngine;
 
-namespace Game.Core
+namespace Game.Core.Contexts
 {
     public class ProjectContext : MonoBehaviour, IInstaller
     {

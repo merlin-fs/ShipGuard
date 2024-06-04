@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 using Common.Core;
 using Common.Core.Loading;
-using Common.Defs;
 
 using Cysharp.Threading.Tasks;
 
+using Game.Core.Defs;
 using Game.Core.Repositories;
 
 using JetBrains.Annotations;

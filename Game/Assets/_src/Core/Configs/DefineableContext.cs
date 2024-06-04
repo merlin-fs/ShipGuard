@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace Common.Defs
+namespace Game.Core.Defs
 {
     public class EntityManagerContext: IDefinableContext
     {
