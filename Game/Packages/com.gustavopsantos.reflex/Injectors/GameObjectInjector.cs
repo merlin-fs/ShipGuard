@@ -12,6 +12,7 @@ namespace Reflex.Injectors
             if (gameObject.TryGetComponent<MonoBehaviour>(out var monoBehaviour))
             {
                 AttributeInjector.Inject(monoBehaviour, container);
+                InitializationManager.Instance.Initialization(monoBehaviour, container);
             }
         }
 
@@ -27,6 +28,7 @@ namespace Reflex.Injectors
                 if (monoBehaviour != null)
                 {
                     AttributeInjector.Inject(monoBehaviour, container);
+                    InitializationManager.Instance.Initialization(monoBehaviour, container);
                 }
             }
         }
@@ -43,6 +45,7 @@ namespace Reflex.Injectors
                 if (monoBehaviour != null)
                 {
                     AttributeInjector.Inject(monoBehaviour, container);
+                    InitializationManager.Instance.Initialization(monoBehaviour, container);
                 }
             }
         }
@@ -62,6 +65,7 @@ namespace Reflex.Injectors
                     if (monoBehaviour != null)
                     {
                         AttributeInjector.Inject(monoBehaviour, container);
+                        InitializationManager.Instance.Initialization(monoBehaviour, container);
                     }
                 }
             }

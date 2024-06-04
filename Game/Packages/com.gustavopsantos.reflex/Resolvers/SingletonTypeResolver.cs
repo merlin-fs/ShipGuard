@@ -26,7 +26,7 @@ namespace Reflex.Resolvers
             {
                 _instance = container.Construct(_concreteType);
                 _disposables.TryAdd(_instance);
-                InitializationManager.Instance.Initialization(_instance);
+                InitializationManager.Instance.Initialization(_instance, container);
                 Diagnosis.RegisterInstance(this, _instance);
             }
 

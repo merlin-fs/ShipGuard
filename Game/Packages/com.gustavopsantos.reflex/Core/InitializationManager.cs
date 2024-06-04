@@ -1,35 +1,37 @@
 using System.Collections.Concurrent;
 
+using Common.Core;
+
 namespace Reflex.Core
 {
     internal class InitializationManager: IInitialization
     {
         internal static InitializationManager Instance { get; } = new();
         
-        private ConcurrentDictionary<IInitialization, bool> m_Queue = new();
+        private ConcurrentDictionary<IInitialization, IContainer> m_Queue = new();
         private bool m_Active;
         
-        public void Initialization(object instance)
+        public void Initialization(object instance, IContainer container)
         {
             if (instance is not IInitialization initialization || instance == this) return;
             
             if (!m_Active) 
-                Add(initialization);
+                Add(initialization, container);
             else
-                initialization.Initialization();
+                initialization.Initialization(container);
         }
 
-        private void Add(IInitialization instance)
+        private void Add(IInitialization instance, IContainer container)
         {
-            m_Queue.TryAdd(instance, true);
+            m_Queue.TryAdd(instance, container);
         }
         
-        public void Initialization()
+        public void Initialization(IContainer dummy)
         {
             m_Active = true;
-            foreach (var iter in m_Queue.Keys)
+            foreach ((IInitialization iter, IContainer container) in m_Queue)
             {
-                iter.Initialization();
+                iter.Initialization(container);
             }
             m_Queue.Clear();
         }

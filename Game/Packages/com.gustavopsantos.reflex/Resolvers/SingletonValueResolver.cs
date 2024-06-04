@@ -20,7 +20,7 @@ namespace Reflex.Resolvers
 
         public object Resolve(Container container)
         {
-            InitializationManager.Instance.Initialization(_value);
+            InitializationManager.Instance.Initialization(_value, container);
             Diagnosis.IncrementResolutions(this);
             return _value;
         }

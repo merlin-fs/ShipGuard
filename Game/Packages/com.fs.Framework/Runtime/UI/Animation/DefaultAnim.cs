@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Common.UI.Windows
 {
-    public class DefaultAnim : MonoBehaviour, IAdditionalBehaviour, IInitiated
+    public class DefaultAnim : MonoBehaviour, IAdditionalBehaviour, IInitialization
     {
         private IWindowManager m_WindowManager;
         
@@ -22,7 +22,7 @@ namespace Common.UI.Windows
             }
         }
 
-        public void Initialize(IContainer container)
+        public void Initialization(IContainer container)
         {
             m_WindowManager = container.Resolve<IWindowManager>();
         }

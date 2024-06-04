@@ -30,7 +30,7 @@ namespace Reflex.Resolvers
 
             var value = _value;
             _value = null;
-            InitializationManager.Instance.Initialization(value);
+            InitializationManager.Instance.Initialization(value, container);
             Diagnosis.ClearInstances(this);
             return value;
         }

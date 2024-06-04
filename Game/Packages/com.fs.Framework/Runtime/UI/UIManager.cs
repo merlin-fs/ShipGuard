@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Common.UI
 {
-    public class UIManager: IUIManager, IInitiated
+    public class UIManager: IUIManager, IInitialization
     {
         private IContainer m_Container;
         private readonly UIDocument m_Document;
@@ -16,11 +16,11 @@ namespace Common.UI
         private readonly Dictionary<Type, IWidget> m_Parts = new();
 
         private int m_CancelRef;
-        private Initialization m_Initialization;
-        private IInitiated _initiatedImplementation;
+        private InternalInitialization m_Initialization;
+        private IInitialization _initiatedImplementation;
 
         #region Initialize
-        public void Initialize(IContainer container)
+        public void Initialization(IContainer container)
         {
             m_Document.enabled = true;
             if (m_Initialization == null) return;
@@ -34,7 +34,7 @@ namespace Common.UI
             m_Initialization = null;
         }
         #endregion
-        private class Initialization
+        private class InternalInitialization
         {
             public Action<WidgetBinder> BindWidget;
         }
@@ -52,7 +52,7 @@ namespace Common.UI
 
         public void WithBindWidget(Action<WidgetBinder> bind)
         {
-            m_Initialization ??= new Initialization();
+            m_Initialization ??= new InternalInitialization();
             m_Initialization.BindWidget = bind;
         } 
 

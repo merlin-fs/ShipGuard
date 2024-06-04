@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+
+using Common.Core;
+
 using Reflex.Core;
 using Reflex.Extensions;
 using Reflex.Logging;
