@@ -6,3 +6,5 @@
 /Game/obj/
 *.csproj
 *.sln
+/Game/.utmp/
+/Game/Bin/
