@@ -45,7 +45,7 @@ namespace LunarConsoleEditorInternal
                 return;
             }
 
-            LunarConsole[] existing = GameObject.FindObjectsOfType<LunarConsole>();
+            LunarConsole[] existing = Resources.FindObjectsOfTypeAll<LunarConsole>();//Object.FindObjectsOfType<LunarConsole>();
             if (existing != null)
             {
                 foreach (LunarConsole c in existing)

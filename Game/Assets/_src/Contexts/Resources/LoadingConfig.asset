@@ -55,7 +55,7 @@ MonoBehaviour:
     - rid: 3181409511752335631
       type: {class: LoadScene, ns: Game.Core.Loading, asm: Assembly-CSharp}
       data:
-        scene: Main
+        sceneName: Main
     - rid: 3181409511752335632
       type: {class: LoadEntitiesWorld, ns: Game, asm: Assembly-CSharp}
       data: 

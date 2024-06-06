@@ -12,7 +12,7 @@ namespace Game.Core.Loading
 {
     public class LoadScene : ILoadingCommand
     {
-        [SerializeField] private string scene;
+        [SerializeField] private string sceneName;
         private float m_Progress;
         
         private AsyncOperation m_AsyncOperationHandle; 
@@ -23,18 +23,18 @@ namespace Game.Core.Loading
 
         public Task Execute(ILoadingManager manager)
         {
-            return UniTask.Run( async () =>
+            return UniTask.RunOnThreadPool( async () =>
             {
                 await UniTask.SwitchToMainThread();
                 var scene = SceneManager.GetActiveScene();
-                if (scene.IsValid() && scene.name == this.scene)
+                if (scene.IsValid() && scene.name == this.sceneName)
                 {
                     m_Progress = 1;
                     await UniTask.WaitUntil(() => scene.isLoaded);
                     return;
                 }
 
-                m_AsyncOperationHandle = SceneManager.LoadSceneAsync(this.scene, LoadSceneMode.Single);
+                m_AsyncOperationHandle = SceneManager.LoadSceneAsync(this.sceneName, LoadSceneMode.Single);
 
                 await UniTask.WaitUntil(() =>
                 {

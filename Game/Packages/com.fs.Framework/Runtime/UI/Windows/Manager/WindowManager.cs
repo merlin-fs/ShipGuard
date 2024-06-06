@@ -24,8 +24,8 @@ namespace Common.UI.Windows
 
 	public partial class WindowManager : MonoBehaviour, IWindowManager
 	{
-		[SerializeField]
-		private float m_InteractiveAnimateTime = 0.2f;
+		//[SerializeField]
+		//private float m_InteractiveAnimateTime = 0.2f;
 
 		[SerializeField]
 		private Transform m_Dark = default;

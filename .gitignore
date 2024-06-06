@@ -8,3 +8,9 @@
 *.sln
 /Game/.utmp/
 /Game/Bin/
+/Test/.utmp/
+/Test/Bin/
+/Test/Library/
+/Test/Logs/
+/Test/Temp/
+/Test/UserSettings/

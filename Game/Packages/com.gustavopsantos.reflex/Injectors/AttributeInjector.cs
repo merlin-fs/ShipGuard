@@ -3,7 +3,7 @@ using Reflex.Core;
 
 namespace Reflex.Injectors
 {
-    public static class AttributeInjector
+    internal static class AttributeInjector
     {
         public static void Inject(object obj, Container container)
         {

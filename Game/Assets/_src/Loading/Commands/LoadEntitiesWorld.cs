@@ -1,5 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+
+using Common.Core;
 using Common.Core.Loading;
 using Cysharp.Threading.Tasks;
 
@@ -29,15 +31,15 @@ namespace Game
                 await UniTask.SwitchToMainThread();
                 var container = SceneManager.GetActiveScene().GetSceneContainer();
 
-                World.SystemCreated += async (world, componentSystemBase) =>
+                World.SystemCreated += (world, componentSystemBase) =>
                 {
-                    AttributeInjector.Inject(componentSystemBase, container);
+                    container.Inject(componentSystemBase);
                 };
                 
-                World.UnmanagedSystemCreated += async (world, ptr, type) =>
+                World.UnmanagedSystemCreated += (world, ptr, type) =>
                 {
                     var obj = Marshal.PtrToStructure(ptr, type);
-                    AttributeInjector.Inject(obj, container);
+                    container.Inject(obj);
                 };
                 
                 var world = DefaultWorldInitialization.Initialize("Default World", false);
