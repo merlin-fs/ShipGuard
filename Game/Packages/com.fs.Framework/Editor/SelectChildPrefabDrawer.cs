@@ -35,12 +35,12 @@ namespace UnityEditor.Inspector
     [CustomPropertyDrawer(typeof(SelectChildPrefabAttribute))]
     public class SelectChildPrefabDrawer : PropertyDrawer
     {
-        public async override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             SelectChildPrefabAttribute attr = (SelectChildPrefabAttribute)attribute;
             if (property.serializedObject.targetObject is not IViewPrefab componentPrefab) return;
 
-            var prefab = await componentPrefab.GetViewPrefab();
+            var prefab = componentPrefab.GetViewPrefab();
             if (prefab == null)
             {
                 EditorGUI.PropertyField(position, property, label);//typeof(GameObject)

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Common.Core
+namespace Common.Core.Views
 {
     public interface IView : IDisposable
     {

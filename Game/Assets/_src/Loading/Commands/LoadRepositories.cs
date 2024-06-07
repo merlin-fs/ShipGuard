@@ -56,7 +56,7 @@ namespace Game.Core.Loading
                         foreach (var config in configs)
                             if (config is IViewPrefab viewPrefab)
                             {
-                                await viewPrefab.GetViewPrefab();
+                                await viewPrefab.PreloadPrefab();
                             }
                     });
             }).AsTask();

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using Unity.Entities;
 
-using Game.Core;
-
-using Unity.Entities;
-using Unity.Properties;
 using Unity.Collections;
 
 namespace Game.Model.Stats
@@ -28,29 +22,8 @@ namespace Game.Model.Stats
                 Modifier.Estimation(Self, ref m_Items.ElementAt(i), m_Modifiers, delta);
             }
         }
-
-        public ref Stat GetRW<T>(T stat)
-            where T: struct, IConvertible
-        {
-            return ref m_Items.GetRW(stat);
-        }
-
-        public ref Stat GetRW(EnumHandle statId)
-        {
-            return ref m_Items.GetRW(statId);
-        }
-
-        public Stat GetRO<T>(T stat)
-            where T: struct, IConvertible
-        {
-            return m_Items.GetRO(stat);
-        }
-
-        public Stat GetRO(EnumHandle statId)
-        {
-            return m_Items.GetRO(statId);
-        }
-
+        
+    /*
         #region DesignTime
 
 #if UNITY_EDITOR
@@ -59,5 +32,6 @@ namespace Game.Model.Stats
 
 #endif
         #endregion
+        */
     }
 }

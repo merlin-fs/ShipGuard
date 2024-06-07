@@ -819,7 +819,8 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   scriptingDefineSymbols:
-    Standalone: REFLEX_DEBUG
+    Android: REFLEX_DEBUG;UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP_RUNTIME_WORLD
+    Standalone: REFLEX_DEBUG;UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP_RUNTIME_WORLD
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

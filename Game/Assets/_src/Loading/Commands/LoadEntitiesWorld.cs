@@ -1,19 +1,17 @@
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-using Common.Core;
 using Common.Core.Loading;
+
 using Cysharp.Threading.Tasks;
 
-using Reflex.Attributes;
-using Reflex.Core;
 using Reflex.Extensions;
-using Reflex.Injectors;
 
-using Unity.Collections;
 using Unity.Entities;
 
 using UnityEngine.SceneManagement;
+
+using Application = UnityEngine.Application;
 
 namespace Game
 {
@@ -42,7 +40,7 @@ namespace Game
                     container.Inject(obj);
                 };
                 
-                var world = DefaultWorldInitialization.Initialize("Default World", false);
+                var world = DefaultWorldInitialization.Initialize(Application.productName, false);
             }).AsTask();
         }
     }

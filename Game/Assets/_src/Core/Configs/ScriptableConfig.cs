@@ -35,28 +35,22 @@ namespace Game.Core.Defs
 
         private GameObject m_ViewPrefab;
         
-        public async Task<GameObject> GetViewPrefab()
+        public GameObject GetViewPrefab()
         {
-            if (!m_ViewPrefab && ReferencePrefab.RuntimeKeyIsValid())
-            {
 #if UNITY_EDITOR
-                if (Application.isPlaying)
-                    m_ViewPrefab = await ReferencePrefab.LoadAssetAsync().Task;
-                else
-                    m_ViewPrefab = ReferencePrefab.editorAsset;
-#else
-                m_ViewPrefab = await ReferencePrefab.LoadAssetAsync().Task;
+            if (!Application.isPlaying)
+                m_ViewPrefab = ReferencePrefab.editorAsset;
 #endif
-            }
-            return await Task.FromResult(m_ViewPrefab);
+            return m_ViewPrefab;
         }
         private Entity m_Prefab;
 
         public Entity EntityPrefab => m_Prefab;
 
-        public void SetPrefab(GameObject prefab)
+        public async Task PreloadPrefab()
         {
-            m_ViewPrefab = prefab;
+            if (!ReferencePrefab.RuntimeKeyIsValid()) return;
+            m_ViewPrefab = await ReferencePrefab.LoadAssetAsync().Task;
         }
         
         void IConfig.Configure(Entity root, IDefinableContext context)

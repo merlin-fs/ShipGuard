@@ -19,40 +19,38 @@ namespace Game.Model.Stats
 
         public bool Active;
         
-        [CreateProperty] private string ID => m_StatID.ToString();
-        private EnumHandle m_StatID;
-        public TypeIndex TypeIndex;
+        [CreateProperty] private string ID => m_StatId.ToString();
+        private Stat.Handle m_StatId;
 
         //[NativeDisableUnsafePtrRestriction]
         private readonly ulong m_ModifierPtr;
         [HideInInspector]
         public ulong UID => (ulong)m_ModifierPtr;
 
-        private Modifier(void* ptr, EnumHandle stat)
+        private Modifier(void* ptr, Stat.Handle statId)
         {
-            m_StatID = stat;
+            m_StatId = statId;
             m_ModifierPtr = (ulong)ptr;
             Active = true;
-            TypeIndex = 0;
         }
 
         public bool HasStat(Stat stat)
         {
-            return stat == m_StatID;
+            return stat == m_StatId;
         }
         bool IEquatable<Modifier>.Equals(Modifier other)
         {
             return (m_ModifierPtr == other.m_ModifierPtr);
         }
 
-        public static Modifier Create<T, S>(ref T modifier, S stat)
+        public static Modifier Create<T, S>(ref T modifier)
             where T : struct, IModifier
-            where S : struct, IConvertible
+            where S : IStat
         {
             UnsafeUtility.PinGCObjectAndGetAddress(modifier, out ulong handle);
-            return new Modifier((void*)handle, EnumHandle.FromEnum(stat))
+            return new Modifier((void*)handle, Stat.Handle.From<S>())
             {
-                TypeIndex = TypeManager.GetTypeIndex<T>(),
+                //TypeIndex = TypeManager.GetTypeIndex<T>(),
             };
         }
 
@@ -67,18 +65,6 @@ namespace Game.Model.Stats
             //var obj = (IModifier)Marshal.PtrToStructure(new IntPtr((void*)m_ModifierPtr), TypeManager.GetTypeInfo(TypeIndex).Type);
             var obj = (IModifier)GCHandle.FromIntPtr(new IntPtr((void*)m_ModifierPtr)).Target;
             obj.Estimation(entity, ref stat, delta);
-        }
-
-        public static ulong AddModifierAsync<T, S>(Entity entity, ref T modifier, S statType)
-            where T : struct, IModifier
-            where S : struct, IConvertible
-        {
-            return ModifiersSystem.Instance.AddModifier(entity, ref modifier, statType);
-        }
-
-        public static void DelModifierAsync(Entity entity, ulong uid)
-        {
-            ModifiersSystem.Instance.DelModifier(entity, uid);
         }
 
         public static void Estimation(Entity entity, ref Stat stat, in DynamicBuffer<Modifier> items, float delta)

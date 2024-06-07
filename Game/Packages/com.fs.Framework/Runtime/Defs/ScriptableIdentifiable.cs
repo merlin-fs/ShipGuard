@@ -13,6 +13,7 @@ namespace Common.Defs
         
         public virtual void OnBeforeSerialize()
         {
+            if (!this) return;
             m_ID = ObjectID.Create(name);
         }
 

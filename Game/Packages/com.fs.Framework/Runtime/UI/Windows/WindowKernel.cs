@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+
+using Common.Core.Views;
+
 using UnityEngine;
 
 namespace Common.UI.Windows

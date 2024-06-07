@@ -34,17 +34,14 @@ namespace Game
         
         private void SetMoveVector(InputAction.CallbackContext callbackContext)
         {
-            
             var vector = math.normalize(callbackContext.ReadValue<Vector2>());
             m_MoveComponent.SetMove(math.normalize(new float3(vector.x, 0, vector.y)));
             if (callbackContext.started)
             {
                 _startTime = (float)callbackContext.startTime;
-                Debug.Log($"startTime {callbackContext.startTime}, time {callbackContext.time}, start {callbackContext.started}, canceled {callbackContext.canceled}");
             }
 
             var velocity = (callbackContext.time - _startTime) * 0.02f;
-            Debug.Log($"velocity {velocity}, time{callbackContext.time}, startTime {_startTime}, delta {Time.deltaTime}");
             m_MoveComponent.SetVelocity((float)velocity);
             
         }

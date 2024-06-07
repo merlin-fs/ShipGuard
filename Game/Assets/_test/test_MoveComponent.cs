@@ -9,7 +9,7 @@ namespace Game
         [SerializeField] private Animator m_Animator;
         private int MovingTag { get; } = Animator.StringToHash("Moving");
         private int VelocityXTag { get; } = Animator.StringToHash("VelocityX");
-        private int VelocityYTag { get; } = Animator.StringToHash("VelocityY");
+        private int VelocityZTag { get; } = Animator.StringToHash("VelocityZ");
         private int VelocityTag { get; } = Animator.StringToHash("Velocity");
         
 
@@ -18,6 +18,11 @@ namespace Game
             m_Animator.SetFloat(VelocityTag, velocity);
         }
 
+        public void SetAnimator(Animator aimator)
+        {
+            m_Animator = aimator;
+        }
+        
         public void SetMove(float3 vector)
         {
             //velocityX = Vector3.Dot(shift.normalized, MovementComponent.RotateTarget.right);
@@ -28,7 +33,7 @@ namespace Game
 
             m_Animator.SetBool(MovingTag, isMoving);
             m_Animator.SetFloat(VelocityXTag, vector.x);
-            m_Animator.SetFloat(VelocityYTag, vector.z);
+            m_Animator.SetFloat(VelocityZTag, vector.z);
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Game.Core
 {
-    public readonly struct Manager<THandle>
+    public readonly struct CustomHandleManager<THandle>
         where THandle: unmanaged, ICustomHandle
     {
         public delegate void TRegistry(Type type, params object[] args); 

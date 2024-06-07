@@ -1,6 +1,7 @@
 using Common.Core.Loading;
 using Game.Core.Loading;
 using Game.Core.Repositories;
+using Game.Core.Spawns;
 
 using Reflex.Core;
 
@@ -15,6 +16,8 @@ namespace Game.Core.Contexts
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
             containerBuilder.AddSingleton(c => c.Construct<ObjectRepository>());
+            containerBuilder.AddTransient(c => c.Construct<Spawner>(null));//new Spawn.IViewFactory(){} 
+            
             LoadGame(containerBuilder);
         }
 

@@ -6,7 +6,7 @@ using Unity.Jobs;
 
 namespace Game.Model.Stats
 {
-    //[UpdateInGroup(typeof(GameLogicInitSystemGroup))]
+    [UpdateInGroup(typeof(GameLogicInitSystemGroup))]
     public partial class ModifiersSystem : SystemBase
     {
         public static ModifiersSystem Instance { get; private set; }
@@ -28,11 +28,11 @@ namespace Game.Model.Stats
             m_LookupModifiers = GetBufferLookup<Modifier>(false);
         }
 
-        public ulong AddModifier<T, S>(Entity entity, ref T modifier, S statType)
+        public ulong AddModifier<T, TS>(Entity entity, ref T modifier)
             where T: struct, IModifier
-            where S: struct, IConvertible
+            where TS: IStat
         {
-            var mod = Modifier.Create(ref modifier, statType);
+            var mod = Modifier.Create<T, TS>(ref modifier);
             var item = new Item()
             {
                 UID = 0,

@@ -1,4 +1,7 @@
 using System;
+
+using Common.Core.Views;
+
 using UnityEngine;
 
 namespace Common.UI.Windows

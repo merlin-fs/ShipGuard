@@ -177,6 +177,7 @@ namespace Reflex.Core
         private void OverrideSelfInjection()
         {
             ResolversByContract[typeof(Container)] = new List<IResolver> { new SingletonValueResolver(this) };
+            ResolversByContract[typeof(IContainer)] = new List<IResolver> { new SingletonValueResolver(this) };
         }
     }
 }

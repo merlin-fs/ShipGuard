@@ -5,6 +5,7 @@ namespace Common.Core
 {
     public interface IViewPrefab
     {
-        public Task<GameObject> GetViewPrefab();
+        GameObject GetViewPrefab();
+        Task PreloadPrefab();
     }
 }
