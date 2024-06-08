@@ -26,13 +26,17 @@ MonoBehaviour:
     Dependency:
       m_CommandsIndex: 
   - Command:
+      rid: 4602785666861105232
+    Dependency:
+      m_CommandsIndex: 
+  - Command:
       rid: 3181409511752335632
     Dependency:
       m_CommandsIndex: 000000000100000002000000
   - Command:
       rid: 3181409573459198056
     Dependency:
-      m_CommandsIndex: 03000000
+      m_CommandsIndex: 04000000
   - Command:
       rid: 3181409844241367127
     Dependency:
@@ -56,6 +60,7 @@ MonoBehaviour:
       type: {class: LoadScene, ns: Game.Core.Loading, asm: Assembly-CSharp}
       data:
         sceneName: Main
+        loadMode: 0
     - rid: 3181409511752335632
       type: {class: LoadEntitiesWorld, ns: Game, asm: Assembly-CSharp}
       data: 
@@ -68,3 +73,8 @@ MonoBehaviour:
     - rid: 3181409936986341464
       type: {class: LoadGameInitialization, ns: Game.Core.Loading, asm: Assembly-CSharp}
       data: 
+    - rid: 4602785666861105232
+      type: {class: LoadScene, ns: Game.Core.Loading, asm: Assembly-CSharp}
+      data:
+        sceneName: MainLocation
+        loadMode: 1

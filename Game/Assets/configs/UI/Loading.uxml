@@ -1,0 +1,5 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="background" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/Frame/1/bg_Panel2.png?fileID=21300000&amp;guid=dfc54a49987eac84b96db56cca6dd4a8&amp;type=3#bg_Panel2&quot;); -unity-background-scale-mode: stretch-to-fill; justify-content: flex-end; flex-direction: column;">
+        <engine:ProgressBar value="0.5" title="my-progress" name="progress" high-value="1" style="align-content: flex-start; align-items: stretch; flex-basis: 15%; align-self: center; width: 50%;" />
+    </engine:VisualElement>
+</engine:UXML>

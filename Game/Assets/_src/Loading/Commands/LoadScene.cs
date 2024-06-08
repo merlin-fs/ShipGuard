@@ -10,38 +10,38 @@ using UnityEngine.SceneManagement;
 
 namespace Game.Core.Loading
 {
-    public class LoadScene : ILoadingCommand
+    public class LoadScene : ILoadingCommand, IProgress<float>
     {
         [SerializeField] private string sceneName;
-        private float m_Progress;
+        [SerializeField] private LoadSceneMode loadMode = LoadSceneMode.Single;
         
-        private AsyncOperation m_AsyncOperationHandle; 
+        private float m_Progress;
+
         public float GetProgress()
         {
             return m_Progress;
         }
 
+        public LoadScene(){}
+
+        public LoadScene(string name, LoadSceneMode mode = LoadSceneMode.Single)
+        {
+            sceneName = name;
+            loadMode = mode;
+        }
+        
         public Task Execute(ILoadingManager manager)
         {
             return UniTask.RunOnThreadPool( async () =>
             {
                 await UniTask.SwitchToMainThread();
-                var scene = SceneManager.GetActiveScene();
-                if (scene.IsValid() && scene.name == this.sceneName)
-                {
-                    m_Progress = 1;
-                    await UniTask.WaitUntil(() => scene.isLoaded);
-                    return;
-                }
-
-                m_AsyncOperationHandle = SceneManager.LoadSceneAsync(this.sceneName, LoadSceneMode.Single);
-
-                await UniTask.WaitUntil(() =>
-                {
-                    m_Progress = m_AsyncOperationHandle.progress;
-                    return m_AsyncOperationHandle.isDone;
-                });
+                await SceneManager.LoadSceneAsync(this.sceneName, loadMode).ToUniTask(this);
             }).AsTask();
+        }
+
+        public void Report(float value)
+        {
+            m_Progress = value;
         }
     }
 }

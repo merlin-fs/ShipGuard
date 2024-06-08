@@ -1,4 +1,7 @@
 using Common.Core.Loading;
+
+using Cysharp.Threading.Tasks;
+
 using Game.Core.Loading;
 using Game.Core.Repositories;
 using Game.Core.Spawns;
@@ -6,6 +9,7 @@ using Game.Core.Spawns;
 using Reflex.Core;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.Core.Contexts
 {
@@ -21,8 +25,17 @@ namespace Game.Core.Contexts
             LoadGame(containerBuilder);
         }
 
-        private void LoadGame(ContainerBuilder containerBuilder)
+        private async void LoadGame(ContainerBuilder containerBuilder)
         {
+            /*
+#if UNITY_EDITOR
+            var scene = SceneManager.GetActiveScene();
+            if (scene.IsValid() && scene.isLoaded)
+            {
+                await SceneManager.LoadSceneAsync(0).ToUniTask();
+            }
+#endif
+*/
             ILoadingManager loadingManager = new LoadingManager(containerBuilder.Build(), loadingConfig.GetCommands());
             containerBuilder.AddSingleton(loadingManager, typeof(ILoadingManager));
             loadingManager.Start();
