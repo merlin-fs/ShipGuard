@@ -1,8 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.Serialization;
-
 using Reflex.Delegates;
 
 namespace Reflex.Reflectors
@@ -30,8 +28,8 @@ namespace Reflex.Reflectors
 
         public ObjectActivator GenerateDefaultActivator(Type type)
         {
-            var ctor = Expression.Default(type);
-            var lambda = Expression.Lambda(typeof(ObjectActivator), ctor, Expression.Parameter(typeof(object[])));
+            var body = Expression.Convert(Expression.Default(type), typeof(object));
+            var lambda = Expression.Lambda(typeof(ObjectActivator), body, Expression.Parameter(typeof(object[])));
             return (ObjectActivator) lambda.Compile();
         }
     }

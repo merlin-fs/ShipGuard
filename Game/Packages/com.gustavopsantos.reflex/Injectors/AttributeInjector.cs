@@ -3,22 +3,17 @@ using Reflex.Core;
 
 namespace Reflex.Injectors
 {
-    internal static class AttributeInjector
+    public static class AttributeInjector
     {
         public static void Inject(object obj, Container container)
         {
-            var info = TypeAttributeInfoCache.Get(obj.GetType());
+            var info = TypeInfoCache.Get(obj.GetType());
 
             for (int i = 0; i < info.InjectableFields.Length; i++)
             {
                 FieldInjector.Inject(info.InjectableFields[i], obj, container);
             }
 
-            for (int i = 0; i < info.InjectableFieldsStatic.Length; i++)
-            {
-                FieldInjector.Inject(info.InjectableFieldsStatic[i], obj, container);
-            }
-            
             for (int i = 0; i < info.InjectableProperties.Length; i++)
             {
                 PropertyInjector.Inject(info.InjectableProperties[i], obj, container);

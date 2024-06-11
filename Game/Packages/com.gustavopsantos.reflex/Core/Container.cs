@@ -112,7 +112,7 @@ namespace Reflex.Core
 
         public void Inject(object obj)
         {
-            AttributeInjector.Inject(obj, this);   
+            AttributeInjector.Inject(obj, this);
         }
 
         public T Instantiate<T>()

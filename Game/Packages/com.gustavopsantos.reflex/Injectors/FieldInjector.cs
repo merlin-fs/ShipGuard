@@ -15,7 +15,7 @@ namespace Reflex.Injectors
             }
             catch (Exception e)
             {
-                throw new FieldInjectorException($"{e} by {instance}");
+                throw new FieldInjectorException(e);
             }
         }
     }

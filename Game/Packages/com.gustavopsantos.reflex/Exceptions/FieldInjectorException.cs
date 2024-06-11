@@ -7,9 +7,5 @@ namespace Reflex.Exceptions
         public FieldInjectorException(Exception e) : base(e.Message)
         {
         }
-        
-        public FieldInjectorException(string message) : base(message)
-        {
-        }
     }
 }

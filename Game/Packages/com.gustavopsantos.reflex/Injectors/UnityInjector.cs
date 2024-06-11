@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-using Common.Core;
-
 using Reflex.Core;
-using Reflex.Extensions;
 using Reflex.Logging;
-using Reflex.Utilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Scripting;
@@ -21,6 +16,7 @@ namespace Reflex.Injectors
         internal static Action<Scene, SceneScope> OnSceneLoaded;
         internal static Container ProjectContainer { get; private set; }
         internal static Dictionary<Scene, Container> ContainersPerScene { get; } = new();
+        internal static Dictionary<Scene, Container> SceneContainerParentOverride { get; } = new();
         internal static Dictionary<Scene, Action<ContainerBuilder>> ScenePreInstaller { get; } = new();
         
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -29,7 +25,7 @@ namespace Reflex.Injectors
             ReportReflexDebuggerStatus();
             
             ContainersPerScene.Clear();
-            ProjectContainer = CreateProjectContainer();
+            ProjectContainer = CreateProjectContainer.Create();
 
             void InjectScene(Scene scene, SceneScope sceneScope)
             {
@@ -65,21 +61,13 @@ namespace Reflex.Injectors
             Application.quitting += DisposeProject;
         }
 
-        private static Container CreateProjectContainer()
-        {
-            var builder = new ContainerBuilder().SetName("ProjectContainer");
-            
-            if (ResourcesUtilities.TryLoad<ProjectScope>(nameof(ProjectScope), out var projectScope))
-            {
-                builder.AddSingleton(InitializationManager.Instance, typeof(IInitialization));
-                projectScope.InstallBindings(builder);
-            }
-            return builder.Build();
-        }
-
         private static Container CreateSceneContainer(Scene scene, Container projectContainer, SceneScope sceneScope)
         {
-            return projectContainer.Scope(builder =>
+            var sceneParentContainer = SceneContainerParentOverride.Remove(scene, out var container)
+                ? container
+                : projectContainer;
+            
+            return sceneParentContainer.Scope(builder =>
             {
                 builder.SetName($"{scene.name} ({scene.GetHashCode()})");
 
