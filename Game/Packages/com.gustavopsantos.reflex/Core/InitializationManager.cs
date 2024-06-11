@@ -6,10 +6,15 @@ namespace Reflex.Core
 {
     internal class InitializationManager: IInitialization
     {
-        internal static InitializationManager Instance { get; } = new();
+        internal static InitializationManager Instance { get; private set; }
         
         private ConcurrentDictionary<IInitialization, IContainer> m_Queue = new();
         private bool m_Active;
+
+        public InitializationManager()
+        {
+            Instance = this;
+        }
         
         public void Initialization(object instance, IContainer container)
         {

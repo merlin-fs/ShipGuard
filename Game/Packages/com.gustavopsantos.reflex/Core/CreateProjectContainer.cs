@@ -1,4 +1,7 @@
 ﻿using System.Linq;
+
+using Common.Core;
+
 using UnityEngine;
 
 namespace Reflex.Core
@@ -13,6 +16,7 @@ namespace Reflex.Core
 
             foreach (var projectScope in activeProjectScopes)
             {
+                builder.AddSingleton(new InitializationManager(), typeof(IInitialization));
                 projectScope.InstallBindings(builder);
             }
 

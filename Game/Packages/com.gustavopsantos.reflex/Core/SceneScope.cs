@@ -1,5 +1,6 @@
 using Reflex.Injectors;
 using Reflex.Logging;
+
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -10,6 +11,10 @@ namespace Reflex.Core
     {
         private void Awake()
         {
+#if UNITY_EDITOR
+            if (UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene() == gameObject.scene && gameObject.scene.isLoaded)
+                return;
+#endif
             UnityInjector.OnSceneLoaded.Invoke(gameObject.scene, this);
         }
 
