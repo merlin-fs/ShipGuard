@@ -95,10 +95,16 @@ namespace Common.Core.Loading
                     {
                         foreach (var iter in commands)
                         {
-                            m_Container.Inject(iter.Command);
-                            iter.Dependency.Rebuild(this);
+                            try
+                            {
+                                m_Container.Inject(iter.Command);
+                                iter.Dependency.Rebuild(this);
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.unityLogger.LogException(e);
+                            }
                         }
-                            
                     }
                 });
         }
