@@ -12,7 +12,7 @@ namespace UnityEditor.Inspector
     {
         protected override void GetDisplayValue(object value, ref string display)
         {
-            display = (string)value ?? "(null)";
+            display = value?.ToString() ?? "(null)";
         }
 
         protected override void OnSelect(SerializedProperty property, Type type)
@@ -28,7 +28,8 @@ namespace UnityEditor.Inspector
             DefineableSelectAttribute attr = (DefineableSelectAttribute)attribute;
             var type = attr.InstanceType;
             var method = type.GetMethod("GetGenericType");
-            type = (Type)method.Invoke(null, null);
+            if (method != null)
+                type = (Type)method.Invoke(null, null);
             return type;
         }
 

@@ -55,6 +55,8 @@ namespace Common.Core
         }
 
         public static implicit operator ObjectID(string value) => ObjectID.Create(value);
+        //public static implicit operator string(ObjectID value) => value.ToString();
+        public static explicit operator string(ObjectID value) => value.ToString();
 
         public override int GetHashCode()
         {
