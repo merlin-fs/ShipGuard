@@ -1,3 +1,5 @@
+using Common.UI;
+
 using Game.Core.Camera;
 using Game.Core.Inputs;
 using Game.Core.Spawns;
@@ -9,6 +11,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 namespace Game.Core.Contexts
 {
@@ -18,12 +21,26 @@ namespace Game.Core.Contexts
         [SerializeField] private CameraController cameraController;
         [SerializeField] private SpawnFactory spawnViewFactory;
         [SerializeField] private LocationScenes locationScenes;
+        [SerializeField] private UIDocument rootUI;
 
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
             containerBuilder.AddTransient(c => c.Construct<Spawner>(spawnViewFactory));
             containerBuilder.AddSingleton<IPlayerInputs>(c => c.Construct<PlayerInputs>(playerInputAsset));
             containerBuilder.AddSingleton<CameraController>(c => cameraController);
+
+            containerBuilder.AddSingleton<IUIManager>(container =>
+            {
+                var manager = container.Construct<UIManager>(rootUI.gameObject, "main");
+                //UI widgets
+                manager.WithBindWidget(binder =>
+                {
+                    //binder.Bind<GameUI>();
+                    //binder.Bind<LeftPanel>();
+                });
+                return manager;
+            });
+
 
             containerBuilder.OnContainerBuilt += async container =>
             {

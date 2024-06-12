@@ -15,12 +15,6 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 38fe1a49c3539d040836300cf74f2023
   m_SerializeEntries:
-  - m_GUID: 55c4a49ed91d8a24294a50d06ea68958
-    m_Address: Assets/configs/DamageTypes/DamageConfig.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - defs
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7077e9883d336e64b9fb4d42e6d818ea
     m_Address: Assets/Prefabs/TestPoint.prefab
     m_ReadOnly: 0

@@ -30,7 +30,8 @@ MonoBehaviour:
   - m_GUID: a6848c74ceaa16d4d86d600738478846
     m_Address: Assets/Scenes/Game/Locations/TestLocation_1.unity
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - scene
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1dd52ba43ac92fd419a659f4b15f5863, type: 2}

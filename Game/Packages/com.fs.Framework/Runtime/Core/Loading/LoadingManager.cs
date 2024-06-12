@@ -22,6 +22,7 @@ namespace Common.Core.Loading
         {
             m_Container = container;
             m_Commands = commands.ToList();
+            m_Progress = new MultiProgress(new ILoadingCommand[] { });
         }
 
         #region ILoadingManager
