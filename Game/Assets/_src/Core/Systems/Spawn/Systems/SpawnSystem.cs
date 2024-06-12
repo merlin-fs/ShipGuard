@@ -41,7 +41,7 @@ namespace Game.Core.Spawns
                     if (config == null) throw new ArgumentNullException($"Prefab {spawn.PrefabID} not found");
 
                     var builder = m_Spawner.Spawn(config, ecb)
-                        .WithView()
+                        .WithNewView()
                         .WithLogicEnabled(false)
                         .WithComponents(components);
                         

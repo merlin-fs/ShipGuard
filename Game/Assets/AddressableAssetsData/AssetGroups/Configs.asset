@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Configs
   m_GUID: 4b85313d57db5864d80cbbcfcce38134
   m_SerializeEntries:
+  - m_GUID: b552c2ca9b2a33849bc7809168af6756
+    m_Address: PlayerSpawnPointConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - defs
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: be591dac54d18704fad4d0479809d0c9
     m_Address: Player
     m_ReadOnly: 0

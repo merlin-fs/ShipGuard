@@ -4,6 +4,7 @@ using Common.Core;
 
 using Game.Core.Defs;
 using Game.Core.HybridTransforms;
+using Game.Views;
 
 using Reflex.Core;
 
@@ -16,9 +17,15 @@ namespace Game.Core.Spawns
     {
         public partial class Builder
         {
-            public Builder WithView()
+            public Builder WithNewView()
             {
                 m_Spawner.m_Ecb.AddComponent<Spawn.ViewTag>(m_Spawner.m_Entity);
+                return this;
+            }
+
+            public Builder WithView(IView view)
+            {
+                m_Spawner.CreateContext(m_Spawner.m_Entity, view, m_Spawner.m_Ecb, default);
                 return this;
             }
         }
@@ -38,6 +45,24 @@ namespace Game.Core.Spawns
                     var inst = m_Factory.Instantiate(prefab, entity, container);
                     return inst;
                 });
+            });
+                
+            
+            ecb.AddComponent(entity, new HybridTransform.ContainerReference{ Value = newContext });
+            ecb.AddComponent<LocalTransform>(entity);
+            ecb.AddComponent<LocalToWorld>(entity);
+            return newContext;
+
+            //AddChildPrefab(newContext, children);
+            //initialization spawn prefab
+            //m_Pool.Get().SetContext(newContext);
+        }
+        
+        public Container CreateContext(Entity entity, IView view, EntityCommandBuffer ecb, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab> children)
+        {
+            var newContext = m_Container.Scope(builder =>
+            {
+                builder.AddSingleton(container => view);
             });
                 
             

@@ -6,13 +6,14 @@ using Common.Core.Loading;
 using Cysharp.Threading.Tasks;
 
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace Game.Core.Loading
 {
     public class LoadScene : ILoadingCommand, IProgress<float>
     {
-        [SerializeField] private string sceneName;
+        [SerializeField] private AssetReference sceneRef;
         [SerializeField] private LoadSceneMode loadMode = LoadSceneMode.Single;
         
         private float m_Progress;
@@ -24,18 +25,25 @@ namespace Game.Core.Loading
 
         public LoadScene(){}
 
-        public LoadScene(string name, LoadSceneMode mode = LoadSceneMode.Single)
+        public LoadScene(Guid sceneGuid, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            sceneName = name;
+            sceneRef = new AssetReference(sceneGuid.ToString());
             loadMode = mode;
         }
         
         public Task Execute(ILoadingManager manager)
         {
-            return UniTask.RunOnThreadPool( async () =>
+            return UniTask.RunOnThreadPool(async () =>
             {
                 await UniTask.SwitchToMainThread();
-                await SceneManager.LoadSceneAsync(this.sceneName, loadMode).ToUniTask(this);
+                /*
+                if (loadMode == LoadSceneMode.Single && 
+                    SceneManager.GetActiveScene().IsValid() && 
+                    SceneManager.GetActiveScene().name == this.sceneName)
+                    return;
+                */
+                await Addressables.LoadSceneAsync(sceneRef, loadMode).Task;
+                //await SceneManager.LoadSceneAsync(this.sceneName, loadMode).ToUniTask(this);
             }).AsTask();
         }
 

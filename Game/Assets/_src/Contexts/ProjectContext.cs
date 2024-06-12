@@ -1,10 +1,7 @@
 using Common.Core.Loading;
 
-using Cysharp.Threading.Tasks;
-
 using Game.Core.Loading;
 using Game.Core.Repositories;
-using Game.Core.Spawns;
 
 using Reflex.Core;
 
@@ -20,25 +17,22 @@ namespace Game.Core.Contexts
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
             containerBuilder.AddSingleton(c => c.Construct<ObjectRepository>());
-            containerBuilder.AddTransient(c => c.Construct<Spawner>(null));//new Spawn.IViewFactory(){} 
-            
-            LoadGame(containerBuilder);
-        }
+            containerBuilder.AddSingleton<ILoadingManager>(c => c.Construct<LoadingManager>(c, loadingConfig.GetCommands()));
 
-        private async void LoadGame(ContainerBuilder containerBuilder)
-        {
+            containerBuilder.OnContainerBuilt += container =>
+            {
+                container.Resolve<ILoadingManager>().Start();
+            };
             /*
 #if UNITY_EDITOR
             var scene = SceneManager.GetActiveScene();
             if (scene.IsValid() && scene.isLoaded)
             {
+                scene.GetRootGameObjects()
                 await SceneManager.LoadSceneAsync(0).ToUniTask();
             }
 #endif
-*/
-            ILoadingManager loadingManager = new LoadingManager(containerBuilder.Build(), loadingConfig.GetCommands());
-            containerBuilder.AddSingleton(loadingManager, typeof(ILoadingManager));
-            loadingManager.Start();
+            */
         }
     }
 }

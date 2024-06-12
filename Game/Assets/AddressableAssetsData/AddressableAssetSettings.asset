@@ -60,8 +60,10 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 90788f6017396724dbbf51e6cf74096c, type: 2}
+  - {fileID: 11400000, guid: 80ffd5dac763b5b4fa52a0871e853e04, type: 2}
   - {fileID: 11400000, guid: d5811ca0ad1172c40b3075e63dfa4009, type: 2}
   - {fileID: 11400000, guid: 1704fd4f394035143a776e856cb87335, type: 2}
+  - {fileID: 11400000, guid: 0a66a30cc3594224583d716a7d2c82a3, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
     m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
@@ -102,6 +104,7 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - defs
+    - scene
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: de737346c86592e45a5b739ef4d8c748, type: 2}

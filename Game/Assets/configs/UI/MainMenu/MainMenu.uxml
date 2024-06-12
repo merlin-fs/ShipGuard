@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/configs/UI/Styles/Defaults.uss?fileID=7433441132597879392&amp;guid=c9d86378d0aad5c489ad0841fac2cc41&amp;type=3#Defaults" />
+    <Style src="project://database/Assets/configs/UI/Styles/Toolbar.uss?fileID=7433441132597879392&amp;guid=d259a0d4499ad8640b3701f0faf6b427&amp;type=3#Toolbar" />
+    <engine:VisualElement class="map_bg toolbar" style="flex-grow: 1; align-items: flex-start; align-self: flex-start; justify-content: flex-end; padding-top: 40px; padding-right: 40px; padding-bottom: 40px; padding-left: 40px;">
+        <engine:Button text="Location 1" style="min-width: 180px; min-height: 60px;" />
+    </engine:VisualElement>
+</engine:UXML>

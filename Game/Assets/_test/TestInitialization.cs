@@ -29,7 +29,7 @@ namespace Game
             var config = m_ObjectRepository.FindByID("Player");
 
             m_Spawner.Spawn(config, ecb)
-                .WithView()
+                .WithNewView()
                 .WithPosition(float3.zero)
                 .WithEvent(view =>
                 {

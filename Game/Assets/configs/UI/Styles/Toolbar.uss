@@ -1,0 +1,76 @@
+.unity-label {
+    color: rgb(195, 195, 195);
+}
+
+.unity-toggle {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_n.png?fileID=21300000&guid=9a0bdcd9f12677b41997151415b55619&type=3#Btn_Yes_n');
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.98);
+    -unity-text-align: middle-center;
+}
+
+.unity-toggle:hover {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_h.png?fileID=21300000&guid=1104e569d8c8cc74eae9eb95440168ea&type=3#Btn_Yes_h');
+}
+
+.unity-toggle:active {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_c.png?fileID=21300000&guid=e250aa877dfe43143bf3a31953ddbf6b&type=3#Btn_Yes_c');
+}
+
+.unity-toggle:disabled {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_n.png?fileID=21300000&guid=9a0bdcd9f12677b41997151415b55619&type=3#Btn_Yes_n');
+}
+
+.unity-toggle:checked {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_c.png?fileID=21300000&guid=e250aa877dfe43143bf3a31953ddbf6b&type=3#Btn_Yes_c');
+    -unity-background-image-tint-color: rgb(132, 132, 132);
+}
+
+.unity-toggle__checkmark {
+    display: none;
+}
+
+.unity-toggle__label {
+    flex-grow: 1;
+}
+
+.unity-radio-button {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_n.png?fileID=21300000&guid=9a0bdcd9f12677b41997151415b55619&type=3#Btn_Yes_n');
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.98);
+    -unity-text-align: middle-center;
+    min-height: 60px;
+}
+
+.unity-radio-button:hover {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_h.png?fileID=21300000&guid=1104e569d8c8cc74eae9eb95440168ea&type=3#Btn_Yes_h');
+}
+
+.unity-radio-button:active {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_c.png?fileID=21300000&guid=e250aa877dfe43143bf3a31953ddbf6b&type=3#Btn_Yes_c');
+}
+
+.unity-radio-button:disabled {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_n.png?fileID=21300000&guid=9a0bdcd9f12677b41997151415b55619&type=3#Btn_Yes_n');
+}
+
+.unity-radio-button:checked {
+    background-image: url('project://database/Assets/Art/UI/Btn_Yes_c.png?fileID=21300000&guid=e250aa877dfe43143bf3a31953ddbf6b&type=3#Btn_Yes_c');
+    -unity-background-image-tint-color: rgb(132, 132, 132);
+}
+
+.unity-radio-button__label {
+    flex-grow: 1;
+}
+
+.unity-radio-button__checkmark {
+    display: none;
+}
+
+.unity-radio-button__checkmark-background {
+    display: none;
+}
+
+.toolbar {
+    flex-grow: 0;
+}

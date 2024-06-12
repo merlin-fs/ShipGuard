@@ -16,13 +16,13 @@ namespace Game.Core.Spawns
     public partial class Spawner
     {
         [Inject] private Container m_Container;
-        private Spawn.IViewFactory m_Factory;
+        private readonly Spawn.IViewFactory m_Factory;
         
         private IConfig m_Config;
         private EntityCommandBuffer m_Ecb;
         private Entity m_Entity;
 
-        private Builder m_Builder; 
+        private readonly Builder m_Builder; 
 
         public Builder Spawn(IConfig config, EntityCommandBuffer ecb)
         {

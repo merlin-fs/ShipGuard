@@ -21,6 +21,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - defs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7077e9883d336e64b9fb4d42e6d818ea
+    m_Address: Assets/Prefabs/TestPoint.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ab4a4b41f2403bb45a73a2c124373e9e
     m_Address: Assets/Prefabs/Dummy.prefab
     m_ReadOnly: 0

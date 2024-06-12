@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Locations
+  m_EditorClassIdentifier: 
+  m_GroupName: Locations
+  m_GUID: 5a1ded45a9954ba45941233f9c59ed32
+  m_SerializeEntries:
+  - m_GUID: 4f0f336cbd812324593ce1cd0eac1410
+    m_Address: Assets/Scenes/Game/Main.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scene
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b1c041ca5e48ef41aaad36af19a5553
+    m_Address: Assets/Scenes/Game/Locations/MainLocation.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scene
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6848c74ceaa16d4d86d600738478846
+    m_Address: Assets/Scenes/Game/Locations/TestLocation_1.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 1dd52ba43ac92fd419a659f4b15f5863, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 35ef5d4a52299f2449564e395ccdb964, type: 2}
+    - {fileID: 11400000, guid: de1943672cfae3a49b654b290c94c9f1, type: 2}

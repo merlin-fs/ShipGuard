@@ -34,9 +34,10 @@ namespace Game
                     container.Inject(componentSystemBase);
                 };
                 
-                World.UnmanagedSystemCreated += (world, ptr, type) =>
+                World.UnmanagedSystemCreated += async (world, ptr, type) =>
                 {
                     var obj = Marshal.PtrToStructure(ptr, type);
+                    await UniTask.SwitchToMainThread();
                     container.Inject(obj);
                 };
                 
