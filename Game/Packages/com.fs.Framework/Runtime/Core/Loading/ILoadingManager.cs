@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Common.Core.Loading
@@ -8,6 +9,6 @@ namespace Common.Core.Loading
         IProgress Progress { get; }
         string Text { get; }
         bool IsComplete { get; }
-        Task Start(Action onLoadComplete = null);
+        Task Start(IContainer container, IEnumerable<LoadingManager.CommandItem> commands, Action onLoadComplete = null);
     }
 }

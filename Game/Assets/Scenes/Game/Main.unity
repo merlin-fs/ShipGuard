@@ -888,7 +888,7 @@ MonoBehaviour:
   cameraController: {fileID: 1870496621}
   spawnViewFactory: {fileID: 410921794}
   locationScenes: {fileID: 11400000, guid: cfc5dfeb2905a7b4887329f7b324c61e, type: 2}
-  rootUI: {fileID: 0}
+  uiManagerHost: {fileID: 1970101265}
 --- !u!1 &1757047830
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,7 +1024,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1970101267}
-  - component: {fileID: 1970101266}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -1032,25 +1031,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1970101266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1970101265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 717b13ede5094f04aa67272b7adaaaee, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 5d0e92b1c8f325a45968559e86a38357, type: 3}
-  m_SortingOrder: 0
-  m_WorldSpaceSizeMode: 1
-  m_WorldSpaceWidth: 1920
-  m_WorldSpaceHeight: 1080
 --- !u!4 &1970101267
 Transform:
   m_ObjectHideFlags: 0

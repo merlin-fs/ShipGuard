@@ -30,6 +30,12 @@ namespace Game.Core.Loading
             sceneRef = new AssetReference(sceneGuid.ToString());
             loadMode = mode;
         }
+
+        public LoadScene(AssetReference sceneRef, LoadSceneMode mode = LoadSceneMode.Single)
+        {
+            this.sceneRef = sceneRef;
+            loadMode = mode;
+        }
         
         public Task Execute(ILoadingManager manager)
         {

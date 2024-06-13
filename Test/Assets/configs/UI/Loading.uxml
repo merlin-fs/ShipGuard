@@ -1,5 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:VisualElement name="background" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/Frame/1/bg_Panel2.png?fileID=21300000&amp;guid=dfc54a49987eac84b96db56cca6dd4a8&amp;type=3#bg_Panel2&quot;); -unity-background-scale-mode: stretch-to-fill; justify-content: flex-end; flex-direction: column;">
-        <engine:ProgressBar value="0.5" title="my-progress" name="progress" high-value="1" style="align-content: flex-start; align-items: stretch; flex-basis: 15%; align-self: center; width: 50%;" />
+    <Style src="project://database/Assets/configs/UI/Styles/Defaults.uss?fileID=7433441132597879392&amp;guid=c9d86378d0aad5c489ad0841fac2cc41&amp;type=3#Defaults" />
+    <engine:VisualElement name="background" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/UI/Frame/1/bg_Panel2.png?fileID=21300000&amp;guid=dfc54a49987eac84b96db56cca6dd4a8&amp;type=3#bg_Panel2&quot;); -unity-background-scale-mode: stretch-to-fill; -unity-background-image-tint-color: rgb(110, 176, 109); padding-top: 4%; padding-right: 4%; padding-bottom: 4%; padding-left: 4%;">
+        <engine:VisualElement style="flex-grow: 1; justify-content: flex-end; background-image: url(&quot;project://database/Assets/Art/UI/Frame/1/bg_Panel1.png?fileID=21300000&amp;guid=bd2fb3c39ab86784899642ca2422eb9e&amp;type=3#bg_Panel1&quot;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.2);">
+            <engine:ProgressBar value="0.5" title="my-progress" name="progress" high-value="1" style="align-items: stretch; align-self: center; width: 50%; font-size: 55%; color: rgb(0, 0, 0); height: 6%;" />
+        </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

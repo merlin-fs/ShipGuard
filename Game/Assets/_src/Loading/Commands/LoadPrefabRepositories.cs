@@ -34,5 +34,7 @@ namespace Game.Core.Loading
             });
             */
         }
+
+        public LoadPrefabRepositories(string label) : base(label){}
     }
 }

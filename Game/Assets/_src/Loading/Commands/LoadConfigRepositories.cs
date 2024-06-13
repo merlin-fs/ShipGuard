@@ -22,5 +22,7 @@ namespace Game.Core.Loading
         {
             return result.Cast<IConfig>();
         }
+
+        public LoadConfigRepositories(string label) : base(label){ }
     }
 }

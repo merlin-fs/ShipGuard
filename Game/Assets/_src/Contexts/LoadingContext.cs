@@ -3,17 +3,17 @@ using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Game
+namespace Game.Core.Contexts
 {
     public class LoadingContext: MonoBehaviour
     {
-        [SerializeField] private UIDocument rootUI;
+        [SerializeField] private UIDocument loadingUI;
         [Inject] private ILoadingManager m_LoadingManager;
-
+        
         private void Awake()
         {
-            var progress = rootUI.rootVisualElement.Q<ProgressBar>("progress");
-            progress.schedule.Execute(() => progress.value = m_LoadingManager.Progress.Value).Every(10);
+            var widget = new UI.Loading();
+            widget.Bind(loadingUI.rootVisualElement, m_LoadingManager.Progress);
         }
     }
 }

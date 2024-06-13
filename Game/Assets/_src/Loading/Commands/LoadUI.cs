@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
+
 using Common.Core.Loading;
-using Common.UI;
 
 using Cysharp.Threading.Tasks;
+
+using Game.UI;
 
 using Reflex.Extensions;
 
@@ -23,8 +25,9 @@ namespace Game.Core.Loading
             {
                 await UniTask.SwitchToMainThread();
                 var container = SceneManager.GetActiveScene().GetSceneContainer();
-                //var uiManager = container.Resolve<IUIManager>();
-                //uiManager.Show<GameUI>(true);
+                var uiManager = container.Resolve<IUIManager>();
+                uiManager.Hide<UI.Loading>();
+                uiManager.Show<UI.MainMenu>().WithLayer(UILayer.Main);
             }).AsTask();
         }
     }

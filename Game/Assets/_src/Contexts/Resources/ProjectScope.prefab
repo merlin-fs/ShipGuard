@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6699806572445016155}
   - component: {fileID: 5881360947252690426}
   - component: {fileID: 3852459849489853341}
+  - component: {fileID: -6239888547578402182}
   m_Layer: 0
   m_Name: ProjectScope
   m_TagString: Untagged
@@ -57,4 +58,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0986340b85b073d41b530a7540a58fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingConfig: {fileID: 11400000, guid: fa4fdb87cab17f54ebff28ebf64e2c5c, type: 2}
+  loadingConfig: {fileID: 11400000, guid: 674f09161a2a8ad4fba94b809eb5faee, type: 2}
+--- !u!114 &-6239888547578402182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617373262096487675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28eb2ab63664a904a9184bacb517124b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configs:
+  - {fileID: 11400000, guid: c11c0bd796f9fae4a8a1a540259386fe, type: 2}

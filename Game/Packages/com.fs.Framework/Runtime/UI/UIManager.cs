@@ -1,176 +1,123 @@
 using System;
-using System.Linq;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
 using Common.Core;
+
+using JetBrains.Annotations;
+
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
 namespace Common.UI
 {
-    public class UIManager: IUIManager, IInitialization
+    public partial class UIManager<TLayer>: IUIManager<TLayer>
+        where TLayer : struct, IComparable, IConvertible, IFormattable
     {
-        private IContainer m_Container;
-        private readonly UIDocument m_Document;
-        private readonly VisualElement m_Cancel;
-        private readonly List<VisualElement> m_PopupStack = new();
-        private readonly Dictionary<Type, IWidget> m_Parts = new();
+        private readonly IContainer m_Container;
+        private readonly Dictionary<TLayer, UIDocument> m_Layers = new();
+        private readonly ConcurrentQueue<WidgetShowInternalBinder> m_WidgetShowQueue = new();
+        private readonly TLayer m_DefaultLayer;
+        private readonly Dictionary<Type, CacheWidget> m_CacheWidget = new();
 
-        private int m_CancelRef;
-        private InternalInitialization m_Initialization;
-        private IInitialization _initiatedImplementation;
+        private Task m_ProcessTask;
+        private Action m_ResumeProcess;
 
-        #region Initialize
-        public void Initialization(IContainer container)
+        protected UIManager(IContainer container, [NotNull] GameObject host, TLayer defaultLayer, params (TLayer layer, PanelSettings panelSettings, VisualTreeAsset rootElement)[] layers)
         {
-            m_Document.enabled = true;
-            if (m_Initialization == null) return;
+            Assert.AreNotEqual(layers.Length, 0, $"UIManager requires at least one UIDocument");
+            m_Container = container;
+            m_DefaultLayer = defaultLayer;
 
-            if (m_Initialization.BindWidget != null)
+            foreach ((TLayer layer, PanelSettings panelSettings, VisualTreeAsset rootElement) in layers)
             {
-                var binder = new WriterWidgetBinder();
-                m_Initialization.BindWidget.Invoke(binder);
-                InitializeWidgets(binder.Build());
+                var obj = new GameObject(layer.ToString(), typeof(UIDocument));
+                obj.transform.SetParent(host.transform);
+                var uiDocument = obj.GetComponent<UIDocument>();
+                uiDocument.panelSettings = panelSettings;
+                uiDocument.visualTreeAsset = rootElement;
+                m_Layers.Add(layer, uiDocument);
+                
+                //m_Document.rootVisualElement?.RegisterCallback<NavigationCancelEvent>(evt => OnCancel());
             }
-            m_Initialization = null;
+            //m_Document = rootDoc;
+            //m_Document.enabled = true;
+            //var cancelWidget = new RootClicked(m_Document.rootVisualElement);
+            //cancelWidget.Bind(m_Document);
+            //m_Cancel = cancelWidget.VisualElement;
+            //ShowElement(m_Cancel, false);
+            //m_Document.rootVisualElement?.RegisterCallback<NavigationCancelEvent>(evt => OnCancel());
+            m_ProcessTask = Process();
         }
-        #endregion
-        private class InternalInitialization
-        {
-            public Action<WidgetBinder> BindWidget;
-        }
+
         
-        public UIManager(GameObject root, string rootName)
+        public IUIManager<TLayer>.WidgetShowBinder Show<T>() 
+            where T : IWidget
         {
-            m_Document = root.GetComponent<UIDocument>();
-            m_Document.enabled = true;
-            var cancelWidget = new RootClicked(rootName);
-            cancelWidget.Bind(m_Document);
-            m_Cancel = cancelWidget.VisualElement;
-            ShowElement(m_Cancel, false);
-            m_Document.rootVisualElement?.RegisterCallback<NavigationCancelEvent>(evt => OnCancel());
+            var binder = new WidgetShowInternalBinder(this, typeof(T), true);
+            m_WidgetShowQueue.Enqueue(binder);
+            ResumeProcess();
+            return binder;
         }
 
-        public void WithBindWidget(Action<WidgetBinder> bind)
+        public void Hide<T>() 
+            where T : IWidget
         {
-            m_Initialization ??= new InternalInitialization();
-            m_Initialization.BindWidget = bind;
-        } 
-
-        public void Show<T>(bool show)
-            where T: IWidget
-        {
-            var widget = GetPart(typeof(T));
-            ShowElements(widget, show);
+            var binder = new WidgetShowInternalBinder(this, typeof(T), false);
+            binder.WithLayer(m_DefaultLayer);
+            m_WidgetShowQueue.Enqueue(binder);
+            ResumeProcess();
         }
 
-        private UIWidget GetPart(Type type)
-        {
-            return (UIWidget)m_Parts[type];
-        }
-
-        private void InitializeWidgets(IEnumerable<Type> widgets)
-        {
-            foreach (var widgetType in widgets)
-            {
-                var widget = AddWidged(widgetType);
-                if (widget is IWidgetContainer container)
-                    InitializeWidgets(container.GetWidgetTypes());
-                ShowElements(widget, false);
-            }
-
-            UIWidget AddWidged(Type type)
-            {
-                if (m_Parts.TryGetValue(type, out var value)) return (UIWidget)value; 
-
-                var widget = (UIWidget)m_Container.Instantiate(type);
-                m_Parts.Add(type, widget);
-                widget.Bind(m_Document);
-                return widget;
-            }
-        }
-
-        private void ShowElements(UIWidget widget, bool show)
-        {
-            foreach (var iter in widget.GetElements())
-            {
-                ShowElement(iter, show);
-            }
-
-            if (widget is not IWidgetContainer container) return;
-
-            foreach (var iter in container.GetWidgetTypes())
-            {
-                ShowElements(GetPart(iter), show);
-            }
-        }
+        private void ResumeProcess() => Task.Delay(1).ContinueWith(task => m_ResumeProcess.Invoke());
         
-        public void Show(VisualElement element, ShowStyle style = ShowStyle.Normal)
+        private Task Process()
         {
-            switch (style)
+            EventWaitHandle @event = new AutoResetEvent(false);
+            CancellationToken token = new CancellationToken();
+            m_ResumeProcess = () => @event.Set(); 
+            
+            return Task.Run(() =>
             {
-                case ShowStyle.Normal:
-                    ShowElement(element, true);
-                    return;
-                case ShowStyle.Popup:
-                    ShowPopups(element);
-                    return;
-            }
+                while (@event.WaitOne())
+                {
+                    while (m_WidgetShowQueue.TryDequeue(out var showBinder))
+                    {
+                        if (showBinder.Show)
+                            UnityMainThread.Context.Post(target => Show((WidgetShowInternalBinder)target), showBinder);
+                        else
+                            UnityMainThread.Context.Post(target => Hide((WidgetShowInternalBinder)target), showBinder);
+                    }
+                }
+            }, token);
         }
 
-        public void Close(VisualElement element)
+        private void Show(WidgetShowInternalBinder showBinder)
         {
-            m_PopupStack.Remove(element);
-            ShowCancelButton(false);
-            ShowElement(element, false);
-        }
-
-        public void HidePopups()
-        {
-            foreach (var iter in m_PopupStack)
+            if (!m_CacheWidget.TryGetValue(showBinder.WidgetType, out var cacheWidget))
             {
-                ShowCancelButton(false);
-                ShowElement(iter, false);
+                var widget = showBinder.Create();
+                var doc = m_Layers[showBinder.Layer];
+                var element = showBinder.AttachDocument(doc.rootVisualElement);
+                cacheWidget = new CacheWidget {Widget = widget, Root = doc.rootVisualElement, Element = element};
+                showBinder.Bind(cacheWidget.Root);
+                m_CacheWidget.Add(showBinder.WidgetType, cacheWidget);
             }
+            ShowElement(cacheWidget.Element, true);
         }
 
-        public void RestorePopups()
+        private void Hide(WidgetShowInternalBinder showBinder)
         {
-            ShowCancelButton(true);
-            foreach (var iter in m_PopupStack)
-                ShowElement(iter, true);
-        }
-
-        private void ShowPopups(VisualElement element)
-        {
-            ShowCancelButton(true);
-            ShowElement(element, true);
-            if (!m_PopupStack.Contains(element))
-                m_PopupStack.Add(element);
-        }
-
-        private void ClosePopups()
-        {
-            while (m_PopupStack.Count > 0)
-            {
-                var item = m_PopupStack.Last();
-                m_PopupStack.RemoveAt(m_PopupStack.Count - 1);
-                ShowCancelButton(false);
-                ShowElement(item, false);
-            }
-        }
-
-        public void ShowCancelButton(bool show)
-        {
-            if (show)
-                ShowElement(m_Cancel, ++m_CancelRef > 0);
-            else
-                ShowElement(m_Cancel, --m_CancelRef > 0);
-            if (m_CancelRef < 0) m_CancelRef = 0;
+            if (!m_CacheWidget.TryGetValue(showBinder.WidgetType, out var cacheWidget)) return;
+            ShowElement(cacheWidget.Element, false);
         }
 
         private void OnCancel()
         {
-            ClosePopups();
+            
         }
 
         private static void ShowElement(VisualElement element, bool show)
@@ -192,9 +139,16 @@ namespace Common.UI
             }
         }
 
-        private class WriterWidgetBinder : WidgetBinder
+        private IWidget Create(Type widgetType)
         {
-            public IEnumerable<Type> Build() => m_WidgetTypes;
+            return (IWidget)m_Container.Instantiate(widgetType);
+        }
+
+        private class CacheWidget
+        {
+            public IWidget Widget;
+            public VisualElement Root;
+            public VisualElement Element;
         }
     }
 }

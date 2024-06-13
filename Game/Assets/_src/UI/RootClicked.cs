@@ -1,16 +1,15 @@
-using System.Collections.Generic;
 using UnityEngine.UIElements;
 
-namespace Common.UI
+namespace Game.UI
 {
     public class RootClicked : UIWidget
     {
-        private string m_RootName;
+        private readonly VisualElement m_Root;
         public VisualElement VisualElement { get; private set; }
 
-        public RootClicked(string rootName)
+        public RootClicked(VisualElement root)
         {
-            m_RootName = rootName;
+            m_Root = root;
         }
         
         private void OnClick()
@@ -21,7 +20,6 @@ namespace Common.UI
 
         protected override void Bind()
         {
-            var root = Document.rootVisualElement.Q(m_RootName);
             VisualElement = new Button(OnClick);
             VisualElement.style.position = Position.Absolute;
             VisualElement.style.top = 0;
@@ -30,12 +28,7 @@ namespace Common.UI
             VisualElement.style.height = new StyleLength(new Length(100, LengthUnit.Percent));
             VisualElement.style.width = new StyleLength(new Length(100, LengthUnit.Percent));
             VisualElement.style.opacity = new StyleFloat(0f);
-            root.Insert(0, VisualElement);
-        }
-
-        public override IEnumerable<VisualElement> GetElements()
-        {
-            yield return VisualElement;
+            m_Root.Insert(0, VisualElement);
         }
     }
 }

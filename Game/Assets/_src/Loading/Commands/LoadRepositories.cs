@@ -35,6 +35,8 @@ namespace Game.Core.Loading
             return m_Progress; 
         }
 
+        public LoadRepositories(string label) => this.label = label;
+        
         protected abstract AsyncOperationHandle<IList<T>> GetAsyncOperationHandle(IEnumerable keys);
         [NotNull]
         protected abstract IEnumerable<IConfig> CastToConfig(IEnumerable<T> result);

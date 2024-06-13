@@ -9,6 +9,7 @@ namespace Reflex.Core
     [DefaultExecutionOrder(int.MinValue)]
     public sealed class SceneScope : MonoBehaviour
     {
+//#if !REFLEX_DISABLED
         private void Awake()
         {
 #if UNITY_EDITOR
@@ -18,6 +19,7 @@ namespace Reflex.Core
 #endif
             UnityInjector.OnSceneLoaded.Invoke(gameObject.scene, this);
         }
+//#endif
 
         public void InstallBindings(ContainerBuilder containerBuilder)
         {

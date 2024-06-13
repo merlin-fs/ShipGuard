@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e2c412d47616a94780c7d333c0cc5e0, type: 3}
+  m_Name: WidgetConfig
+  m_EditorClassIdentifier: 
+  layers:
+  - Layer: 0
+    PanelSettings: {fileID: 11400000, guid: 2ad269b90b33ba845b7f6c4f5571ae89, type: 2}
+    RootElement: {fileID: 9197481963319205126, guid: 6b71f738b4e3139429acbf9e7bb3fcd8, type: 3}
+  - Layer: 1
+    PanelSettings: {fileID: 11400000, guid: 2cd323a257be826409c9428ee65ec11b, type: 2}
+    RootElement: {fileID: 9197481963319205126, guid: 6b71f738b4e3139429acbf9e7bb3fcd8, type: 3}
+  - Layer: 2
+    PanelSettings: {fileID: 11400000, guid: 9ec633b103c219347941b761b61e39f7, type: 2}
+    RootElement: {fileID: 9197481963319205126, guid: 6b71f738b4e3139429acbf9e7bb3fcd8, type: 3}
+  widgets:
+  - Type: Game.UI.Loading
+    Template: {fileID: 9197481963319205126, guid: aa52445816a6e9a4190caa3a45e52519, type: 3}
+  - Type: Game.UI.MainMenu
+    Template: {fileID: 9197481963319205126, guid: 5d0e92b1c8f325a45968559e86a38357, type: 3}

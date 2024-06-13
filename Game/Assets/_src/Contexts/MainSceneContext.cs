@@ -1,10 +1,13 @@
-using Common.UI;
+
+using Common.Core.Loading;
 
 using Game.Core.Camera;
 using Game.Core.Inputs;
 using Game.Core.Spawns;
 using Game.Model.Locations;
+using Game.UI;
 
+using Reflex.Attributes;
 using Reflex.Core;
 
 using UnityEngine;
@@ -21,7 +24,9 @@ namespace Game.Core.Contexts
         [SerializeField] private CameraController cameraController;
         [SerializeField] private SpawnFactory spawnViewFactory;
         [SerializeField] private LocationScenes locationScenes;
-        [SerializeField] private UIDocument rootUI;
+        [SerializeField] private GameObject uiManagerHost;
+        
+        [Inject] private WidgetConfig m_WidgetConfig;
 
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
@@ -31,19 +36,27 @@ namespace Game.Core.Contexts
 
             containerBuilder.AddSingleton<IUIManager>(container =>
             {
-                var manager = container.Construct<UIManager>(rootUI.gameObject, "main");
+                var manager = container.Construct<UIManager>(
+                    container, 
+                    uiManagerHost, 
+                    UILayer.Main,
+                    container.Resolve<WidgetConfig>().GetLayers);
                 //UI widgets
+                /*
                 manager.WithBindWidget(binder =>
                 {
                     //binder.Bind<GameUI>();
                     //binder.Bind<LeftPanel>();
                 });
+                */
                 return manager;
             });
 
-
             containerBuilder.OnContainerBuilt += async container =>
             {
+                container.Resolve<IUIManager>().Show<UI.Loading>()
+                    .WithData(() => container.Resolve<ILoadingManager>().Progress);
+                
                 foreach (var sceneRef in locationScenes.Scenes)
                 {
                     var loc = await Addressables.LoadResourceLocationsAsync(sceneRef).Task;

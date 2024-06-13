@@ -57,7 +57,7 @@ namespace Common.UI.Windows
 			return null;
 		}
 
-        internal void DoAnimComplate(IWindow.AnimationMode mode)
+        internal void DoAnimComplete(IWindow.AnimationMode mode)
         {
             OnAnimComplate?.Invoke(mode);
         }

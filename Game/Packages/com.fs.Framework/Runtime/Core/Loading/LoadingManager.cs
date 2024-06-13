@@ -3,25 +3,21 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Common.Core.Progress;
+
 using UnityEngine;
 
 namespace Common.Core.Loading
 {
-    using Progress;
-    
     public sealed class LoadingManager: ILoadingManager
     {
-        private readonly List<CommandItem> m_Commands;
         private MultiProgress m_Progress;
         private bool m_IsComplete;
         private Action m_OnComplete;
 
-        private readonly IContainer m_Container;
-        
-        public LoadingManager(IContainer container, IEnumerable<CommandItem> commands)
+        public LoadingManager()
         {
-            m_Container = container;
-            m_Commands = commands.ToList();
             m_Progress = new MultiProgress(new ILoadingCommand[] { });
         }
 
@@ -32,19 +28,21 @@ namespace Common.Core.Loading
         
         bool ILoadingManager.IsComplete => m_IsComplete;
         
-        Task ILoadingManager.Start(Action onLoadComplete)
+        Task ILoadingManager.Start(IContainer container, IEnumerable<CommandItem> interCommands, Action onLoadComplete)
         {
             m_OnComplete = onLoadComplete;
             m_IsComplete = false;
-            m_Progress = new MultiProgress(m_Commands.Select(iter => iter.Command).ToArray());
+            
+            IEnumerable<CommandItem> commandItems = interCommands as CommandItem[] ?? interCommands.ToArray();
+            m_Progress = new MultiProgress(commandItems.Select(iter => iter.Command).ToArray());
             EventWaitHandle @event = new AutoResetEvent(true);
 
             return Task.Run(
                 () =>
                 {
                     //TODO: додати обробку помилок у потоці
-                    List<CommandItem> commands = new (m_Commands);
-                    Prepare();
+                    List<CommandItem> commands = new (commandItems);
+                    Prepare(container, commandItems.Select(iter => iter.Command).ToArray());
                     int count = commands.Count;
                     while (count > 0)
                     {
@@ -92,14 +90,14 @@ namespace Common.Core.Loading
                             iter.Dependency.Remove(command);
                     }
 
-                    void Prepare()
+                    void Prepare(IContainer injector, ILoadingCommand[] sources)
                     {
                         foreach (var iter in commands)
                         {
                             try
                             {
-                                m_Container.Inject(iter.Command);
-                                iter.Dependency.Rebuild(this);
+                                injector.Inject(iter.Command);
+                                iter.Dependency.Rebuild(sources);
                             }
                             catch (Exception e)
                             {
@@ -115,19 +113,19 @@ namespace Common.Core.Loading
         public struct Dependency
         {
             [SerializeField]
-            private int[] m_CommandsIndex;
+            public int[] CommandsIndex;
 
             private HashSet<ILoadingCommand> m_Commands;
 
             public bool HasDependency => m_Commands?.Count > 0;
 
-            public void Rebuild(LoadingManager manager)
+            public void Rebuild(ILoadingCommand[] commands)
             {
-                if (m_CommandsIndex == null || m_CommandsIndex.Length == 0)
+                if (CommandsIndex == null || CommandsIndex.Length == 0)
                     return;
                 m_Commands = new HashSet<ILoadingCommand>();
-                foreach (int iter in m_CommandsIndex)
-                    Add(manager.m_Commands[iter].Command);
+                foreach (int iter in CommandsIndex)
+                    Add(commands[iter]);
             }
 
             public void Add(ILoadingCommand command) 
@@ -149,6 +147,14 @@ namespace Common.Core.Loading
 
             [SerializeField]
             public Dependency Dependency;
+            
+            public CommandItem(){}
+            
+            public CommandItem (ILoadingCommand command, params int[] dependencies)
+            {
+                Command = command;
+                Dependency = new Dependency {CommandsIndex = dependencies};
+            }
         }
     }
 }

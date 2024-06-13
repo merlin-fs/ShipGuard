@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
+
+using Common.UI;
+
 using UnityEngine.UIElements;
 
-namespace Common.UI
+namespace Game.UI
 {
     public abstract class UIWidgetContainer: UIWidget, IWidgetContainer
     {
         protected override void Bind() {}
-        public override IEnumerable<VisualElement> GetElements()
+        
+        public virtual IEnumerable<VisualElement> GetElements()
         {
             yield break;
         }

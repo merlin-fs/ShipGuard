@@ -22,7 +22,7 @@ namespace Reflex.Resolvers
             Diagnosis.IncrementResolutions(this);
             var instance = _factory.Invoke(container);
             _disposables.TryAdd(instance);
-            InitializationManager.Instance.Initialization(instance, container);
+            InitializationManager.Initialization(instance, container);
             Diagnosis.RegisterInstance(this, instance);
             return instance;
         }

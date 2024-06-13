@@ -6,22 +6,24 @@ namespace Reflex.Core
 {
     internal class InitializationManager: IInitialization
     {
-        internal static InitializationManager Instance { get; private set; }
+        private static InitializationManager m_Instance;
         
         private ConcurrentDictionary<IInitialization, IContainer> m_Queue = new();
         private bool m_Active;
 
         public InitializationManager()
         {
-            Instance = this;
+            m_Instance = this;
         }
         
-        public void Initialization(object instance, IContainer container)
+        public static void Initialization(object instance, IContainer container)
         {
-            if (instance is not IInitialization initialization || instance == this) return;
+            if (m_Instance == null) return;
             
-            if (!m_Active) 
-                Add(initialization, container);
+            if (instance is not IInitialization initialization || instance == m_Instance) return;
+            
+            if (!m_Instance.m_Active) 
+                m_Instance.Add(initialization, container);
             else
                 initialization.Initialization(container);
         }

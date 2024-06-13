@@ -18,7 +18,7 @@ namespace Reflex.Injectors
         internal static Dictionary<Scene, Container> ContainersPerScene { get; } = new();
         internal static Dictionary<Scene, Container> SceneContainerParentOverride { get; } = new();
         internal static Dictionary<Scene, Action<ContainerBuilder>> ScenePreInstaller { get; } = new();
-        
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void BeforeAwakeOfFirstSceneOnly()
         {
