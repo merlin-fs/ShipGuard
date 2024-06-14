@@ -8,7 +8,6 @@ namespace Common.Core.Loading
     {
         IProgress Progress { get; }
         string Text { get; }
-        bool IsComplete { get; }
-        Task Start(IContainer container, IEnumerable<LoadingManager.CommandItem> commands, Action onLoadComplete = null);
+        Task Start(IContainer container, params ICommandItem[] commands);
     }
 }

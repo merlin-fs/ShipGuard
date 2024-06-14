@@ -17,7 +17,7 @@ namespace Common.UI
 
             protected WidgetShowBinder(Type widgetType, bool show)
             {
-                BindingObject = visualElement => BindObject<TLayer>(visualElement, GetWidget.Invoke(), default);
+                BindingObject = visualElement => BindObject<object>(visualElement, GetWidget?.Invoke());
                 WidgetType = widgetType;
                 Show = show;
             }
@@ -34,7 +34,7 @@ namespace Common.UI
                 return this;
             }
 
-            private static void BindObject<T>(VisualElement root, IWidget widget, T obj)
+            private static void BindObject<T>(VisualElement root, IWidget widget, T obj = default)
             {
                 switch (widget)
                 {

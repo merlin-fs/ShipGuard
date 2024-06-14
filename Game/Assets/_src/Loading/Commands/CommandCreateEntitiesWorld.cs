@@ -1,44 +1,44 @@
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
+using Common.Core;
 using Common.Core.Loading;
 
 using Cysharp.Threading.Tasks;
 
-using Reflex.Extensions;
+using Reflex.Attributes;
 
 using Unity.Entities;
 
-using UnityEngine.SceneManagement;
-
 using Application = UnityEngine.Application;
 
-namespace Game
+namespace Game.Core.Loading
 {
-    public class LoadEntitiesWorld : ILoadingCommand
+    public class CommandCreateEntitiesWorld : ICommandProgress
     {
+        [Inject] private IContainer m_Container;
         public float GetProgress()
         {
             return 1;
         }
 
-        public Task Execute(ILoadingManager manager)
+        public Task Execute()
         {
             return UniTask.Create(async () =>
             {
                 await UniTask.SwitchToMainThread();
-                var container = SceneManager.GetActiveScene().GetSceneContainer();
+                //var container = SceneManager.GetActiveScene().GetSceneContainer();
 
                 World.SystemCreated += (world, componentSystemBase) =>
                 {
-                    container.Inject(componentSystemBase);
+                    m_Container.Inject(componentSystemBase);
                 };
                 
                 World.UnmanagedSystemCreated += async (world, ptr, type) =>
                 {
                     var obj = Marshal.PtrToStructure(ptr, type);
                     await UniTask.SwitchToMainThread();
-                    container.Inject(obj);
+                    m_Container.Inject(obj);
                 };
                 
                 var world = DefaultWorldInitialization.Initialize(Application.productName, false);

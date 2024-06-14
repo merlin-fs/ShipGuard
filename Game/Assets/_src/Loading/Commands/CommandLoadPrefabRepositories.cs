@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game.Core.Loading
 {
-    public class LoadPrefabRepositories : LoadRepositories<GameObject>
+    public class CommandLoadPrefabRepositories : CommandLoadRepositories<GameObject>
     {
         protected override AsyncOperationHandle<IList<GameObject>> GetAsyncOperationHandle(IEnumerable keys)
         {
@@ -35,6 +35,6 @@ namespace Game.Core.Loading
             */
         }
 
-        public LoadPrefabRepositories(string label) : base(label){}
+        public CommandLoadPrefabRepositories(string label) : base(label){}
     }
 }

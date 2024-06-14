@@ -32,7 +32,12 @@ namespace Game.UI
         {
             return m_Dictionary.TryGetValue(typeof(T), out template);
         }
-        
+
+        private void Awake()
+        {
+            m_Dictionary = BuildDictionary();
+        }
+
         private void OnValidate()
         {
             m_Dictionary = BuildDictionary();

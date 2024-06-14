@@ -9,7 +9,6 @@ namespace Common.Core.Progress
         private float[] m_Steps;
         private int m_CurrentStep;
         private float m_Progress;
-        private event IProgress.OnProgressChange m_OnProgressChange;
         private IProgressWritable Self => this;
 
         private StepProgress()
@@ -61,7 +60,6 @@ namespace Common.Core.Progress
                 if (m_Progress != value)
                 {
                     m_Progress = value;
-                    m_OnProgressChange?.Invoke(m_Progress);
                 }
             }
         }
@@ -113,12 +111,6 @@ namespace Common.Core.Progress
         {
             Progress = value;
             return Self.Value;
-        }
-
-        event IProgress.OnProgressChange IProgress.OnChange
-        {
-            add => m_OnProgressChange += value;
-            remove => m_OnProgressChange -= value;
         }
         #endregion
     }

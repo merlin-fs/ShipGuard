@@ -15,9 +15,9 @@ namespace Reflex.Injectors
     {
         internal static Action<Scene, SceneScope> OnSceneLoaded;
         internal static Container ProjectContainer { get; private set; }
-        internal static Dictionary<Scene, Container> ContainersPerScene { get; } = new();
-        internal static Dictionary<Scene, Container> SceneContainerParentOverride { get; } = new();
-        internal static Dictionary<Scene, Action<ContainerBuilder>> ScenePreInstaller { get; } = new();
+        internal static Dictionary<string, Container> ContainersPerScene { get; } = new();
+        internal static Dictionary<string, Container> SceneContainerParentOverride { get; } = new();
+        internal static Dictionary<string, Action<ContainerBuilder>> ScenePreInstaller { get; } = new();
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void BeforeAwakeOfFirstSceneOnly()
@@ -31,7 +31,7 @@ namespace Reflex.Injectors
             {
                 ReflexLogger.Log($"Scene {scene.name} ({scene.GetHashCode()}) loaded", LogLevel.Development);
                 var sceneContainer = CreateSceneContainer(scene, ProjectContainer, sceneScope);
-                ContainersPerScene.Add(scene, sceneContainer);
+                ContainersPerScene.Add(scene.path, sceneContainer);
                 SceneInjector.Inject(scene, sceneContainer);
             }
             
@@ -39,7 +39,7 @@ namespace Reflex.Injectors
             {
                 ReflexLogger.Log($"Scene {scene.name} ({scene.GetHashCode()}) unloaded", LogLevel.Development);
 
-                if (ContainersPerScene.Remove(scene, out var sceneContainer)) // Not all scenes has containers
+                if (ContainersPerScene.Remove(scene.path, out var sceneContainer)) // Not all scenes has containers
                 {
                     sceneContainer.Dispose();
                 }
@@ -63,7 +63,7 @@ namespace Reflex.Injectors
 
         private static Container CreateSceneContainer(Scene scene, Container projectContainer, SceneScope sceneScope)
         {
-            var sceneParentContainer = SceneContainerParentOverride.Remove(scene, out var container)
+            var sceneParentContainer = SceneContainerParentOverride.Remove(scene.path, out var container)
                 ? container
                 : projectContainer;
             
@@ -71,7 +71,7 @@ namespace Reflex.Injectors
             {
                 builder.SetName($"{scene.name} ({scene.GetHashCode()})");
 
-                if (ScenePreInstaller.Remove(scene, out var preInstaller))
+                if (ScenePreInstaller.Remove(scene.path, out var preInstaller))
                 {
                     preInstaller.Invoke(builder);
                 }

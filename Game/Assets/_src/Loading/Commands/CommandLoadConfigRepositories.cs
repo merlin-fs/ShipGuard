@@ -11,7 +11,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game.Core.Loading
 {
-    public class LoadConfigRepositories : LoadRepositories<IIdentifiable<ObjectID>>
+    public class CommandLoadConfigRepositories : CommandLoadRepositories<IIdentifiable<ObjectID>>
     {
         protected override AsyncOperationHandle<IList<IIdentifiable<ObjectID>>> GetAsyncOperationHandle(IEnumerable keys)
         {
@@ -23,6 +23,6 @@ namespace Game.Core.Loading
             return result.Cast<IConfig>();
         }
 
-        public LoadConfigRepositories(string label) : base(label){ }
+        public CommandLoadConfigRepositories(string label) : base(label){ }
     }
 }

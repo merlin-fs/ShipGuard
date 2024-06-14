@@ -10,9 +10,9 @@ using Reflex.Attributes;
 
 using Unity.Entities;
 
-namespace Game
+namespace Game.Core.Loading
 {
-    public class LoadEntitiesPrefab : ILoadingCommand
+    public class CommandLoadEntitiesPrefab : ICommandProgress
     {
         [Inject] private ObjectRepository m_ObjectRepository;
 
@@ -21,7 +21,7 @@ namespace Game
             return 1;
         }
 
-        public Task Execute(ILoadingManager manager)
+        public Task Execute()
         {
             return UniTask.Create(async () =>
             {

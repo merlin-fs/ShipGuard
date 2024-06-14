@@ -12,8 +12,8 @@ namespace Game.Core.Contexts
         
         private void Awake()
         {
-            var widget = new UI.Loading();
-            widget.Bind(loadingUI.rootVisualElement, m_LoadingManager.Progress);
+            var widget = new UI.Loading(m_LoadingManager);
+            widget.Bind(loadingUI.rootVisualElement);
         }
     }
 }

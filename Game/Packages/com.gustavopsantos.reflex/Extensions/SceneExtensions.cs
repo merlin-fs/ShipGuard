@@ -8,7 +8,7 @@ namespace Reflex.Extensions
     {
         public static Container GetSceneContainer(this Scene scene)
         {
-            return UnityInjector.ContainersPerScene[scene];
+            return UnityInjector.ContainersPerScene[scene.path];
         }
     }
 }

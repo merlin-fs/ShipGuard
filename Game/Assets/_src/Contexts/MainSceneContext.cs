@@ -30,6 +30,7 @@ namespace Game.Core.Contexts
 
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
+            containerBuilder.AddSingleton(locationScenes);
             containerBuilder.AddTransient(c => c.Construct<Spawner>(spawnViewFactory));
             containerBuilder.AddSingleton<IPlayerInputs>(c => c.Construct<PlayerInputs>(playerInputAsset));
             containerBuilder.AddSingleton<CameraController>(c => cameraController);
@@ -54,15 +55,11 @@ namespace Game.Core.Contexts
 
             containerBuilder.OnContainerBuilt += async container =>
             {
-                container.Resolve<IUIManager>().Show<UI.Loading>()
-                    .WithData(() => container.Resolve<ILoadingManager>().Progress);
-                
                 foreach (var sceneRef in locationScenes.Scenes)
                 {
                     var loc = await Addressables.LoadResourceLocationsAsync(sceneRef).Task;
                     var id = Addressables.ResourceManager.TransformInternalId(loc[0]);
-                    var scene = SceneManager.GetSceneByPath(id);
-                    ReflexSceneManager.OverrideSceneParentContainer(scene: scene, parent: container);
+                    ReflexSceneManager.OverrideSceneParentContainer(scenePath: id, parent: container);
                 }
             };
         }

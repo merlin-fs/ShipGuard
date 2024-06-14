@@ -4,20 +4,14 @@ using Common.Core;
 using Common.Core.Loading;
 using Cysharp.Threading.Tasks;
 using Reflex.Attributes;
-using Reflex.Core;
 
 namespace Game.Core.Loading
 {
-    public class LoadGameInitialization : ILoadingCommand
+    public class CommandStartGameInitialization : ICommand
     {
         [Inject] private IInitialization m_Initialization;
-        
-        public float GetProgress()
-        {
-            return 1;
-        }
 
-        public Task Execute(ILoadingManager manager)
+        public Task Execute()
         {
             return UniTask.Create(async () =>
             {

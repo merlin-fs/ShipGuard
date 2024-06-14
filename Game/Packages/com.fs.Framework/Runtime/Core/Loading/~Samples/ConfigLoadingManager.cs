@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class ConfigLoadingManager : MonoBehaviour
 {
-    [SerializeField] private List<LoadingManager.CommandItem> Items;
+    [SerializeField] private List<ICommandItem> Items;
 }

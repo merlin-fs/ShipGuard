@@ -12,6 +12,8 @@ namespace Common.UI
         where TLayer : struct, IComparable, IConvertible, IFormattable
     {
         WidgetShowBinder Show<T>() where T : IWidget;
+        //WidgetShowBinder Show(Type uiType);
         void Hide<T>() where T : IWidget;
+        //void Hide(Type uiType);
     }
 }

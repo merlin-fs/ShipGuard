@@ -12,14 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af16a9f569f47df4a8c58f564b244f8c, type: 3}
   m_Name: LocationScenes
   m_EditorClassIdentifier: 
-  locationScenes:
-  - m_AssetGUID: 9b1c041ca5e48ef41aaad36af19a5553
-    m_SubObjectName: 
-    m_SubObjectGUID: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: a6848c74ceaa16d4d86d600738478846
-    m_SubObjectName: 
-    m_SubObjectGUID: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  locations:
+  - Scene:
+      m_AssetGUID: 9b1c041ca5e48ef41aaad36af19a5553
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Name: default

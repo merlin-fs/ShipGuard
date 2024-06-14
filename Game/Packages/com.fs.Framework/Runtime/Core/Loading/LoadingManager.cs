@@ -1,160 +1,37 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Common.Core.Progress;
-
-using UnityEngine;
 
 namespace Common.Core.Loading
 {
     public sealed class LoadingManager: ILoadingManager
     {
-        private MultiProgress m_Progress;
-        private bool m_IsComplete;
-        private Action m_OnComplete;
+        private IProgress m_Progress;
 
         public LoadingManager()
         {
-            m_Progress = new MultiProgress(new ILoadingCommand[] { });
+            m_Progress = new WrapperProgress(() => 0);
         }
 
         #region ILoadingManager
+
         string ILoadingManager.Text { get; }
         
         IProgress ILoadingManager.Progress => m_Progress;
         
-        bool ILoadingManager.IsComplete => m_IsComplete;
-        
-        Task ILoadingManager.Start(IContainer container, IEnumerable<CommandItem> interCommands, Action onLoadComplete)
+        Task ILoadingManager.Start(IContainer container, params ICommandItem[] commands)
         {
-            m_OnComplete = onLoadComplete;
-            m_IsComplete = false;
-            
-            IEnumerable<CommandItem> commandItems = interCommands as CommandItem[] ?? interCommands.ToArray();
-            m_Progress = new MultiProgress(commandItems.Select(iter => iter.Command).ToArray());
-            EventWaitHandle @event = new AutoResetEvent(true);
-
-            return Task.Run(
-                () =>
+            var command = new CommandContainer(container)
+                .Add(commands.ToArray())
+                .WithCallback(() =>
                 {
-                    //TODO: додати обробку помилок у потоці
-                    List<CommandItem> commands = new (commandItems);
-                    Prepare(container, commandItems.Select(iter => iter.Command).ToArray());
-                    int count = commands.Count;
-                    while (count > 0)
-                    {
-                        while (GetNextCommand(out var command))
-                        {
-                            command.Execute(this)
-                                .ContinueWith(task =>
-                                {
-                                    if (task.Status == TaskStatus.Faulted)
-                                    {
-                                        Debug.unityLogger.LogException(task.Exception);
-                                    }
-                                    m_Progress.SetProgress(command, 1);
-                                    RemoveDependency(command);
-                                    count--;
-                                    @event.Set();
-                                });
-                        }
-
-                        while (!@event.WaitOne(10) && count > 0)
-                        {
-                            foreach (var command in commands)
-                            {
-                                m_Progress.SetProgress(command.Command, command.Command.GetProgress());
-                            }
-                        } 
-                    }
-
-                    m_Progress.SetDone();
-                    m_IsComplete = true;
-                    onLoadComplete?.Invoke();
-
-
-                    bool GetNextCommand(out ILoadingCommand command)
-                    {
-                        var item = commands.FirstOrDefault((iter) => !iter.Dependency.HasDependency);
-                        if (item != null) commands.Remove(item);
-                        command = item?.Command;
-                        return item != null;
-                    }
-
-                    void RemoveDependency(ILoadingCommand command)
-                    {
-                        foreach (var iter in commands)
-                            iter.Dependency.Remove(command);
-                    }
-
-                    void Prepare(IContainer injector, ILoadingCommand[] sources)
-                    {
-                        foreach (var iter in commands)
-                        {
-                            try
-                            {
-                                injector.Inject(iter.Command);
-                                iter.Dependency.Rebuild(sources);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.unityLogger.LogException(e);
-                            }
-                        }
-                    }
+                    m_Progress = new WrapperProgress(() => 0);
                 });
+            m_Progress = new WrapperProgress(command.GetProgress);
+            return command.Execute();
         }
         #endregion
-
-        [Serializable]
-        public struct Dependency
-        {
-            [SerializeField]
-            public int[] CommandsIndex;
-
-            private HashSet<ILoadingCommand> m_Commands;
-
-            public bool HasDependency => m_Commands?.Count > 0;
-
-            public void Rebuild(ILoadingCommand[] commands)
-            {
-                if (CommandsIndex == null || CommandsIndex.Length == 0)
-                    return;
-                m_Commands = new HashSet<ILoadingCommand>();
-                foreach (int iter in CommandsIndex)
-                    Add(commands[iter]);
-            }
-
-            public void Add(ILoadingCommand command) 
-            {
-                m_Commands?.Add(command);
-            }
-            
-            public void Remove(ILoadingCommand command) 
-            {
-                m_Commands?.Remove(command);
-            }
-        }
-
-        [Serializable]
-        public class CommandItem
-        {
-            [SerializeReference, ReferenceSelect(typeof(ILoadingCommand))]
-            public ILoadingCommand Command;
-
-            [SerializeField]
-            public Dependency Dependency;
-            
-            public CommandItem(){}
-            
-            public CommandItem (ILoadingCommand command, params int[] dependencies)
-            {
-                Command = command;
-                Dependency = new Dependency {CommandsIndex = dependencies};
-            }
-        }
     }
 }

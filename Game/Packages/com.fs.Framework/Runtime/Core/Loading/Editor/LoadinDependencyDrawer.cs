@@ -8,8 +8,10 @@ using UnityEngine;
 namespace UnityEditor.Inspector
 {
     using Common.Core.Loading;
+    //TODO: зробити UI редактування команд
 
-    [CustomPropertyDrawer(typeof(LoadingManager.Dependency))]
+    /*
+    //[CustomPropertyDrawer(typeof(LoadingManager.Dependency))]
     public class LoadinDependencyDrawer : PropertyDrawer
     {
         private float LINE_HEIGHT = EditorGUIUtility.singleLineHeight;
@@ -98,5 +100,6 @@ namespace UnityEditor.Inspector
         }
 
     }
+    */
 }
 #endif

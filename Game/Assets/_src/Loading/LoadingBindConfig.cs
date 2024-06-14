@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 using Common.Core.Loading;
 
+using Game.UI;
+
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -11,23 +13,28 @@ namespace Game.Core.Loading
     {
         [SerializeField] private AssetReference mainSceneRef;
         
-        public IEnumerable<LoadingManager.CommandItem> GetCommands()
+        public IEnumerable<ICommandItem> GetCommands()
         {
-            return new LoadingManager.CommandItem[] {
+            return new ICommandItem[] {
                 //0
-                new(new LoadConfigRepositories("defs")),
+                new CommandLoadConfigRepositories("defs").AsItem(),
                 //1
-                new(new LoadPrefabRepositories("defs")),
+                new CommandLoadPrefabRepositories("defs").AsItem(),
                 //2
-                new(new LoadScene(mainSceneRef)),
+                new CommandLoadScene(mainSceneRef).AsItem(),
+                
                 //3
-                new(new LoadEntitiesWorld(), 0, 1, 2),
+                new CommandUiShow<UI.Loading>(UILayer.Loading).AsItem(2),
                 //4
-                new(new LoadEntitiesPrefab(), 3),
+                new CommandCreateEntitiesWorld().AsItem(0, 1, 2),
                 //5
-                new(new LoadGameInitialization(), 4),
+                new CommandLoadEntitiesPrefab().AsItem(4),
                 //6
-                new(new LoadUI(), 5),
+                new CommandStartGameInitialization().AsItem(5),
+                //7
+                new CommandUiHide<UI.Loading>().AsItem(6),
+                //8
+                new CommandUiShow<MainMenu>(UILayer.Main).AsItem(6),
             };
         }
     }

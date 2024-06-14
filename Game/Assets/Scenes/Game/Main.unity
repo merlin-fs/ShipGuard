@@ -287,7 +287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &961739750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,7 +349,7 @@ Camera:
   m_GameObject: {fileID: 961739749}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -630,6 +630,7 @@ GameObject:
   - component: {fileID: 1298056049}
   - component: {fileID: 1298056050}
   - component: {fileID: 1298056051}
+  - component: {fileID: 1298056052}
   m_Layer: 0
   m_Name: _test
   m_TagString: Untagged
@@ -690,6 +691,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+--- !u!114 &1298056052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298056047}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 9ec633b103c219347941b761b61e39f7, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 5d0e92b1c8f325a45968559e86a38357, type: 3}
+  m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!1 &1442661378
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,7 +724,7 @@ GameObject:
   - component: {fileID: 1442661380}
   m_Layer: 0
   m_Name: UI Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -812,7 +832,7 @@ Camera:
   field of view: 14
   orthographic: 1
   orthographic size: 10
-  m_Depth: 1
+  m_Depth: -2
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 50
@@ -887,7 +907,7 @@ MonoBehaviour:
   playerInputAsset: {fileID: -944628639613478452, guid: 8202b4ea4fa866043b99e157c59c1795, type: 3}
   cameraController: {fileID: 1870496621}
   spawnViewFactory: {fileID: 410921794}
-  locationScenes: {fileID: 11400000, guid: cfc5dfeb2905a7b4887329f7b324c61e, type: 2}
+  locationScenes: {fileID: 11400000, guid: cf44c79091136854db13811f297c5b0b, type: 2}
   uiManagerHost: {fileID: 1970101265}
 --- !u!1 &1757047830
 GameObject:

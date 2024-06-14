@@ -11,25 +11,30 @@ namespace Common.Core.Progress
     public class MultiProgress : IProgressWritable
     {
         private bool m_Done;
-        private readonly Dictionary<ILoadingCommand, float> m_Progress = new();
-        private event IProgress.OnProgressChange OnProgressChange;
+        private readonly Dictionary<ICommand, float> m_Progress = new();
         private IProgressWritable Self => this;
 
-        public MultiProgress(params ILoadingCommand[] objects)
+        public MultiProgress(params ICommand[] objects)
         {
             foreach(var iter in objects)
                 m_Progress.Add(iter, 0);
         }
 
+        public void SetProgressPopulate(Func<ICommand, float> getter)
+        {
+            foreach (var iter in m_Progress.Keys.ToArray())
+            {
+                SetProgress(iter, getter.Invoke(iter));
+            }
+        }
 
-        public void SetProgress(ILoadingCommand obj, float value)
+        public void SetProgress(ICommand obj, float value)
         {
             if (!m_Progress.TryGetValue(obj, out float objValue)) return;
             value = Mathf.Clamp(value, 0, 1);
             if (objValue.CompareTo(value) == 0) return;
             
             m_Progress[obj] = value;
-            OnProgressChange?.Invoke(Self.Value);
             Debug.Log($"Progress: {Self.Value}");
         }
 
@@ -59,12 +64,6 @@ namespace Common.Core.Progress
         float IProgressWritable.SetProgress(float value)
         {
             return Self.Value;
-        }
-
-        event IProgress.OnProgressChange IProgress.OnChange
-        {
-            add => OnProgressChange += value;
-            remove => OnProgressChange -= value;
         }
         #endregion
     }

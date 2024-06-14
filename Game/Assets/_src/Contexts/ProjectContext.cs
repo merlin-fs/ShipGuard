@@ -1,3 +1,5 @@
+using System.Linq;
+
 using Common.Core.Loading;
 
 using Game.Core.Loading;
@@ -20,7 +22,7 @@ namespace Game.Core.Contexts
 
             containerBuilder.OnContainerBuilt += container =>
             {
-                container.Resolve<ILoadingManager>().Start(container, loadingConfig.GetCommands());
+                container.Resolve<ILoadingManager>().Start(container, loadingConfig.GetCommands().ToArray());
             };
         }
     }

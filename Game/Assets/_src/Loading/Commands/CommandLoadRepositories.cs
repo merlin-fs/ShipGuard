@@ -20,7 +20,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game.Core.Loading
 {
-    public abstract class LoadRepositories<T> : ILoadingCommand, IProgress<float>
+    public abstract class CommandLoadRepositories<T> : ICommandProgress, IProgress<float>
     {
         [SerializeField] private string label;
         
@@ -35,13 +35,13 @@ namespace Game.Core.Loading
             return m_Progress; 
         }
 
-        public LoadRepositories(string label) => this.label = label;
+        public CommandLoadRepositories(string label) => this.label = label;
         
         protected abstract AsyncOperationHandle<IList<T>> GetAsyncOperationHandle(IEnumerable keys);
         [NotNull]
         protected abstract IEnumerable<IConfig> CastToConfig(IEnumerable<T> result);
         
-        public Task Execute(ILoadingManager manager)
+        public Task Execute()
         {
             return UniTask.Create(async () =>
             {
