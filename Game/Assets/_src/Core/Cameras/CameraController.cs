@@ -1,14 +1,18 @@
 using Unity.Cinemachine;
 
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game.Core.Camera
 {
     public class CameraController : MonoBehaviour
     {
         [SerializeField] private CinemachineCamera cinemachineCamera;
-        
+        [SerializeField] private UnityEngine.Camera mainCamera;
+
+        public void SetActive(bool value)
+        {
+            mainCamera.gameObject.SetActive(value);
+        }
         
         public void SetFollowTarget(Transform value)
         {
