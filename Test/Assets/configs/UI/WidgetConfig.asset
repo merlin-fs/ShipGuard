@@ -27,3 +27,5 @@ MonoBehaviour:
     Template: {fileID: 9197481963319205126, guid: aa52445816a6e9a4190caa3a45e52519, type: 3}
   - Type: Game.UI.MainMenu
     Template: {fileID: 9197481963319205126, guid: 5d0e92b1c8f325a45968559e86a38357, type: 3}
+  - Type: Game.UI.GameUI
+    Template: {fileID: 9197481963319205126, guid: b02d75343e8c05f4489113d931a84c20, type: 3}
