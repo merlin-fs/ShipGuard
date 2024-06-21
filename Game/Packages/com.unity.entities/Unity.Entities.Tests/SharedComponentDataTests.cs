@@ -1200,7 +1200,7 @@ namespace Unity.Entities.Tests
             world.EntityManager.AddSharedComponentManaged(entity, refcountedComp);
             var entities = new NativeArray<Entity>(1, Allocator.Temp);
             entities[0] = entity;
-            world2.EntityManager.CopyEntitiesFrom(world.EntityManager, entities);
+            world2.EntityManager.CopyEntitiesFrom(world.EntityManager, entities, CopyArchetype.Original);
             world.Dispose();
             Assert.AreEqual(1, RefCount1);
             world2.Dispose();
@@ -1220,7 +1220,7 @@ namespace Unity.Entities.Tests
             world.EntityManager.AddSharedComponentManaged(entity, refcountedComp);
             var entities = new NativeArray<Entity>(1, Allocator.Temp);
             entities[0] = entity;
-            world2.EntityManager.CopyEntitiesFrom(world.EntityManager, entities);
+            world2.EntityManager.CopyEntitiesFrom(world.EntityManager, entities, CopyArchetype.Original);
             world.EntityManager.RemoveComponent(entity, ComponentType.ReadWrite<EcsTestSharedCompWithRefCount>());
 
             Assert.AreEqual( 1, RefCount1);

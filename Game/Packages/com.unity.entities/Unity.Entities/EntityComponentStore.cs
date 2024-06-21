@@ -2702,6 +2702,7 @@ namespace Unity.Entities
             dstArchetype->NextChangedArchetype = null;
             dstArchetype->InstantiateArchetype = null;
             dstArchetype->CopyArchetype = null;
+            dstArchetype->StorageArchetype = null;
             dstArchetype->MetaChunkArchetype = null;
             dstArchetype->CleanupResidueArchetype = null;
 

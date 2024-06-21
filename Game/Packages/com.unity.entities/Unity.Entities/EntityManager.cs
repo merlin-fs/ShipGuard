@@ -3530,7 +3530,7 @@ namespace Unity.Entities
             var access = GetCheckedEntityDataAccess();
             access->PrepareForInstantiateAdditiveStructuralChanges(srcEntities);
             var changes = access->BeginAdditiveStructuralChanges();
-            access->InstantiateInternalDuringStructuralChange((Entity*)srcEntities.GetUnsafeReadOnlyPtr(), (Entity*)outputEntities.GetUnsafePtr(), srcEntities.Length, outputEntities.Length, true);
+            access->InstantiateInternalDuringStructuralChange((Entity*)srcEntities.GetUnsafeReadOnlyPtr(), (Entity*)outputEntities.GetUnsafePtr(), srcEntities.Length, outputEntities.Length, CopyArchetype.NoPrefab);
             access->EndStructuralChanges(ref changes);
         }
 
@@ -3554,16 +3554,28 @@ namespace Unity.Entities
         [StructuralChangeMethod]
         [ExcludeFromCoverage]
         [Obsolete("This method is not safe to use in some contexts, and will be removed from the public API in a future Entities release. To create copies of a prefab Entity, use EntityManager.Instantiate().")]
-        public void CopyEntities(NativeArray<Entity> srcEntities, NativeArray<Entity> outputEntities)
+        public void CopyEntities(NativeArray<Entity> srcEntities, NativeArray<Entity> outputEntities, CopyArchetype copyArchetype)
         {
-            CopyEntitiesInternal(srcEntities, outputEntities);
+            CopyEntitiesInternal(srcEntities, outputEntities, copyArchetype);
         }
-        internal void CopyEntitiesInternal(NativeArray<Entity> srcEntities, NativeArray<Entity> outputEntities)
+        internal void CopyEntitiesInternal(NativeArray<Entity> srcEntities, NativeArray<Entity> outputEntities, CopyArchetype copyArchetype)
         {
             var access = GetCheckedEntityDataAccess();
-            access->PrepareForCopyAdditiveStructuralChanges(srcEntities);
+            switch (copyArchetype)
+            {
+                case CopyArchetype.Original :
+                    access->PrepareForInstantiateAdditiveStructuralChanges(srcEntities);
+                    break;
+                case CopyArchetype.NoPrefab :
+                    access->PrepareForCopyAdditiveStructuralChanges(srcEntities);
+                    break;
+                case CopyArchetype.Storage :
+                    access->PrepareForCopyStoreStructuralChanges(srcEntities);
+                    break;
+            }
+
             var changes = access->BeginAdditiveStructuralChanges();
-            access->InstantiateInternalDuringStructuralChange((Entity*)srcEntities.GetUnsafeReadOnlyPtr(), (Entity*)outputEntities.GetUnsafePtr(), srcEntities.Length, outputEntities.Length, false);
+            access->InstantiateInternalDuringStructuralChange((Entity*)srcEntities.GetUnsafeReadOnlyPtr(), (Entity*)outputEntities.GetUnsafePtr(), srcEntities.Length, outputEntities.Length, copyArchetype);
             access->EndStructuralChanges(ref changes);
         }
 
@@ -3704,7 +3716,7 @@ namespace Unity.Entities
         /// <param name="srcEntities">Entities in the srcEntityManager that have component with Entity references</param>
         /// <param name="outputEntities">New entities that have been remapped from srcEntities</param>
         [ExcludeFromBurstCompatTesting("Accesses managed component store")]
-        public void CopyEntitiesFrom(EntityManager srcEntityManager, NativeArray<Entity> srcEntities, NativeArray<Entity> outputEntities = default)
+        public void CopyEntitiesFrom(EntityManager srcEntityManager, NativeArray<Entity> srcEntities, CopyArchetype sopyArchetype, NativeArray<Entity> outputEntities = default)
         {
 #if ENABLE_UNITY_COLLECTIONS_CHECKS || UNITY_DOTS_DEBUG
             if (outputEntities.IsCreated && outputEntities.Length != srcEntities.Length)
@@ -3713,7 +3725,7 @@ namespace Unity.Entities
 
             using (var srcManagerInstances = new NativeArray<Entity>(srcEntities.Length, Allocator.Temp))
             {
-                srcEntityManager.CopyEntitiesInternal(srcEntities, srcManagerInstances);
+                srcEntityManager.CopyEntitiesInternal(srcEntities, srcManagerInstances, sopyArchetype);
                 srcEntityManager.AddComponent(srcManagerInstances, ComponentType.ReadWrite<IsolateCopiedEntities>());
 
                 var instantiated = new EntityQueryBuilder(Allocator.Temp)

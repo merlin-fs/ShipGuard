@@ -10,6 +10,13 @@ using Unity.Mathematics;
 
 namespace Unity.Entities
 {
+    public enum CopyArchetype
+    {
+        Original,
+        NoPrefab,
+        Storage,
+    } 
+
     internal unsafe partial struct EntityComponentStore
     {
         // ----------------------------------------------------------------------------------------------------------
@@ -187,17 +194,17 @@ namespace Unity.Entities
                 var entityPtr = (Entity*)BufferHeader.GetElementPointer(header);
                 var entityCount = header->Length;
 
-                InstantiateEntitiesGroup(entityPtr, entityCount, outputEntities, true, instanceCount, true);
+                InstantiateEntitiesGroup(entityPtr, entityCount, outputEntities, true, instanceCount, CopyArchetype.NoPrefab);
             }
             else
             {
-                InstantiateEntitiesOne(srcEntity, outputEntities, instanceCount, null, 0, true);
+                InstantiateEntitiesOne(srcEntity, outputEntities, instanceCount, null, 0, CopyArchetype.NoPrefab);
             }
         }
 
-        public void InstantiateEntities(Entity* srcEntity, Entity* outputEntities, int entityCount, bool removePrefab)
+        public void InstantiateEntities(Entity* srcEntity, Entity* outputEntities, int entityCount, CopyArchetype copyArchetype)
         {
-            InstantiateEntitiesGroup(srcEntity, entityCount, outputEntities, false, 1, removePrefab);
+            InstantiateEntitiesGroup(srcEntity, entityCount, outputEntities, false, 1, copyArchetype);
         }
 
         // ----------------------------------------------------------------------------------------------------------
@@ -324,12 +331,23 @@ namespace Unity.Entities
             }
         }
 
-        int InstantiateEntitiesOne(Entity srcEntity, Entity* outputEntities, int instanceCount, InstantiateRemapChunk* remapChunks, int remapChunksCount, bool removePrefab)
+        Archetype* GetCopyArchetype(Archetype* archetype, CopyArchetype copyArchetype)
+        {
+            return copyArchetype switch {
+                CopyArchetype.Original => archetype->CopyArchetype,
+                CopyArchetype.NoPrefab => archetype->InstantiateArchetype,
+                CopyArchetype.Storage => archetype->StorageArchetype,
+                _ => throw new ArgumentOutOfRangeException(nameof(copyArchetype), copyArchetype, null)
+            };
+        }
+        
+        int InstantiateEntitiesOne(Entity srcEntity, Entity* outputEntities, int instanceCount, InstantiateRemapChunk* remapChunks, int remapChunksCount, CopyArchetype archetype)
         {
             var src = GetEntityInChunk(srcEntity);
             var srcArchetype = GetArchetype(src.Chunk);
 
-            var dstArchetype = removePrefab ? srcArchetype->InstantiateArchetype : srcArchetype->CopyArchetype;
+
+            var dstArchetype = GetCopyArchetype(srcArchetype, archetype);
 
             var archetypeChunkFilter = new ArchetypeChunkFilter();
             archetypeChunkFilter.Archetype = dstArchetype;
@@ -370,7 +388,7 @@ namespace Unity.Entities
             return remapChunksCount;
         }
 
-        void InstantiateEntitiesGroup(Entity* srcEntities, int srcEntityCount, Entity* outputRootEntities, bool outputRootEntityOnly, int instanceCount, bool removePrefab)
+        void InstantiateEntitiesGroup(Entity* srcEntities, int srcEntityCount, Entity* outputRootEntities, bool outputRootEntityOnly, int instanceCount, CopyArchetype copyArchetype)
         {
             int totalCount = srcEntityCount * instanceCount;
 
@@ -400,7 +418,7 @@ namespace Unity.Entities
             {
                 var srcEntity = srcEntities[i];
 
-                remapChunksCount = InstantiateEntitiesOne(srcEntity, outputEntities, instanceCount, remapChunks, remapChunksCount, removePrefab);
+                remapChunksCount = InstantiateEntitiesOne(srcEntity, outputEntities, instanceCount, remapChunks, remapChunksCount, copyArchetype);
 
                 for (int r = 0; r != instanceCount; r++)
                 {

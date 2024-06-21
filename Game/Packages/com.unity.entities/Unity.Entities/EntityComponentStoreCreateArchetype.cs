@@ -13,6 +13,7 @@ namespace Unity.Entities
         // ----------------------------------------------------------------------------------------------------------
         public Archetype* GetOrCreateArchetype(ComponentTypeInArchetype* inTypesSorted, int count)
         {
+            if (count == 0) return null;
             var srcArchetype = GetExistingArchetype(inTypesSorted, count);
             if (srcArchetype != null)
                 return srcArchetype;
@@ -21,8 +22,9 @@ namespace Unity.Entities
 
             var types = stackalloc ComponentTypeInArchetype[count + 1];
 
-            srcArchetype->InstantiateArchetype = CreateInstanceArchetype(inTypesSorted, count, types, srcArchetype, true);
-            srcArchetype->CopyArchetype = CreateInstanceArchetype(inTypesSorted, count, types, srcArchetype, false);
+            srcArchetype->InstantiateArchetype = CreateInstanceArchetype(inTypesSorted, count, types, srcArchetype, true, false);
+            srcArchetype->CopyArchetype = CreateInstanceArchetype(inTypesSorted, count, types, srcArchetype, false, false);
+            srcArchetype->StorageArchetype = CreateInstanceArchetype(inTypesSorted, count, types, srcArchetype, true, true);
 
             if (srcArchetype->InstantiateArchetype != null)
             {
@@ -36,6 +38,11 @@ namespace Unity.Entities
                 Assert.IsTrue(srcArchetype->CopyArchetype->CleanupResidueArchetype == null);
             }
 
+            if (srcArchetype->StorageArchetype != null)
+            {
+                Assert.IsTrue(srcArchetype->StorageArchetype->StorageArchetype == srcArchetype->StorageArchetype);
+                Assert.IsTrue(srcArchetype->StorageArchetype->CleanupResidueArchetype == null);
+            }
 
             // Setup cleanup archetype
             if (srcArchetype->CleanupNeeded)
@@ -73,6 +80,7 @@ namespace Unity.Entities
                 Assert.IsTrue(cleanupResidueArchetype->CleanupResidueArchetype == cleanupResidueArchetype);
                 Assert.IsTrue(cleanupResidueArchetype->InstantiateArchetype == null);
                 Assert.IsTrue(cleanupResidueArchetype->CopyArchetype == null);
+                Assert.IsTrue(cleanupResidueArchetype->StorageArchetype == null);
             }
 
             // Setup meta chunk archetype
@@ -104,7 +112,8 @@ namespace Unity.Entities
             return srcArchetype;
         }
 
-        Archetype* CreateInstanceArchetype(ComponentTypeInArchetype* inTypesSorted, int count, ComponentTypeInArchetype* types, Archetype* srcArchetype, bool removePrefab)
+        Archetype* CreateInstanceArchetype(ComponentTypeInArchetype* inTypesSorted, int count, 
+            ComponentTypeInArchetype* types, Archetype* srcArchetype, bool removePrefab, bool removeNotStorage)
         {
             UnsafeUtility.MemCpy(types, inTypesSorted, sizeof(ComponentTypeInArchetype) * count);
 
@@ -118,13 +127,17 @@ namespace Unity.Entities
 
                 hasCleanup |= type.TypeIndex == m_CleanupEntityType;
 
-                var skip = type.IsCleanupComponent || (removePrefab && type.TypeIndex == m_PrefabType);
+                var skip = type.TypeIndex != m_EntityType && (
+                    type.IsCleanupComponent
+                    || (removePrefab && type.TypeIndex == m_PrefabType)
+                    || (removeNotStorage && !type.IsStoreComponent)
+                    );
                 if (skip)
                     ++removedTypes;
                 else
                     types[t - removedTypes] = srcArchetype->Types[t];
 
-                if (removePrefab)
+                if (removePrefab || removeNotStorage)
                 {
                     if (type.TypeIndex == m_LinkedGroupType)
                         legIndex = t - removedTypes;

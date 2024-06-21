@@ -77,6 +77,7 @@ namespace Unity.Entities
 
         public ArchetypeFlags Flags;
 
+        public Archetype* StorageArchetype; // Removes cleanup components
         public Archetype* CopyArchetype; // Removes cleanup components
         public Archetype* InstantiateArchetype; // Removes cleanup components & prefabs
         public Archetype* CleanupResidueArchetype;

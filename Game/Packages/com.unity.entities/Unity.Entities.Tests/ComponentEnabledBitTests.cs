@@ -657,7 +657,7 @@ namespace Unity.Entities.Tests
             SetupChunkWithEnabledBits(ref m_Manager, enableableType, World.UpdateAllocator.ToAllocator, out var entities, out var map, out var archetype, chunkCount);
 
             var copyWorldEntities = new NativeArray<Entity>(entities.Length, Allocator.Persistent);
-            dstManager.CopyEntitiesFrom(m_Manager, entities, copyWorldEntities);
+            dstManager.CopyEntitiesFrom(m_Manager, entities, CopyArchetype.Original, copyWorldEntities);
             CheckChunkDataAndMapConsistency_WithRemapping(dstManager, enableableType, entities, copyWorldEntities, map);
 
             m_Manager.Debug.CheckInternalConsistency();

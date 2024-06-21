@@ -757,7 +757,7 @@ namespace Unity.Entities
         }
 
         [Conditional("ENABLE_UNITY_COLLECTIONS_CHECKS"), Conditional("UNITY_DOTS_DEBUG")]
-        public void AssertCanInstantiateEntities(Entity* srcEntity, int entityCount, bool removePrefab)
+        public void AssertCanInstantiateEntities(Entity* srcEntity, int entityCount, CopyArchetype copyArchetype)
         {
             for (int i = 0; i < entityCount; i++)
             {
@@ -766,7 +766,8 @@ namespace Unity.Entities
                         $"The srcEntity[{i}] references an entity that is invalid." + AppendDestroyedEntityRecordError(*srcEntity));
 
                 var archetype = GetArchetype(srcEntity[i]);
-                if ((removePrefab ? archetype->InstantiateArchetype : archetype->CopyArchetype) == null)
+                
+                if (GetCopyArchetype(archetype, copyArchetype) == null)
                     throw new ArgumentException(
                         $"The srcEntity[{i}] references an entity that has already been destroyed. (Only cleanup components are left on the entity)");
             }

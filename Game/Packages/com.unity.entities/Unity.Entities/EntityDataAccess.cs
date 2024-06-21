@@ -449,6 +449,14 @@ namespace Unity.Entities
             CompleteForAdditiveStructuralChanges();
         }
 
+        public void PrepareForCopyStoreStructuralChanges(NativeArray<Entity> entities)
+        {
+            foreach (var entity in entities)
+                CheckIsAdditiveStructuralChange(EntityComponentStore->GetArchetype(entity)->StorageArchetype);
+
+            CompleteForAdditiveStructuralChanges();
+        }
+
         private void CompleteForAdditiveStructuralChanges()
         {
             if (IsInExclusiveTransaction)
@@ -2704,7 +2712,7 @@ namespace Unity.Entities
         }
 
         internal void InstantiateInternalDuringStructuralChange(Entity* srcEntities, Entity* outputEntities, int count,
-            int outputCount, bool removePrefab, in SystemHandle originSystem = default)
+            int outputCount, CopyArchetype copyArchetype, in SystemHandle originSystem = default)
         {
 #if ENABLE_UNITY_COLLECTIONS_CHECKS || UNITY_DOTS_DEBUG
             if (count < 0)
@@ -2712,14 +2720,14 @@ namespace Unity.Entities
 #endif
             AssertCountsMatch(count, outputCount);
             EntityComponentStore->AssertEntitiesExist(srcEntities, count);
-            EntityComponentStore->AssertCanInstantiateEntities(srcEntities, count, removePrefab);
+            EntityComponentStore->AssertCanInstantiateEntities(srcEntities, count, copyArchetype);
 
 #if ENABLE_PROFILER
             if (StructuralChangesProfiler.Enabled)
                 StructuralChangesRecorder.Begin(StructuralChangesProfiler.StructuralChangeType.CreateEntity, in m_WorldUnmanaged);
 #endif
 
-            StructuralChange.InstantiateEntities(EntityComponentStore, srcEntities, outputEntities, count, removePrefab);
+            StructuralChange.InstantiateEntities(EntityComponentStore, srcEntities, outputEntities, count, copyArchetype);
 
 #if ENABLE_PROFILER
             if (StructuralChangesProfiler.Enabled)

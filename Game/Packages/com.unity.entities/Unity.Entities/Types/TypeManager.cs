@@ -189,6 +189,8 @@ namespace Unity.Entities
         /// </summary>
         public bool HasNativeContainer { [MethodImpl(MethodImplOptions.AggressiveInlining)] get { return (Value & TypeManager.HasNativeContainerFlag) != 0; } }
 
+        public bool IsStoreComponent { [MethodImpl(MethodImplOptions.AggressiveInlining)] get { return (Value & TypeManager.IsStoreComponentFlag) != 0; } }
+        
         /// <summary>
         /// The component type is appropriate for chunk serialization. Such types are blittable without containing pointer types or have been decorated with <seealso cref="ChunkSerializableAttribute"/>.
         /// </summary>
@@ -496,11 +498,14 @@ namespace Unity.Entities
             UnityEngineObject,
         }
 
+        
         /// <summary>
         /// Maximum number of unique component types supported by the <seealso cref="TypeManager"/>/>
         /// </summary>
         public const int MaximumTypesCount = 1 << 13;
 
+        public const int IsStoreComponentFlag = 1 << 16;
+        
         /// <summary>
         /// Bitflag set for component types that do not contain an <seealso cref="Entity"/> member.
         /// Entity members found in nested member types will cause this bitflag to not be set.
@@ -3017,6 +3022,10 @@ namespace Unity.Entities
             return isSerializable.isSerializable;
         }
 
+        private static bool IsComponentChunkStore(Type type, TypeCategory category, bool hasEntityReference, BuildComponentCache cache)
+        {
+            return typeof(IStorageData).IsAssignableFrom(type);
+        }
 
         // True when a component is valid to using in world serialization. A component IsSerializable when it is valid to blit
         // the data across storage media. Thus components containing pointers have an IsSerializable of false as the component
@@ -3027,7 +3036,7 @@ namespace Unity.Entities
             if (cache.TryGetValue(type, out result))
                 return result;
 
-            if (Attribute.IsDefined(type, typeof(ChunkSerializableAttribute)))
+            if (Attribute.IsDefined(type, typeof(ChunkSerializableAttribute)) || typeof(IStorageData).IsAssignableFrom(type))
             {
                 result = (true, true);
                 cache.Add(type, result);
@@ -3268,6 +3277,7 @@ namespace Unity.Entities
             bool isBakingOnlyType = Attribute.IsDefined(type, typeof(BakingTypeAttribute));
             var isIEquatable = type.GetInterfaces().Any(i => i.Name.Contains("IEquatable"));
             var isChunkSerializable = IsComponentChunkSerializable(type, category, hasEntityReferences, caches);
+            var isStoreComponent = IsComponentChunkStore(type, category, hasEntityReferences, caches);
 
             if (typeIndex != 0)
             {
@@ -3312,6 +3322,9 @@ namespace Unity.Entities
 
                 if (!isChunkSerializable)
                     typeIndex |= IsNotChunkSerializableTypeFlag;
+                
+                if (isStoreComponent)
+                    typeIndex |= IsStoreComponentFlag;
             }
 
             return new TypeInfo(typeIndex, category, entityOffsetCount, entityOffsetIndex,

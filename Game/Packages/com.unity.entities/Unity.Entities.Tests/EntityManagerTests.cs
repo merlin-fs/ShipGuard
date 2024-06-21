@@ -1262,7 +1262,7 @@ namespace Unity.Entities.Tests
 
             var dstEntities = new NativeArray<Entity>(entityCount, Allocator.Temp);
 
-            m_Manager.CopyEntitiesInternal(srcEntities, dstEntities);
+            m_Manager.CopyEntitiesInternal(srcEntities, dstEntities, CopyArchetype.Original);
 
             for (int i = 0; i < srcEntities.Length; ++i)
             {
@@ -1289,7 +1289,7 @@ namespace Unity.Entities.Tests
             using var dstWorld = new World("Copy Destination World");
             var dstEntities = new NativeArray<Entity>(entityCount, Allocator.Temp);
 
-            dstWorld.EntityManager.CopyEntitiesFrom(m_Manager, srcEntities, dstEntities);
+            dstWorld.EntityManager.CopyEntitiesFrom(m_Manager, srcEntities, CopyArchetype.Original, dstEntities);
 
             for (int i = 0; i < srcEntities.Length; ++i)
             {
@@ -1642,7 +1642,7 @@ namespace Unity.Entities.Tests
             {
 
                 //underlying function calls into EntityComponentStore.CopyName
-                m_Manager.CopyEntitiesInternal(srcEntities,dstEntities);
+                m_Manager.CopyEntitiesInternal(srcEntities,dstEntities, CopyArchetype.Original);
 
                 //make sure entities of interest are actually cloned in the manager
                 var query = m_Manager.CreateEntityQuery(typeof(EcsTestData));

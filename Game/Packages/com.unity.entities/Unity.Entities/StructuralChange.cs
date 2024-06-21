@@ -169,9 +169,9 @@ namespace Unity.Entities
         }
 
         [BurstCompile]
-        public static void InstantiateEntities(EntityComponentStore* entityComponentStore, Entity* srcEntities, Entity* outputEntities, int entityCount, bool removePrefab)
+        public static void InstantiateEntities(EntityComponentStore* entityComponentStore, Entity* srcEntities, Entity* outputEntities, int entityCount, CopyArchetype copyArchetype)
         {
-            entityComponentStore->InstantiateEntities(srcEntities, outputEntities, entityCount, removePrefab);
+            entityComponentStore->InstantiateEntities(srcEntities, outputEntities, entityCount, copyArchetype);
         }
     }
 }

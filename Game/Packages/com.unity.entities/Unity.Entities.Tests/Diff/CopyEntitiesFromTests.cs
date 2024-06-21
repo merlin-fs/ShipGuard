@@ -39,7 +39,7 @@ namespace Unity.Entities.Tests
                 // create extra entities to ensure entity id's aren't the same by accident
                 DstEntityManager.CreateEntity();
 
-                DstEntityManager.CopyEntitiesFrom(SrcEntityManager, srcEntities, dstEntities);
+                DstEntityManager.CopyEntitiesFrom(SrcEntityManager, srcEntities, CopyArchetype.Original, dstEntities);
 
                 TestValues(dstEntities[0], 5, 0);
                 Assert.AreEqual(dstEntities[1], DstEntityManager.GetComponentData<EcsTestManagedDataEntity>(dstEntities[0]).value1);
