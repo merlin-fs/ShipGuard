@@ -27,7 +27,7 @@ namespace Common.Core.Storages
 		private const string FILE_USER_DATA = "data.save";
 		private IStorageProvider m_Rempve;
 		private IStorageProvider m_Local;
-		private string m_Key => "78532DdSYVjdh74lfuàãV2m6ry_wCIsIIYk¿vM1222326zVc";
+		private string m_Key => "78532DdSYVjdh74lfuÃ Ã£V2m6ry_wCIsIIYkÂ¿vM1222326zVc";
 		private IStorageSerializable<T> m_Serializable;
 
 		Task IStorageManager<T>.Init(IStorageProvider remove, IStorageProvider local)

@@ -24,7 +24,7 @@ namespace Game.Core.Loading
     {
         [SerializeField] private string label;
         
-        [Inject] private ObjectRepository m_ObjectRepository;
+        [Inject] private ConfigRepository m_ConfigRepository;
 
         private float m_Progress;
 
@@ -54,7 +54,7 @@ namespace Game.Core.Loading
                         var configs = CastToConfig(result);
                         if (configs == null) return;
                         
-                        m_ObjectRepository.Insert(configs, label);
+                        m_ConfigRepository.Insert(configs, label);
                         foreach (var config in configs)
                             if (config is IViewPrefab viewPrefab)
                             {

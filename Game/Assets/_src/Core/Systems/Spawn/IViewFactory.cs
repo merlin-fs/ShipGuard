@@ -10,7 +10,7 @@ using IView = Game.Views.IView;
 
 namespace Game.Core.Spawns
 {
-    public partial class Spawn
+    public partial struct Spawn
     {
         public interface IViewFactory
         {

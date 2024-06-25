@@ -13,7 +13,7 @@ namespace Game.Model.Stats
     public partial struct StatPrepareSystem : ISystem
     {
         private EntityQuery m_Query;
-        [Inject] private static ObjectRepository m_Repository;
+        [Inject] private static ConfigRepository m_Repository;
 
         public void OnCreate(ref SystemState state)
         {

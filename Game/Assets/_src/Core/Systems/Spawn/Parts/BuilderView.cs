@@ -19,18 +19,19 @@ namespace Game.Core.Spawns
         {
             public Builder WithNewView()
             {
-                m_Spawner.m_Ecb.AddComponent<Spawn.ViewTag>(m_Spawner.m_Entity);
+                m_Ecb.AddComponent<Spawn.ViewTag>(m_Entity);
+                //m_Ecb.AddBuffer<PrefabInfo.BakedInnerPathPrefab>(m_Entity);
                 return this;
             }
 
             public Builder WithView(IView view)
             {
-                m_Spawner.CreateContext(m_Spawner.m_Entity, view, m_Spawner.m_Ecb, default);
+                m_Ecb.AddComponent<Spawn.ViewAttachTag>(m_Entity);
                 return this;
             }
         }
         
-        public Container CreateContext(Entity entity, IConfig config, EntityCommandBuffer ecb, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab> children)
+        public Container CreateContext(Entity entity, IConfig config, EntityCommandBuffer ecb)//, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab> children
         {
             if (config is not IViewPrefab viewPrefab) 
                 throw new NotImplementedException($"IViewPrefab {config.ID} NotImplemented");

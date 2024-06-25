@@ -4,34 +4,25 @@ using Common.Core;
 
 using Unity.Entities;
 
-using Common.Defs;
-
 using Game.Views;
 
-using Newtonsoft.Json.Linq;
+using Unity.Mathematics;
 
 namespace Game.Core.Spawns
 {
-    public partial class Spawn : IComponentData
+    public partial struct Spawn : IComponentData, IStorageData
     {
-        public int ID;
-        public ObjectID PrefabID;
-        public JToken Data;
-        
-        public struct Tag : IComponentData{}
-        
+        public Entity NewEntity;
+
         public struct ViewTag : IComponentData{}
+        public struct ViewAttachTag : IComponentData {}
+        public struct WithDataTag : IComponentData {}
+        public struct PostSpawnTag : IComponentData {}
 
         public class Event : IComponentData
         {
             public Action<IView> Callback;
         }
 
-        public struct Component : IBufferElementData
-        {
-            public ComponentType ComponentType;
-            public static implicit operator Component(ComponentType componentType) =>
-                new Component {ComponentType = componentType};
-        }
    }
 }

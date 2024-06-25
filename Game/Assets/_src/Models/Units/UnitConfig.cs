@@ -10,7 +10,7 @@ namespace Game.Model.Units
     [CreateAssetMenu(fileName = "Unit", menuName = "Configs/Unit")]
     public class UnitConfig: GameObjectConfig, IConfigContainer, IConfigStats
     {
-        public Unit.UnitDef Value = new Unit.UnitDef();
+        public Unit.Def Value = new Unit.Def();
 
         protected override void Configure(Entity prefab, IDefinableContext context)
         {

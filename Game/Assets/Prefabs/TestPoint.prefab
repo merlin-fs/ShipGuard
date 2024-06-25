@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4700412133731025956}
   - component: {fileID: 1987914882839975946}
+  - component: {fileID: 5342727212406759740}
   m_Layer: 0
   m_Name: TestPoint
   m_TagString: Untagged
@@ -44,6 +45,88 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9ffa8f9657ed54f9175bcd1395306c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configPoint: {fileID: 0}
+  config:
+    m_ID:
+      utf8LengthInBytes: 0
+      bytes:
+        offset0000:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        offset0016:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        offset0032:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        byte0048: 0
+        byte0049: 0
+        byte0050: 0
+        byte0051: 0
+        byte0052: 0
+        byte0053: 0
+        byte0054: 0
+        byte0055: 0
+        byte0056: 0
+        byte0057: 0
+        byte0058: 0
+        byte0059: 0
+        byte0060: 0
+        byte0061: 0
+--- !u!114 &5342727212406759740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2992465351232438365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 437059be8b9f53046ac0b71109b88f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   uuid:
-    m_FirstHalf: 6003066802222100332
-    m_SecondHalf: 3763101928743186736
+    m_FirstHalf: 5350889281183510380
+    m_SecondHalf: 3767039301842912067

@@ -1,12 +1,10 @@
-using System;
-
 namespace Common.Defs
 {
-    public interface IDefinable { }
+    public interface IDefinable{}
 
-    public record GetterDef<T>(Func<T> Getter)
+    public interface IDefinable<T> : IDefinable
         where T : IDef
     {
-        public Func<T> Getter { get; } = Getter;
+        void SetDef(RefLink<T> link);
     }
 }

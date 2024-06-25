@@ -1,15 +1,9 @@
-using System;
-
-using Common.Core;
-
 using Game.Core.Defs;
 
 using Reflex.Attributes;
 using Reflex.Core;
 
 using Unity.Entities;
-
-using UnityEngine;
 
 namespace Game.Core.Spawns
 {
@@ -18,44 +12,45 @@ namespace Game.Core.Spawns
         [Inject] private Container m_Container;
         private readonly Spawn.IViewFactory m_Factory;
         
-        private IConfig m_Config;
-        private EntityCommandBuffer m_Ecb;
-        private Entity m_Entity;
+        private readonly EntityArchetype m_EntityArchetype;
 
-        private readonly Builder m_Builder; 
-
+        public Builder Setup(EntityCommandBuffer ecb)
+        {
+            return new Builder(this, ecb);
+        }
+        
+        /*
         public Builder Spawn(IConfig config, EntityCommandBuffer ecb)
         {
             m_Config = config;
             m_Ecb = ecb;
             m_Entity = CreateEntity();
-            m_Builder.WithComponent<Spawn.Tag>();
-
             Debug.Log($"[Spawner] spawn: {config.ID} ({m_Entity})");
             return m_Builder;
         }
+        */
 
-        public Spawner(Spawn.IViewFactory viewFactory)
-        {
-            m_Factory = viewFactory;
-            m_Builder = new Builder(this);
-        }
-        
         /*
-        private Spawner(IConfig config, EntityCommandBuffer ecb)
+        public Builder Spawn(Entity entity, IConfig config, EntityCommandBuffer ecb)
         {
             m_Config = config;
             m_Ecb = ecb;
-            if (m_Config.EntityPrefab == Entity.Null) 
-                throw new ArgumentNullException($"EntityPrefab {m_Config.ID} not assigned");
+            m_Entity = entity;
+            
+            config.Configure(m_Entity, new CommandBufferContext(ecb));
+            
+            Debug.Log($"[Spawner] spawn: {config.ID} ({m_Entity})");
+            return m_Builder;
         }
         */
-
-        private Entity CreateEntity()
+        
+        public Spawner(Spawn.IViewFactory viewFactory)
         {
-            var entity = m_Ecb.Instantiate(m_Config.EntityPrefab);
-            m_Ecb.AddComponent(entity, new PrefabInfo{ConfigID = m_Config.ID});
-            return entity;
+            m_Factory = viewFactory;
+            m_EntityArchetype = World.DefaultGameObjectInjectionWorld.EntityManager
+                .CreateArchetype(
+                    typeof(Spawn)
+                    );
         }
     }
 }

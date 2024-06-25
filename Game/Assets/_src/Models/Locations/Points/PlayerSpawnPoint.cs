@@ -3,23 +3,29 @@ using System;
 using Common.Defs;
 
 using Game.Core.Defs;
+using Game.Core.Spawns;
 
 using Unity.Entities;
 
 namespace Game.Model.Locations
 {
-    public struct PlayerSpawnPoint : IDefinable, IComponentData, IDefinableCallback
+    public struct PlayerSpawnPoint : IDefinable<PlayerSpawnPoint.Def>, IComponentData, IDefinableCallback, IStorageData
     {
-        public RefLink<PlayerSpawnPointDef> RefLink { get; }
+        public bool Enabled { get; set; } 
+        public RefLink<Def> RefLink { get; private set; }
 
-        public PlayerSpawnPoint(RefLink<PlayerSpawnPointDef> config)
+        public void SetDef(RefLink<Def> link)
         {
-            RefLink = config;
+            RefLink = link;
         }
-        
+
         public void AddComponentData(Entity entity, IDefinableContext context)
         {
+            context.AddComponentData(entity, new Spawn.ViewAttachTag());
+            context.AddComponentData(entity, new LocationTag());
             
+            //TODO: доробити StorageData
+            context.AddComponentData(entity, new TUserStorageDataTag());
         }
 
         public void RemoveComponentData(Entity entity, IDefinableContext context)
@@ -28,7 +34,7 @@ namespace Game.Model.Locations
         }
         
         [Serializable]
-        public class PlayerSpawnPointDef : IDef<PlayerSpawnPoint>
+        public class Def : IDef<PlayerSpawnPoint>
         {
             
         }

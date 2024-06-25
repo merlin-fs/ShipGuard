@@ -9,7 +9,7 @@ namespace Common.Repositories
         T Entity { get; }
     }
 
-    public interface IReadonlyRepository<TID, TEntity, TAttr>
+    public interface IReadonlyRepository<in TID, TEntity, TAttr>
         where TAttr : IEntityAttributes<TEntity>
     {
         IEnumerable<TEntity> Find(Func<TAttr, bool> filter = null, Func<IQueryable<TAttr>, IOrderedQueryable<TAttr>> orderBy = null);
@@ -20,13 +20,13 @@ namespace Common.Repositories
     public interface IRepository<TID, TEntity, TAttr>: IReadonlyRepository<TID, TEntity, TAttr>
         where TAttr : IEntityAttributes<TEntity>
     {
-        void Insert(IEnumerable<TAttr> entities, Action<TEntity> callback = null);
+        void Insert(params (TID, TAttr)[] entities);
 
-        void Update(IEnumerable<TAttr> entities);
+        void Update(params (TID, TAttr)[] entities);
 
-        void Remove(IEnumerable<TAttr> entities, Action<TEntity> callback = null);
+        void Remove(params (TID, TAttr)[] entities);
 
-        IEnumerable<TEntity> Remove(IEnumerable<TID> ids, Action<TEntity> callback = null);
+        IEnumerable<TEntity> Remove(params TID[] ids);
     }
 }
 

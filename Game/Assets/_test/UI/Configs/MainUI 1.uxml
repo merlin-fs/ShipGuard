@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/configs/UI/Styles/Defaults.uss?fileID=7433441132597879392&amp;guid=c9d86378d0aad5c489ad0841fac2cc41&amp;type=3#Defaults" />
+    <Style src="project://database/Assets/configs/UI/Styles/Toolbar.uss?fileID=7433441132597879392&amp;guid=d259a0d4499ad8640b3701f0faf6b427&amp;type=3#Toolbar" />
+    <ui:VisualElement name="main" picking-mode="Ignore" style="flex-grow: 1; flex-shrink: 0;">
+        <ui:VisualElement name="left_area" picking-mode="Ignore" class="map_bg" style="flex-direction: row-reverse; height: 100%; align-self: flex-end;">
+            <ui:VisualElement name="environment" class="toolbar" style="height: 100%;">
+                <ui:RadioButton label="Button" value="false" />
+            </ui:VisualElement>
+            <ui:ListView focusable="true" name="object_list" style="width: 382px; display: none;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="bottom_area" picking-mode="Ignore" class="map_bg" style="flex-direction: column;">
+            <ui:VisualElement name="toolbar" class="toolbar" style="flex-direction: row; justify-content: flex-end;">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row; margin-left: 1%;">
+                    <ui:Button text="Save" parse-escape-sequences="true" display-tooltip-when-elided="true" name="save" style="min-width: 125px; -unity-text-align: middle-center;" />
+                    <ui:Button text="Load" parse-escape-sequences="true" display-tooltip-when-elided="true" name="load" style="min-width: 125px; -unity-text-align: middle-center;" />
+                </ui:VisualElement>
+                <ui:Toggle label="Activate" name="activate" style="height: 48px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

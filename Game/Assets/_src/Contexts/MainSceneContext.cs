@@ -31,9 +31,15 @@ namespace Game.Core.Contexts
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
             containerBuilder.AddSingleton(locationScenes);
+            containerBuilder.AddSingleton(c => c.Construct<SerializeManager>());
+
             containerBuilder.AddTransient(c => c.Construct<Spawner>(spawnViewFactory));
             containerBuilder.AddSingleton<IPlayerInputs>(c => c.Construct<PlayerInputs>(playerInputAsset));
-            containerBuilder.AddSingleton<CameraController>(c => cameraController);
+            containerBuilder.AddSingleton<CameraController>(c =>
+            {
+                cameraController.SetActive(false);
+                return cameraController;
+            });
 
             containerBuilder.AddSingleton<IUIManager>(container =>
             {

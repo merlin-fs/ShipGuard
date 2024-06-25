@@ -12,7 +12,7 @@ using Unity.Entities;
 
 namespace Game.Core.Repositories
 {
-    public class ObjectRepository: Repository<IConfig, ObjectID, ObjectRepository.Attribute>
+    public class ConfigRepository: Repository<ObjectID, IConfig, ConfigRepository.Attribute>
     {
         public class Attribute : IEntityAttributes<IConfig>
         {
@@ -43,7 +43,7 @@ namespace Game.Core.Repositories
         {
             foreach (var iter in labels)
                 m_Labels[iter] = 0;
-            m_Repo.Insert(configs.Select(config => new Attribute(config, labels)));
+            m_Repo.Insert(configs.Select(config => ( config.ID, new Attribute(config, labels) )).ToArray());
         }
     }
 }

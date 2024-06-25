@@ -12,29 +12,32 @@ namespace Game.Core.Defs
     public static class DefHelper
     {
         private static readonly ConcurrentDictionary<object, ConstructorDefinable> m_Defs = new();
+        private delegate void SetDef<T>(RefLink<T> link);
 
         private record ConstructorDefinable
         {
-            private readonly Delegate m_MakeDefinable;
+            private MethodInfo m_MethodInfo;
             private readonly object m_Link;
 
-            public ConstructorDefinable(Delegate makeDefinable, object link)
+            public ConstructorDefinable(MethodInfo methodInfo, object link)
             {
-                m_MakeDefinable = makeDefinable;
+                m_MethodInfo = methodInfo;
                 m_Link = link;
             }
 
-            public T CreateDefinable<T>()
+            public T FillDefinable<T>()
                 where T : unmanaged, IDefinable
             {
-                return (T)m_MakeDefinable.DynamicInvoke(m_Link);
+                var value = default(T);
+                m_MethodInfo.Invoke(value, new object[]{m_Link});
+                return value;
             }
         }
         
         public static void AddComponentData<T>(this IDef<T> self, Entity entity, IDefinableContext context)
             where T : unmanaged, IDefinable, IComponentData
         {
-            var data = GetConstructorDefinable(self).CreateDefinable<T>();
+            var data = GetConstructorDefinable(self).FillDefinable<T>();
             if (data is IDefinableCallback callback)
                 callback.AddComponentData(entity, context);
             context.AddComponentData(entity, data);
@@ -50,14 +53,8 @@ namespace Game.Core.Defs
                 .GetMethod("From", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)!
                 .Invoke(null, new object[] {self});
 
-            var param = Expression.Parameter(defType, "val");
-            var lambda =
-                Expression.Lambda(
-                    Expression.New(
-                        typeof(T).GetConstructor(new[] {defType}) ?? throw new InvalidOperationException(), param),
-                    param);
-            var makeDefinable = lambda.Compile();
-            rec = new ConstructorDefinable(makeDefinable, link);
+            var methodInfo = typeof(T).GetMethod(nameof(IDefinable<IDef<T>>.SetDef));
+            rec = new ConstructorDefinable(methodInfo, link);
             m_Defs.TryAdd(self, rec);
             return rec;
         }

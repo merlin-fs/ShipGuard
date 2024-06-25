@@ -203,7 +203,7 @@ namespace Unity.Entities.Serialization
         }
     }
 
-    internal unsafe class StreamBinaryReader : BinaryReader
+    public unsafe class StreamBinaryReader : BinaryReader
     {
         internal string FilePath { get; }
 #if UNITY_EDITOR

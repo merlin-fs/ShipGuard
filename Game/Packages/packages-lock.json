@@ -19,6 +19,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.fs.reactives": {
+      "version": "file:com.fs.reactives",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.fs.save": {
       "version": "file:com.fs.save",
       "depth": 0,
@@ -99,9 +105,9 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.entities": {
-      "version": "1.2.1",
+      "version": "file:com.unity.entities",
       "depth": 0,
-      "source": "registry",
+      "source": "embedded",
       "dependencies": {
         "com.unity.burst": "1.8.13",
         "com.unity.serialization": "3.1.1",
@@ -115,8 +121,7 @@
         "com.unity.nuget.mono-cecil": "1.11.4",
         "com.unity.scriptablebuildpipeline": "1.20.2",
         "com.unity.profiling.core": "1.0.2"
-      },
-      "url": "https://packages.unity.com"
+      }
     },
     "com.unity.ext.nunit": {
       "version": "2.0.5",

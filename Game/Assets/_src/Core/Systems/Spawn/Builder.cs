@@ -1,5 +1,8 @@
 using System;
 
+using Common.Core;
+
+using Game.Model;
 using Game.Views;
 
 using Unity.Entities;
@@ -12,59 +15,42 @@ namespace Game.Core.Spawns
     {
         public partial class Builder
         {
-            private readonly Spawner m_Spawner;
-            public Entity Entity => m_Spawner.m_Entity;
+            private readonly Entity m_Entity;
+            private EntityCommandBuffer m_Ecb;
+            
 
-            public Builder(Spawner spawner)
+            public Builder(Spawner spawner, EntityCommandBuffer ecb)
             {
-                m_Spawner = spawner;
+                m_Ecb = ecb;
+                m_Entity = m_Ecb.CreateEntity(spawner.m_EntityArchetype); 
             }
 
-            public Builder WithComponents(DynamicBuffer<Spawn.Component> components)
+            public Builder WithConfigId(ObjectID configId)
             {
-                foreach (var iter in components)
-                    m_Spawner.m_Ecb.AddComponent(m_Spawner.m_Entity, iter.ComponentType);
+                m_Ecb.AddComponent(m_Entity, new ConfigInfo{ConfigId = configId});
+                return this;
+            }
+            
+            public Builder WithId(Uuid id)
+            {
+                m_Ecb.AddComponent(m_Entity, new GameEntity(id, Entity.Null));
                 return this;
             }
 
             public Builder WithPosition(float3 value)
             {
-                m_Spawner.m_Ecb.AddComponent<LocalTransform>(m_Spawner.m_Entity,
-                    new LocalTransform() 
-                    {
-                        Position = value,
-                    });
+                
+                m_Ecb.AddComponent(m_Entity, new LocalTransform{Position = value});
                 return this;
             }
             
             public Builder WithEvent(Action<IView> onDone)
             {
-                m_Spawner.m_Ecb.AddComponent<Spawn.Event>(m_Spawner.m_Entity,
+                m_Ecb.AddComponent<Spawn.Event>(m_Entity,
                     new Spawn.Event()
                     {
                         Callback = onDone,
                     });
-                return this;
-            }
-            
-            
-            public Builder WithComponent(object component, Type type)
-            {
-                m_Spawner.m_Ecb.AddComponent(m_Spawner.m_Entity, component, type);
-                return this;
-            }
-
-            public Builder WithComponent<T>()
-                where T : unmanaged, IComponentData
-            {
-                m_Spawner.m_Ecb.AddComponent<T>(m_Spawner.m_Entity);
-                return this;
-            }
-
-            public Builder WithComponent<T>(T component)
-                where T : unmanaged, IComponentData
-            {
-                m_Spawner.m_Ecb.AddComponent<T>(m_Spawner.m_Entity, component);
                 return this;
             }
         }

@@ -25,7 +25,10 @@ namespace Common.UI
             
             public VisualElement AttachDocument(VisualElement root)
             {
-                VisualTreeAsset.CloneTree(root, out var index, out var _);
+                VisualTreeAsset.CloneTree(root, out var index, out var count);
+                if (count <= 0)
+                    throw new Exception($"No insert VisualTreeAsset {VisualTreeAsset}");
+                    
                 return root[index];
             }
             

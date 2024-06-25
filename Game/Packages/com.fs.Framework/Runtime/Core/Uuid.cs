@@ -62,6 +62,8 @@ namespace Common.Core
             return obj is Uuid other && Equals(other);
         }
 
+        public override string ToString() => Name;
+
         public override int GetHashCode()
         {
             return Guid.GetHashCode();

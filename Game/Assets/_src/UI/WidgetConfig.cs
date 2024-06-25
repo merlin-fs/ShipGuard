@@ -6,6 +6,8 @@ using Common.UI;
 
 using Game.Core.Contexts;
 
+using Unity.Assertions;
+
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -31,6 +33,19 @@ namespace Game.UI
             where T : IWidget
         {
             return m_Dictionary.TryGetValue(typeof(T), out template);
+        }
+
+        public VisualTreeAsset GetTemplate<T>()
+            where T : IWidget
+        {
+            return GetTemplate(typeof(T));
+        }
+
+        public VisualTreeAsset GetTemplate(Type type)
+        {
+            var result = m_Dictionary.TryGetValue(type, out var template);
+            Assert.IsTrue(result);
+            return template;
         }
 
         private void Awake()

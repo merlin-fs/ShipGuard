@@ -7,8 +7,7 @@ using Common.Repositories;
 
 namespace Game.Core.Repositories
 {
-    public class Repository<TObject, TID, TAttribute> : IReadonlyRepository<TID, TObject, TAttribute>
-        where TObject : IIdentifiable<TID>
+    public class Repository<TID, TObject, TAttribute> : IReadonlyRepository<TID, TObject, TAttribute>
         where TAttribute : IEntityAttributes<TObject>
     {
         protected readonly DictionaryRepository<TID, TObject, TAttribute> m_Repo = new ();

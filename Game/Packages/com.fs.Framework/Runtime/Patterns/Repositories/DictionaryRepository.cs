@@ -9,7 +9,6 @@ namespace Common.Repositories
 
     [Serializable]
     public sealed class DictionaryRepository<TID, TEntity, TAttr> : IRepository<TID, TEntity, TAttr>
-        where TEntity: IIdentifiable<TID>
         where TAttr : IEntityAttributes<TEntity>
     {
         private readonly ConcurrentDictionary<TID, TAttr> m_Items;
@@ -44,7 +43,11 @@ namespace Common.Repositories
         public T FindByID<T>(TID id) 
             where T : TEntity
         {
-            return (T)FindByID(id);
+            var obj = FindByID(id);
+            if (obj is ICastObject castObject)
+                return castObject.Cast<T>();
+            else
+                return (T)obj;
         }
         
         public TEntity FindByID(TID id)
@@ -54,45 +57,40 @@ namespace Common.Repositories
                 : default;
         }
 
-        public void Insert(TID id, TAttr entity, Action<TEntity> callback = null)
+        public void Insert(TID id, TAttr entity)
         {
-            if (m_Items.TryAdd(id, entity))
-                callback?.Invoke(entity.Entity);
+            m_Items.TryAdd(id, entity);
         }
 
-        public void Insert(IEnumerable<TAttr> entities, Action<TEntity> callback = null)
+        public void Insert(params (TID, TAttr)[] entities)
         {
-            foreach (var entity in entities)
+            foreach (var (id, entity) in entities)
             {
-                if (m_Items.TryAdd(entity.Entity.ID, entity))
-                    callback?.Invoke(entity.Entity);
+                m_Items.TryAdd(id, entity);
             }
         }
         
-        public void Update(IEnumerable<TAttr> entities)
+        public void Update(params (TID, TAttr)[] entities)
         {
-            foreach (var entity in entities)
-                m_Items[entity.Entity.ID] = entity;
+            foreach (var (id, entity) in entities)
+                m_Items[id] = entity;
 
         }
-        public void Remove(IEnumerable<TAttr> entities, Action<TEntity> callback = null)
+        public void Remove(params (TID, TAttr)[] entities)
         {
-            foreach (var entity in entities)
-                if (m_Items.TryRemove(entity.Entity.ID, out TAttr _))
-                    callback?.Invoke(entity.Entity);
+            foreach (var (id, entity) in entities)
+                m_Items.TryRemove(id, out TAttr _);
         }
 
-        public IEnumerable<TEntity> Remove(IEnumerable<TID> ids, Action<TEntity> callback = null)
+        public IEnumerable<TEntity> Remove(params TID[] ids)
         {
             List<TEntity> result = new List<TEntity>();
             foreach (var id in ids)
             {
-                if (m_Items.TryGetValue(id, out TAttr found))
-                {
-                    result.Add(found.Entity);
-                    if (m_Items.TryRemove(id, out TAttr _))
-                        callback?.Invoke(found.Entity);
-                }
+                if (!m_Items.TryGetValue(id, out TAttr found)) continue;
+                
+                result.Add(found.Entity);
+                m_Items.TryRemove(id, out TAttr _);
             }
             return result.ToArray();
         }

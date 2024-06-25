@@ -14,7 +14,7 @@ namespace Game.Core.Loading
 {
     public class CommandLoadEntitiesPrefab : ICommandProgress
     {
-        [Inject] private ObjectRepository m_ObjectRepository;
+        [Inject] private ConfigRepository m_ConfigRepository;
 
         public float GetProgress()
         {
@@ -33,7 +33,7 @@ namespace Game.Core.Loading
                 //var context = new CommandBufferContext(ecb);
                 var context = new EntityManagerContext(worldUnmanaged.EntityManager);
 
-                foreach (var config in m_ObjectRepository.Find())
+                foreach (var config in m_ConfigRepository.Find())
                 {
                     var entity = worldUnmanaged.EntityManager.CreateEntity();
                     context.AddComponentData(entity, new Prefab{});

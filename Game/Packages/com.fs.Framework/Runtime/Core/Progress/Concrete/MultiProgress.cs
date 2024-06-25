@@ -57,7 +57,7 @@ namespace Common.Core.Progress
                 if (m_Done) return 1;
                 if (m_Progress.Count == 0) return 0;
 
-                return m_Progress.Values.Sum() / m_Progress.Count;
+                return m_Progress.Values.ToArray().Sum() / m_Progress.Count;
             }
         }
 

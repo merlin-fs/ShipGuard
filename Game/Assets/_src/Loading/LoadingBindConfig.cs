@@ -32,9 +32,9 @@ namespace Game.Core.Loading
                 //6
                 new CommandStartGameInitialization().AsItem(5),
                 //7
-                new CommandUiHide<UI.Loading>().AsItem(6),
-                //8
                 new CommandUiShow<MainMenu>(UILayer.Main).AsItem(6),
+                //8
+                new CommandUiHide<UI.Loading>().AsItem(6),
             };
         }
     }
