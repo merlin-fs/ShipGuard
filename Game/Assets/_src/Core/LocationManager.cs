@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Common.Core;
+
 using Game.Core.Contexts;
 using Game.Model.Locations;
 
@@ -19,6 +21,7 @@ namespace Game
 {
     public class LocationManager
     {
+        [Inject] private Container m_Container;
         private readonly LocationScenes m_LocationScenes;
 
         private LocationInfo m_CurrentLocation;
@@ -26,6 +29,7 @@ namespace Game
         public LocationManager(LocationScenes locationScenes)
         {
             m_LocationScenes = locationScenes;
+            InitLocationScenes();
         }
 
         public Task LoadLocation(string locationName, Action<Container> onCompleted)
@@ -53,10 +57,22 @@ namespace Game
                 {
                     root.GetComponent<LocationSceneContext>()?.Initialization(container);
                 }
+                ReflexSceneManager.OverrideSceneParentContainer(scene: handle.Result.Scene, parent: m_Container);
                 onCompleted?.Invoke(container);
             };
             return task.Task;
         }
+
+        private async void InitLocationScenes()
+        {
+            foreach (var sceneRef in m_LocationScenes.Scenes)
+            {
+                var loc = await Addressables.LoadResourceLocationsAsync(sceneRef).Task;
+                var id = Addressables.ResourceManager.TransformInternalId(loc[0]);
+                ReflexSceneManager.OverrideSceneParentContainer(scenePath: id, parent: m_Container);
+            }
+        }
+
 
         public Task CloseCurrentLocation(Action onCompleted)
         {

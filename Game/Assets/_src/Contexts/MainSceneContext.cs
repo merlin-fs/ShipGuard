@@ -62,16 +62,6 @@ namespace Game.Core.Contexts
                 */
                 return manager;
             });
-
-            containerBuilder.OnContainerBuilt += async container =>
-            {
-                foreach (var sceneRef in locationScenes.Scenes)
-                {
-                    var loc = await Addressables.LoadResourceLocationsAsync(sceneRef).Task;
-                    var id = Addressables.ResourceManager.TransformInternalId(loc[0]);
-                    ReflexSceneManager.OverrideSceneParentContainer(scenePath: id, parent: container);
-                }
-            };
         }
     }
 }
