@@ -2,7 +2,9 @@ using System;
 
 using Common.Core;
 
+using Game.Core.Defs;
 using Game.Model;
+using Game.Model.Locations;
 using Game.Views;
 
 using Unity.Entities;
@@ -17,7 +19,6 @@ namespace Game.Core.Spawns
         {
             private readonly Entity m_Entity;
             private EntityCommandBuffer m_Ecb;
-            
 
             public Builder(Spawner spawner, EntityCommandBuffer ecb)
             {
@@ -25,9 +26,10 @@ namespace Game.Core.Spawns
                 m_Entity = m_Ecb.CreateEntity(spawner.m_EntityArchetype); 
             }
 
-            public Builder WithConfigId(ObjectID configId)
+            public Builder WithConfig(IConfig config)
             {
-                m_Ecb.AddComponent(m_Entity, new ConfigInfo{ConfigId = configId});
+                m_Ecb.AddComponent(m_Entity, config.GetComponentTypeSet());
+                m_Ecb.AddComponent(m_Entity, new ConfigInfo{ ConfigId = config.ID });
                 return this;
             }
             
@@ -37,14 +39,25 @@ namespace Game.Core.Spawns
                 return this;
             }
 
+            public Builder WhereCondition(Func<GameEntity, bool> condition)
+            {
+                m_Ecb.AddComponent(m_Entity, new Spawn.Condition{ Value = condition });
+                return this;
+            }
+
             public Builder WithPosition(float3 value)
             {
-                
-                m_Ecb.AddComponent(m_Entity, new LocalTransform{Position = value});
+                m_Ecb.AddComponent(m_Entity, new LocalTransform{ Position = value });
+                return this;
+            }
+
+            public Builder WithLocationPoint(Uuid locationPointId)
+            {
+                m_Ecb.AddComponent(m_Entity, new LocationLink{ LocationId = locationPointId });
                 return this;
             }
             
-            public Builder WithEvent(Action<IView> onDone)
+            public Builder WithEvent(Action<GameEntity> onDone)
             {
                 m_Ecb.AddComponent<Spawn.Event>(m_Entity,
                     new Spawn.Event()

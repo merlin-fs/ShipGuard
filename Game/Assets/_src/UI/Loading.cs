@@ -1,4 +1,3 @@
-using Common.Core;
 using Common.Core.Loading;
 using Common.UI;
 
@@ -8,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Game.UI
 {
-    public class Loading : IWidgetNoData
+    public class Loading : IWidgetNoData<VisualElement>
     {
         [Inject] private WidgetConfig m_WidgetConfig;
         [Inject] private ILoadingManager m_LoadingManager;
@@ -19,10 +18,10 @@ namespace Game.UI
         {
             m_LoadingManager = loadingManager;
         }
-        
-        public void Bind(VisualElement root)
+
+        public void Bind(Binder<VisualElement> binder)
         {
-            var progressBar = root.Q<ProgressBar>("progress");
+            var progressBar = binder.Element.Q<ProgressBar>("progress");
             progressBar.value = m_LoadingManager.Progress.Value;
             progressBar.schedule.Execute(() => progressBar.value = m_LoadingManager.Progress.Value).Every(10);
         }

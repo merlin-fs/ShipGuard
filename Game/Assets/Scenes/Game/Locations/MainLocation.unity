@@ -623,6 +623,10 @@ PrefabInstance:
       value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.utf8LengthInBytes
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
       propertyPath: config.m_ID.bytes.offset0000.byte0000
       value: 80
       objectReference: {fileID: 0}
@@ -708,6 +712,94 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
       propertyPath: config.m_ID.bytes.offset0016.byte0005
+      value: 103
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0000
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0001
+      value: 108
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0002
+      value: 97
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0003
+      value: 121
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0004
+      value: 101
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0005
+      value: 114
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0006
+      value: 83
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0007
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0008
+      value: 97
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0009
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0010
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0011
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0012
+      value: 111
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0013
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0014
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0000.byte0015
+      value: 116
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0016.byte0000
+      value: 67
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0016.byte0001
+      value: 111
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0016.byte0002
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0016.byte0003
+      value: 102
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0016.byte0004
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987914882839975946, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}
+      propertyPath: configId.m_ID.bytes.offset0016.byte0005
       value: 103
       objectReference: {fileID: 0}
     - target: {fileID: 2992465351232438365, guid: 7077e9883d336e64b9fb4d42e6d818ea, type: 3}

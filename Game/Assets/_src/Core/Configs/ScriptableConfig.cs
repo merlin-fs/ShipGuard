@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Common.Core;
 using Common.Defs;
 
+using Game.Views;
+
 using UnityEngine;
 using Unity.Entities;
 
@@ -53,12 +55,14 @@ namespace Game.Core.Defs
             m_ViewPrefab = await ReferencePrefab.LoadAssetAsync().Task;
         }
         
-        void IConfig.Configure(Entity root, IDefinableContext context)
+        void IConfig.Configure(Entity root, EntityManager manager, IDefinableContext context)
         {
             m_Prefab = root;
-            Configure(root, context);
+            Configure(root, manager, context);
         }
 
-        protected abstract void Configure(Entity entity, IDefinableContext context);
+        protected abstract void Configure(Entity entity, EntityManager manager, IDefinableContext context);
+        public abstract ComponentTypeSet GetComponentTypeSet();
+        public virtual void Configure(IView view, Entity entity, EntityManager manager) { }
     }
 }

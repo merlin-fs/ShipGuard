@@ -21,6 +21,10 @@ namespace Game.Views
         public void Initialization(IGameEntity entity)
         {
             GameEntity = entity;
+            foreach (var iter in GetComponents<IViewComponent>())
+            {
+                iter.Initialization(this);
+            }
         }
 
         public T Cast<T>() => GetComponent<T>();

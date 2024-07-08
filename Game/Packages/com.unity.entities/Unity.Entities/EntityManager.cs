@@ -16,6 +16,7 @@ using UnityEngine.TestTools;
 
 [assembly: InternalsVisibleTo("Unity.Entities.Hybrid")]
 [assembly: InternalsVisibleTo("com.fs.reactives.runtime")]
+//[assembly: InternalsVisibleTo("com.fs.reactives.runtime")]
 
 namespace Unity.Entities
 {
@@ -4821,7 +4822,7 @@ namespace Unity.Entities
             return access->GetComponentDataRawRWEntityHasComponent(entity, typeIndex);
         }
 
-        internal void* GetComponentDataRawRO(Entity entity, TypeIndex typeIndex)
+        public void* GetComponentDataRawRO(Entity entity, TypeIndex typeIndex)
         {
             var access = GetCheckedEntityDataAccess();
             var ecs = access->EntityComponentStore;

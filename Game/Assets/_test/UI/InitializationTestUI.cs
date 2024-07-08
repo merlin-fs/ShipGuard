@@ -18,7 +18,7 @@ namespace Game
     {
         [SerializeField] private VisualTreeAsset template;
 
-        [Inject] private IUIManager<UILayer> m_UIManager;
+        [Inject] private IUIManager m_UIManager;
         [Inject] private IInitialization m_Initialization;
 
         void Start()
@@ -34,10 +34,12 @@ namespace Game
             */
 
             m_UIManager.Show<Loading>()
-                .WithLayer(UILayer.Main);
+                .WithLayer(UILayer.Loading);
 
-            m_UIManager.Show<Loading>()
-                .WithLayer(UILayer.Windows);
+            m_UIManager.Hide<Loading>();
+            
+            m_UIManager.Show<GameUI>()
+                .WithLayer(UILayer.Main);
         }
 
         // Update is called once per frame

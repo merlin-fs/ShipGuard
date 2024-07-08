@@ -6,10 +6,10 @@ namespace Common.Core
     public interface IContainer
     {
         T Instantiate<T>();
-        T Instantiate<T>(IEnumerable<object> extraArgs);
+        T Instantiate<T>(params object[] extraArgs);
 
         object Instantiate(Type concreteType);
-        object Instantiate(Type concreteType, IEnumerable<object> extraArgs);
+        object Instantiate(Type concreteType, params object[] extraArgs);
         
         TContract Resolve<TContract>();
         TContract ResolveId<TContract>(object identifier);

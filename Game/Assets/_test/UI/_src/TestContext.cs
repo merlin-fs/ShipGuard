@@ -19,8 +19,17 @@ namespace Game
         
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
-            containerBuilder.AddSingleton<IUIManager<UILayer>>(c => 
-                c.Construct<UIManager<UILayer>>(uiManagerHost, UILayer.Main, widgetConfig.GetLayers));
+            //containerBuilder.AddSingleton(widgetConfig);
+            containerBuilder.AddSingleton<ILoadingManager>(c => c.Construct<LoadingManager>(c, new ICommandItem[] { })); 
+            containerBuilder.AddSingleton<IUIManager>(container =>
+            {
+                var manager = container.Construct<UIManager>(
+                    container,
+                    uiManagerHost,
+                    UILayer.Main,
+                    widgetConfig.GetLayers);
+                return manager;
+            });
         }
     }
 }

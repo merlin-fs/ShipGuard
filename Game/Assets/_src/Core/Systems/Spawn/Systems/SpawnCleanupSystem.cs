@@ -17,16 +17,16 @@ namespace Game.Core.Spawns
             public void OnCreate(ref SystemState state)
             {
                 m_Query = SystemAPI.QueryBuilder()
-                    .WithAll<PostSpawnTag>()
+                    .WithAll<Spawn.PostTag>()
                     .Build();
                 state.RequireForUpdate(m_Query);
             }
 
             public void OnUpdate(ref SystemState state)
             {
-                var system = SystemAPI.GetSingleton<GameSpawnSystemCommandBufferSystem.Singleton>();
+                var system = SystemAPI.GetSingleton<EndInitializationEntityCommandBufferSystem.Singleton>();
                 var ecb = system.CreateCommandBuffer(state.WorldUnmanaged);
-                ecb.RemoveComponent<PostSpawnTag>(m_Query, EntityQueryCaptureMode.AtPlayback);
+                ecb.RemoveComponent<Spawn.PostTag>(m_Query, EntityQueryCaptureMode.AtPlayback);
             }
         }
     }

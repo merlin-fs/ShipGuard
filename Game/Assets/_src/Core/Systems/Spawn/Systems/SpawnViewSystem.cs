@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Common.Core;
+
 using Game.Core.Repositories;
 using Game.Model;
 
@@ -22,15 +24,14 @@ namespace Game.Core.Spawns
         {
             [Inject] private static ConfigRepository m_Repository;
             [Inject] private static Spawner m_Spawner;
+            [Inject] private static IContainer m_Container;
             
             private EntityQuery m_Query;
-            private GameSpawnSystemCommandBufferSystem.Singleton m_SpawnSystem;
 
             public void OnCreate(ref SystemState state)
             {
-                m_SpawnSystem = SystemAPI.GetSingleton<GameSpawnSystemCommandBufferSystem.Singleton>();
                 m_Query = SystemAPI.QueryBuilder()
-                    .WithAll<PostSpawnTag>()
+                    .WithAll<Spawn>()
                     .Build();
                 state.RequireForUpdate(m_Query);
             }
@@ -39,28 +40,22 @@ namespace Game.Core.Spawns
             {
                 if (m_Query.IsEmpty) return;
                 
-                var ecb = m_SpawnSystem.CreateCommandBuffer(state.WorldUnmanaged);
+                var ecb = SystemAPI.GetSingleton<EndInitializationEntityCommandBufferSystem.Singleton>()
+                    .CreateCommandBuffer(state.WorldUnmanaged);
+                
                 //New view
-                var dictionary = new Dictionary<Entity, Container>();
-                foreach (var (configInfo, entity) in SystemAPI.Query<ConfigInfo>()//, children, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab>
-                             .WithAll<ViewTag, PostSpawnTag>()
+                foreach (var (configInfo, gameEntity, entity) in SystemAPI.Query<ConfigInfo, GameEntity>()//, children, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab>
+                             .WithAll<ViewTag, Spawn>()
                              .WithEntityAccess())
                 {
                     var config = m_Repository.FindByID(configInfo.ConfigId);
                     if (config == null) throw new ArgumentNullException($"Prefab {configInfo.ConfigId} not found");
 
-                    var ctx = m_Spawner.CreateContext(entity, config, ecb);//, children
-                    dictionary.Add(entity, ctx);
-                }
+                    var view = m_Spawner.CreateView(entity, config, state.EntityManager, ecb);
 
-                foreach (var (eventDone, entity) in SystemAPI.Query<Event>().WithAll<PostSpawnTag>()
-                             .WithEntityAccess())
-                {
-                    if (!dictionary.TryGetValue(entity, out var ctx)) continue;
-                    var view = ctx.Resolve<IView>();
-                    eventDone.Callback.Invoke(view);
+                    view.Initialization(gameEntity);
+                    ecb.RemoveComponent<ViewTag>(entity);
                 }
-                ecb.RemoveComponent<PostSpawnTag>(m_Query, EntityQueryCaptureMode.AtPlayback);
             }
         }
     }

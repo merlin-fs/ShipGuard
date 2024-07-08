@@ -19,11 +19,15 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   Value:
+    storeType: Game.Model.Units.Player
     Parts: []
     Speed:
       rid: 4602785640009433171
     Health:
       rid: 4602785640009433172
+  uuid:
+    m_FirstHalf: 3762807402519424080
+    m_SecondHalf: 3769287725727298377
   references:
     version: 2
     RefIds:

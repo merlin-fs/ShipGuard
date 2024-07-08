@@ -9,14 +9,14 @@ namespace Game.Core.Defs
 {
     public abstract class GameObjectConfig : ScriptableConfig
     {
-        protected override void Configure(Entity entity, IDefinableContext context)
+        protected override void Configure(Entity entity, EntityManager manager, IDefinableContext context)
         {
             context.AddBuffer<PrefabInfo.BakedInnerPathPrefab>(entity);
             ConfigureStats(entity, context);
-            ConfigureChildren(entity, context);
+            ConfigureChildren(entity, manager, context);
         }
 
-        private void ConfigureChildren(Entity entity, IDefinableContext context)
+        private void ConfigureChildren(Entity entity, EntityManager manager, IDefinableContext context)
         {
             if (this is not IConfigContainer container) return;
             
@@ -47,7 +47,7 @@ namespace Game.Core.Defs
                 context.AddComponentData(child, new Unity.Transforms.LocalToWorld());
                 context.AddComponentData(child, new Prefab());
                 
-                ((IConfig)iter.Child).Configure(child, context);
+                ((IConfig)iter.Child).Configure(child, manager, context);
             }
         }
 

@@ -1,0 +1,84 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Game.Core.Contexts;
+using Game.Model.Locations;
+
+using Reflex.Attributes;
+using Reflex.Core;
+using Reflex.Extensions;
+
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.Pool;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
+
+namespace Game
+{
+    public class LocationManager
+    {
+        private readonly LocationScenes m_LocationScenes;
+
+        private LocationInfo m_CurrentLocation;
+
+        public LocationManager(LocationScenes locationScenes)
+        {
+            m_LocationScenes = locationScenes;
+        }
+
+        public Task LoadLocation(string locationName, Action<Container> onCompleted)
+        {
+            if (!m_LocationScenes.TryGetSceneLocation(locationName, out var locationItem))
+            {
+                return Task.FromException(new ArgumentException($"Location {locationName} not found!"));
+            }
+            
+            var task = Addressables.LoadSceneAsync(locationItem.SceneReference, locationItem.LoadSceneMode);
+            task.Completed += handle =>
+            {
+                using var pooledObject1 = ListPool<GameObject>.Get(out var rootGameObjects);
+                handle.Result.Scene.GetRootGameObjects(rootGameObjects);
+                m_CurrentLocation = new LocationInfo {SceneInstance = handle.Result};
+
+                foreach (var root in rootGameObjects)
+                {
+                    m_CurrentLocation.LocationRoots.AddRange(root.GetComponentsInChildren<LocationRoot>());
+                }
+
+                var container = handle.Result.Scene.GetSceneContainer();
+
+                foreach (var root in rootGameObjects)
+                {
+                    root.GetComponent<LocationSceneContext>()?.Initialization(container);
+                }
+                onCompleted?.Invoke(container);
+            };
+            return task.Task;
+        }
+
+        public Task CloseCurrentLocation(Action onCompleted)
+        {
+            if (m_CurrentLocation == null) 
+            {
+                onCompleted?.Invoke();
+                return Task.CompletedTask;
+            }
+            var task = Addressables.UnloadSceneAsync(m_CurrentLocation.SceneInstance, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            task.Completed += handle =>
+            {
+                onCompleted?.Invoke();
+            };
+            return task.Task;
+        }
+        
+        public IEnumerable<LocationRoot> CurrentLocationRoots => m_CurrentLocation.LocationRoots;
+
+        private class LocationInfo
+        {
+            public SceneInstance SceneInstance;
+            public List<LocationRoot> LocationRoots = new();
+        }
+    }
+}

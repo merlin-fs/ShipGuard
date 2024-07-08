@@ -12,9 +12,9 @@ namespace Game.Core.HybridTransforms
     {
         public struct ViewToEntityTag : IComponentData { }
 
-        public class ContainerReference : IComponentData
+        public class ViewReference : IComponentData
         {
-            public IContainer Value;
+            public IView Value;
         }
 
         [UpdateInGroup(typeof(GameLogicSystemGroup))]
@@ -25,7 +25,7 @@ namespace Game.Core.HybridTransforms
             public void OnCreate(ref SystemState state)
             {
                 m_Query = SystemAPI.QueryBuilder()
-                    .WithAll<LocalTransform, ContainerReference>()
+                    .WithAll<LocalTransform, ViewReference>()
                     .WithNone<ViewToEntityTag>()
                     .Build();
                 m_Query.SetChangedVersionFilter(ComponentType.ReadOnly<LocalTransform>());
@@ -34,13 +34,12 @@ namespace Game.Core.HybridTransforms
 
             public void OnUpdate(ref SystemState state)
             {
-                foreach (var (transform, context) in SystemAPI
-                             .Query<RefRO<LocalTransform>, ContainerReference>()
+                foreach (var (transform, view) in SystemAPI
+                             .Query<RefRO<LocalTransform>, ViewReference>()
                              .WithChangeFilter<LocalTransform>())
                 {
-                    var view = context.Value.Resolve<IView>();
-                    view.Transform.localPosition = transform.ValueRO.Position;
-                    view.Transform.localRotation = transform.ValueRO.Rotation;
+                    view.Value.Transform.localPosition = transform.ValueRO.Position;
+                    view.Value.Transform.localRotation = transform.ValueRO.Rotation;
                 }
             }
         }
@@ -53,7 +52,7 @@ namespace Game.Core.HybridTransforms
             public void OnCreate(ref SystemState state)
             {
                 m_Query = SystemAPI.QueryBuilder()
-                    .WithAll<ViewToEntityTag, LocalTransform, ContainerReference>()
+                    .WithAll<ViewToEntityTag, LocalTransform, ViewReference>()
                     .Build();
                 m_Query.SetChangedVersionFilter(ComponentType.ReadOnly<LocalTransform>());
                 state.RequireForUpdate(m_Query);
@@ -61,12 +60,11 @@ namespace Game.Core.HybridTransforms
 
             public void OnUpdate(ref SystemState state)
             {
-                foreach (var (transform, context) in SystemAPI
-                             .Query<RefRW<LocalTransform>, ContainerReference>())
+                foreach (var (transform, view) in SystemAPI
+                             .Query<RefRW<LocalTransform>, ViewReference>())
                 {
-                    var view = context.Value.Resolve<IView>();
-                    transform.ValueRW.Position = view.Transform.localPosition;
-                    transform.ValueRW.Rotation = view.Transform.localRotation;
+                    transform.ValueRW.Position = view.Value.Transform.localPosition;
+                    transform.ValueRW.Rotation = view.Value.Transform.localRotation;
                 }
             }
         }

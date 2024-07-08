@@ -3,6 +3,7 @@ using Common.Core;
 using Game.Core.Camera;
 using Game.Core.Repositories;
 using Game.Core.Spawns;
+using Game.Model;
 
 using Reflex.Attributes;
 
@@ -21,28 +22,25 @@ namespace Game
         [Inject] private Spawner m_Spawner;
         [Inject] private ConfigRepository m_ConfigRepository;
 
-        private LocationRepository m_LocationRepository;
+        private GameEntityRepository m_GameEntityRepository;
         
         public void Initialization(IContainer container)
         {
             
-            m_LocationRepository = container.Resolve<LocationRepository>();
+            m_GameEntityRepository = container.Resolve<GameEntityRepository>();
 
             var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var ecb = manager.World.GetOrCreateSystemManaged<GameSpawnSystemCommandBufferSystem>()
                 .CreateCommandBuffer();
 
-            /*
+            var playerConfig = m_ConfigRepository.FindByID("Player");
+            
+            //*
             m_Spawner.Setup(ecb)
+                //.WhereCondition(gameEntity => gameEntity.)
                 .WithNewView()
-                .WithConfigId("Player")
-                .WithPosition(float3.zero)
-                .WithEvent(view =>
-                {
-                    GetComponent<test_MoveComponent>().SetAnimator(view.Transform.GetComponent<Animator>());
-
-                    m_CameraController.SetFollowTarget(view.Transform);
-                });
+                .WithConfig(playerConfig)
+                .WithPosition(float3.zero);
                 /**/
         }
     }

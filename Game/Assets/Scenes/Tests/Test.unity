@@ -351,7 +351,6 @@ GameObject:
   m_Component:
   - component: {fileID: 499536881}
   - component: {fileID: 499536880}
-  - component: {fileID: 499536879}
   m_Layer: 0
   m_Name: _test
   m_TagString: Untagged
@@ -359,19 +358,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &499536879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499536878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c051954817a68f4b8bf39059762a83a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Animator: {fileID: 1575435994}
 --- !u!114 &499536880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,6 +494,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInputAsset: {fileID: -944628639613478452, guid: 8202b4ea4fa866043b99e157c59c1795, type: 3}
+  cameraController: {fileID: 0}
+  spawnViewFactory: {fileID: 0}
+  locationScenes: {fileID: 0}
+  uiManagerHost: {fileID: 0}
 --- !u!114 &627481160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,11 +822,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1575435994 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 95455848339679364, guid: f018c9b8a16f9c3449b1c025f1a66ce4, type: 3}
-  m_PrefabInstance: {fileID: 1910061903}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1910061903
 PrefabInstance:
   m_ObjectHideFlags: 0

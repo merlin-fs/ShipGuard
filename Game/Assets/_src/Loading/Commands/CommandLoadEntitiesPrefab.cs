@@ -32,12 +32,15 @@ namespace Game.Core.Loading
                     
                 //var context = new CommandBufferContext(ecb);
                 var context = new EntityManagerContext(worldUnmanaged.EntityManager);
+                var manager = worldUnmanaged.EntityManager;
 
                 foreach (var config in m_ConfigRepository.Find())
                 {
-                    var entity = worldUnmanaged.EntityManager.CreateEntity();
+                    var entity = manager.CreateEntity();
+                    manager.AddComponent(entity, config.GetComponentTypeSet());
+                    
                     context.AddComponentData(entity, new Prefab{});
-                    config.Configure(entity, context);
+                    config.Configure(entity, worldUnmanaged.EntityManager, context);
                 }
             }).AsTask();
         }

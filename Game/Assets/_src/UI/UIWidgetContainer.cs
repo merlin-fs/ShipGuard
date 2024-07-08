@@ -3,19 +3,30 @@ using System.Collections.Generic;
 
 using Common.UI;
 
-using UnityEngine.UIElements;
-
 namespace Game.UI
 {
-    public abstract class UIWidgetContainer: UIWidget, IWidgetContainer
+    public abstract class UIWidgetContainer: UIVisualElementWidget, IWidgetContainer
     {
-        protected override void Bind() {}
+        private readonly HashSet<Type> m_SubItems = new();
         
-        public virtual IEnumerable<VisualElement> GetElements()
+        public UIWidgetContainer()
         {
-            yield break;
+            RegistrySubItems(new RegistryContainer(this));
         }
 
-        public abstract IEnumerable<Type> GetWidgetTypes();
+        public abstract void RegistrySubItems(RegistryContainer container);
+        
+        public IEnumerable<Type> GetWidgetTypes() => m_SubItems;
+
+        public class RegistryContainer
+        {
+            private UIWidgetContainer m_Owner;
+            public RegistryContainer(UIWidgetContainer owner) => m_Owner = owner; 
+            public void Add<T>()
+                where T : IWidget
+            {
+                m_Owner.m_SubItems.Add(typeof(T));
+            }
+        }
     }
 }

@@ -19,8 +19,8 @@ namespace Game.Views
         private PlayerSpawnPointConfig configPoint;
 #endif
         [SerializeField]
-        private ObjectID config;
-        public ObjectID Config => config; 
+        private ObjectID configId;
+        public ObjectID ConfigId => configId; 
         public Transform Transform => transform;
         
         protected IGameEntity GameEntity { get; private set; } 
@@ -42,7 +42,7 @@ namespace Game.Views
         public void OnBeforeSerialize()
         {
             if (!configPoint) return;
-            config = configPoint.ID;
+            configId = configPoint.ID;
         }
 
         public void OnAfterDeserialize() {}

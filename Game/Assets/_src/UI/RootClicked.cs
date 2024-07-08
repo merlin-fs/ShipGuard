@@ -1,8 +1,10 @@
+using Common.UI;
+
 using UnityEngine.UIElements;
 
 namespace Game.UI
 {
-    public class RootClicked : UIWidget
+    public class RootClicked : UIVisualElementWidget
     {
         private readonly VisualElement m_Root;
         public VisualElement VisualElement { get; private set; }
@@ -18,7 +20,7 @@ namespace Game.UI
             VisualElement.panel.visualTree.SendEvent(cancel);
         }
 
-        protected override void Bind()
+        public override void Bind(Binder<VisualElement> binder)
         {
             VisualElement = new Button(OnClick);
             VisualElement.style.position = Position.Absolute;

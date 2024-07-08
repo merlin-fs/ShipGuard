@@ -5,7 +5,7 @@ using Game.Model;
 
 namespace Game.Core.Repositories
 {
-    public class LocationRepository: Repository<Uuid, IGameEntity, LocationRepository.Attribute>
+    public class GameEntityRepository: Repository<Uuid, IGameEntity, GameEntityRepository.Attribute>
     {
         public class Attribute : IEntityAttributes<IGameEntity>
         {
@@ -20,5 +20,13 @@ namespace Game.Core.Repositories
         {
             m_Repo.Insert(id, new Attribute(@object));
         }
+
+        /*
+        public void Insert<T>(Uuid id, IGameEntity @object)
+            where T : 
+        {
+            m_Repo.Insert(id, new Attribute(@object));
+        }
+        */
     }
 }

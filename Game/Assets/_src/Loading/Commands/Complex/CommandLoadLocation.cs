@@ -15,13 +15,14 @@ namespace Game.Core.Loading
     {
         private readonly CommandContainer m_CommandContainer;
 
-        public CommandLoadLocation(IContainer container, AssetReference sceneRef)
+        public CommandLoadLocation(IContainer container, string locationName)
         {
             m_CommandContainer = new CommandContainer(container)
                 .Add(new CommandUiShow<UI.Loading>(UILayer.Loading).AsItem())
                 .Add(new CommandLoadStorage($"{Application.persistentDataPath}/saveData.test").AsItem())
-                .Add(new CommandLoadScene(sceneRef, LoadSceneMode.Additive).AsItem())
-                .Add(new CommandUiHide<UI.Loading>().AsItem(1));
+                .Add(new CommandLoadSceneLocation(locationName).AsItem())
+                .Add(new CommandUiHide<UI.Loading>().AsItem(1))
+                .Add(new CommandSpawnPlayer().AsItem(2));
         }
             
         public Task Execute()

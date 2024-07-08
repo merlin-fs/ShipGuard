@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Common.Core;
+
+using Game.Core.Defs;
 using Game.Core.Placements;
 using Game.Views;
 
@@ -29,17 +32,23 @@ namespace Game.Core.Spawns
                 iter => iter.transform);
         }
 
-        public IView Instantiate(GameObject prefab, Entity entity, Container container)
+        public IView Instantiate(IConfig config, Entity entity, EntityManager entityManager, Container container)
         {
-            var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            if (config is not IViewPrefab viewPrefab) 
+                throw new NotImplementedException($"IViewPrefab {config.ID} NotImplemented");
+            var prefab = viewPrefab.GetViewPrefab();
+            if (!prefab) throw new ArgumentNullException($"ViewPrefab {config.ID} not assigned");
             
             //var placement = manager.GetComponentData<Map.Placement>(entity);
             //var parent = m_Layers[placement.Value.Layer];
             var parent = m_Layers.Values.First();
-            
+
             var obj = Object.Instantiate<GameObject>(prefab, parent);
+            var view = obj.GetComponent<IView>();
+            config.Configure(view, entity, entityManager);
             GameObjectInjector.InjectRecursive(obj, container);
-            return obj.GetComponent<IView>();
+            
+            return view;
         }
 
         [Serializable]

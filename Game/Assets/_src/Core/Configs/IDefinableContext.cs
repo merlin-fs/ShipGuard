@@ -1,7 +1,11 @@
 using System;
 using System.Reflection;
 
+using Game.Views;
+
 using Unity.Entities;
+
+using UnityEngine.Scripting;
 
 namespace Game.Core.Defs
 {
@@ -18,7 +22,8 @@ namespace Game.Core.Defs
     
     public interface IDefinableCallback
     {
-        void AddComponentData(Entity entity, IDefinableContext context);
-        void RemoveComponentData(Entity entity, IDefinableContext context);
+        public virtual void AddComponentData(Entity entity, IDefinableContext context){}
+        public virtual void RemoveComponentData(Entity entity, IDefinableContext context){}
+        public virtual void InitializationView(IView view, Entity entity){}
     }
 }

@@ -6,6 +6,9 @@ using Common.Core.Loading;
 
 using Cysharp.Threading.Tasks;
 
+using Game.Model.Locations;
+
+using Reflex.Attributes;
 using Reflex.Extensions;
 
 using UnityEngine;
@@ -18,10 +21,9 @@ namespace Game.Core.Loading
     {
         [SerializeField] private AssetReference sceneRef;
         [SerializeField] private LoadSceneMode loadMode = LoadSceneMode.Single;
-        
+
         private float m_Progress;
         private IContainer m_Container;
-        private ICommandNewContainer m_CommandNewContainerImplementation;
 
         public CommandLoadScene(){}
 

@@ -10,13 +10,13 @@ namespace Common.UI
         public VisualTreeAsset GetTemplate() => null;
     }
 
-    public interface IWidget<in T> : IWidget
+    public interface IWidget<in TObj, T> : IWidget
     {
-        void Bind(VisualElement root, T bindObject);
+        void Bind(Binder<T> binder, TObj bindObject);
     }
 
-    public interface IWidgetNoData : IWidget
+    public interface IWidgetNoData<T> : IWidget
     {
-        void Bind(VisualElement root);
+        void Bind(Binder<T> binder);
     }
 }

@@ -1,4 +1,5 @@
 using Game.Core.Defs;
+using Game.Model;
 
 using Reflex.Attributes;
 using Reflex.Core;
@@ -49,7 +50,7 @@ namespace Game.Core.Spawns
             m_Factory = viewFactory;
             m_EntityArchetype = World.DefaultGameObjectInjectionWorld.EntityManager
                 .CreateArchetype(
-                    typeof(Spawn)
+                    typeof(Spawn), typeof(GameEntity)
                     );
         }
     }

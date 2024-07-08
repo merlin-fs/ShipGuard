@@ -1,5 +1,7 @@
 using Common.Core.Views;
 
+using Game.Core.Defs;
+
 using Reflex.Core;
 
 using Unity.Entities;
@@ -14,7 +16,7 @@ namespace Game.Core.Spawns
     {
         public interface IViewFactory
         {
-            IView Instantiate(GameObject prefab, Entity entity, Container container);
+            IView Instantiate(IConfig config, Entity entity, EntityManager entityManager, Container container);
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
+using Unity.Entities;
+
 using UnityEngine;
 
 namespace Game.Model
@@ -15,5 +18,6 @@ namespace Game.Model
         public DamageTargets Targets;
         [SerializeReference, ReferenceSelect(typeof(IDamage))]
         public List<IDamage> Damages = new List<IDamage>();
+        public override ComponentTypeSet GetComponentTypeSet() => new ComponentTypeSet();
     }
 }

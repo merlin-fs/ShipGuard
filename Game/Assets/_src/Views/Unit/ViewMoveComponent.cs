@@ -1,28 +1,26 @@
+using Game.Views;
+
 using Unity.Mathematics;
 
 using UnityEngine;
 
 namespace Game
 {
-    public class test_MoveComponent : MonoBehaviour
+    public class ViewMoveComponent : MonoBehaviour, IViewComponent
     {
         [SerializeField] private Animator m_Animator;
+        #region StringToHash
         private int MovingTag { get; } = Animator.StringToHash("Moving");
         private int VelocityXTag { get; } = Animator.StringToHash("VelocityX");
         private int VelocityZTag { get; } = Animator.StringToHash("VelocityZ");
         private int VelocityTag { get; } = Animator.StringToHash("Velocity");
-        
+        #endregion
 
         public void SetVelocity(float velocity)
         {
             m_Animator.SetFloat(VelocityTag, velocity);
         }
 
-        public void SetAnimator(Animator aimator)
-        {
-            m_Animator = aimator;
-        }
-        
         public void SetMove(float3 vector)
         {
             //velocityX = Vector3.Dot(shift.normalized, MovementComponent.RotateTarget.right);
@@ -35,5 +33,7 @@ namespace Game
             m_Animator.SetFloat(VelocityXTag, vector.x);
             m_Animator.SetFloat(VelocityZTag, vector.z);
         }
+
+        public void Initialization(IView view) { }
     }
 }

@@ -5,6 +5,6 @@ namespace Common.Defs
     public interface IDefinable<T> : IDefinable
         where T : IDef
     {
-        void SetDef(RefLink<T> link);
+        void SetDef(ref RefLink<T> link);
     }
 }

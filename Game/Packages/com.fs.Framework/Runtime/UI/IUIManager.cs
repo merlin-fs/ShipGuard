@@ -8,12 +8,10 @@ namespace Common.UI
         Popup,
     }
 
-    public partial interface IUIManager<TLayer>
-        where TLayer : struct, IComparable, IConvertible, IFormattable
+    public partial interface IUIManager<TLayer, T, TManifest>
+        where TManifest : WidgetShowManifest<TLayer, T>
     {
-        WidgetShowBinder Show<T>() where T : IWidget;
-        //WidgetShowBinder Show(Type uiType);
-        void Hide<T>() where T : IWidget;
-        //void Hide(Type uiType);
+        TManifest Show<TWidget>() where TWidget : IWidget;
+        void Hide<TWidget>() where TWidget : IWidget;
     }
 }

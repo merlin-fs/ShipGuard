@@ -10,28 +10,32 @@ using JetBrains.Annotations;
 
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Pool;
 using UnityEngine.UIElements;
 
 namespace Common.UI
 {
-    public partial class UIManager<TLayer>: IUIManager<TLayer>
+    public abstract class UIManager<TLayer, T, TManifest>: IUIManager<TLayer, T, TManifest>
         where TLayer : struct, IComparable, IConvertible, IFormattable
+        where TManifest : WidgetShowManifest<TLayer, T>
     {
         private readonly IContainer m_Container;
-        private readonly Dictionary<TLayer, UIDocument> m_Layers = new();
-        private readonly ConcurrentQueue<WidgetShowInternalBinder> m_WidgetShowQueue = new();
+        private readonly Dictionary<TLayer, Binder<T>> m_Layers = new();
+        private readonly ConcurrentQueue<WidgetShowManifest<TLayer, T>.IAccessManifest> m_WidgetShowQueue = new();
         private readonly TLayer m_DefaultLayer;
         private readonly Dictionary<Type, CacheWidget> m_CacheWidget = new();
 
         private Task m_ProcessTask;
         private Action m_ResumeProcess;
 
-        protected UIManager(IContainer container, [NotNull] GameObject host, TLayer defaultLayer, params (TLayer layer, PanelSettings panelSettings, VisualTreeAsset rootElement)[] layers)
+        protected UIManager(IContainer container, [NotNull] GameObject host, 
+            TLayer defaultLayer, params (TLayer layer, PanelSettings panelSettings, VisualTreeAsset rootElement)[] layers)
         {
             Assert.AreNotEqual(layers.Length, 0, $"UIManager requires at least one UIDocument");
             m_Container = container;
             m_DefaultLayer = defaultLayer;
 
+            
             foreach ((TLayer layer, PanelSettings panelSettings, VisualTreeAsset rootElement) in layers)
             {
                 var obj = new GameObject(layer.ToString(), typeof(UIDocument));
@@ -39,36 +43,38 @@ namespace Common.UI
                 var uiDocument = obj.GetComponent<UIDocument>();
                 uiDocument.panelSettings = panelSettings;
                 uiDocument.visualTreeAsset = rootElement;
-                m_Layers.Add(layer, uiDocument);
                 
-                //m_Document.rootVisualElement?.RegisterCallback<NavigationCancelEvent>(evt => OnCancel());
+                m_Layers.Add(layer, GetRootBinder(uiDocument));
             }
-            //m_Document = rootDoc;
-            //m_Document.enabled = true;
-            //var cancelWidget = new RootClicked(m_Document.rootVisualElement);
-            //cancelWidget.Bind(m_Document);
-            //m_Cancel = cancelWidget.VisualElement;
-            //ShowElement(m_Cancel, false);
-            //m_Document.rootVisualElement?.RegisterCallback<NavigationCancelEvent>(evt => OnCancel());
             m_ProcessTask = Process();
         }
 
-        
-        public IUIManager<TLayer>.WidgetShowBinder Show<T>() 
-            where T : IWidget
+        protected abstract Binder<T> GetRootBinder(object layerObject);
+
+        protected Binder<T> GetBinder(T element)
         {
-            var binder = new WidgetShowInternalBinder(this, typeof(T), true);
-            m_WidgetShowQueue.Enqueue(binder);
+            return Binder<T>.GetNewBinder(element);
+        }
+        
+        public TManifest Show<TWidget>() 
+            where TWidget : IWidget
+        {
+            var manifestAccess = new WidgetShowManifest<TLayer, T>.AccessManifest<TManifest>(
+                m_Container.Instantiate<TManifest>(typeof(TWidget), true), m_Container);
+            
+            manifestAccess.Manifest.WithLayer(m_DefaultLayer);
+            m_WidgetShowQueue.Enqueue(manifestAccess);
             ResumeProcess();
-            return binder;
+            return manifestAccess.Manifest;
         }
 
-        public void Hide<T>() 
-            where T : IWidget
+        public void Hide<TWidget>() 
+            where TWidget : IWidget
         {
-            var binder = new WidgetShowInternalBinder(this, typeof(T), false);
-            binder.WithLayer(m_DefaultLayer);
-            m_WidgetShowQueue.Enqueue(binder);
+            var manifestAccess = new WidgetShowManifest<TLayer, T>.AccessManifest<TManifest>(
+                m_Container.Instantiate<TManifest>(typeof(TWidget), false), m_Container);
+            manifestAccess.Manifest.WithLayer(m_DefaultLayer);
+            m_WidgetShowQueue.Enqueue(manifestAccess);
             ResumeProcess();
         }
 
@@ -84,71 +90,135 @@ namespace Common.UI
             {
                 while (@event.WaitOne())
                 {
-                    while (m_WidgetShowQueue.TryDequeue(out var showBinder))
+                    while (m_WidgetShowQueue.TryDequeue(out var manifestAccess))
                     {
-                        if (showBinder.Show)
-                            UnityMainThread.Context.Post(target => Show((WidgetShowInternalBinder)target), showBinder);
-                        else
-                            UnityMainThread.Context.Post(target => Hide((WidgetShowInternalBinder)target), showBinder);
+                        UnityMainThread.Context
+                            .Post(target => ProcessingManifest(
+                                (WidgetShowManifest<TLayer, T>.IAccessManifest)target), 
+                                manifestAccess);   
                     }
                 }
             }, token);
         }
 
-        private void Show(WidgetShowInternalBinder showBinder)
+        private void ProcessingManifest(WidgetShowManifest<TLayer, T>.IAccessManifest manifest)
         {
-            if (!m_CacheWidget.TryGetValue(showBinder.WidgetType, out var cacheWidget))
+            var cacheWidget = GetCacheWidget(manifest);
+            if (cacheWidget == null) return;
+            if (manifest.IsShow)
+                Show(cacheWidget);
+            else
+                Hide(cacheWidget);
+        }
+        
+        private CacheWidget GetCacheWidget(WidgetShowManifest<TLayer, T>.IAccessManifest manifest)
+        {
+            if (m_CacheWidget.TryGetValue(manifest.WidgetType, out var cacheWidget) || !manifest.IsShow)
+                return cacheWidget;
+
+            var widget = manifest.CreateWidget();
+            var binder = GetBinder(manifest.AttachDocument(widget, m_Layers[manifest.Layer]));
+            var callbackHandlers = ListPool<CallbackHandler>.Get();
+
+            if (widget is IWidgetContainer widgetContainer)
             {
-                var widget = showBinder.Create();
-                var doc = m_Layers[showBinder.Layer];
-                var element = showBinder.AttachDocument(doc.rootVisualElement);
-                cacheWidget = new CacheWidget {Widget = widget, Root = doc.rootVisualElement, Element = element};
-                showBinder.Bind(cacheWidget.Root);
-                m_CacheWidget.Add(showBinder.WidgetType, cacheWidget);
-            }
-            ShowElement(cacheWidget.Element, true);
-        }
-
-        private void Hide(WidgetShowInternalBinder showBinder)
-        {
-            if (!m_CacheWidget.TryGetValue(showBinder.WidgetType, out var cacheWidget)) return;
-            ShowElement(cacheWidget.Element, false);
-        }
-
-        private void OnCancel()
-        {
-            
-        }
-
-        private static void ShowElement(VisualElement element, bool show)
-        {
-            if (element == null)
-                return;
-            var style = show
-                ? DisplayStyle.Flex
-                : DisplayStyle.None;
-
-            if (element.style.display != style)
-            {
-                using (var change = ChangeEvent<DisplayStyle>.GetPooled(element.style.display.value, style))
+                foreach (var widgetType in widgetContainer.GetWidgetTypes())
                 {
-                    change.target = element;
-                    element.panel?.visualTree.SendEvent(change);
+                    var manifestAccess = new WidgetShowManifest<TLayer, T>.AccessManifest<TManifest>(
+                        m_Container.Instantiate<TManifest>(widgetType, manifest.IsShow), m_Container);
+                    manifestAccess.Manifest.WithLayer(manifest.Layer);
+
+                    var cacheSubItem = GetCacheWidget(manifestAccess);
+                    if (cacheSubItem == null) continue;
+                    callbackHandlers.AddRange(cacheSubItem.CallbackHandlers);
                 }
-                element.style.display = style;
+            }
+            
+            manifest.BindingObjectAction.Invoke(binder);
+
+            var (elements, handlers) = binder.Build();
+            callbackHandlers.AddRange(handlers);
+            cacheWidget = new CacheWidget 
+            {
+                Widget = widget,
+                Elements = elements,
+                CallbackHandlers = callbackHandlers.ToArray(),
+            };
+            ListPool<CallbackHandler>.Release(callbackHandlers);
+            binder.Release();
+            
+            m_CacheWidget.Add(manifest.WidgetType, cacheWidget);
+            return cacheWidget;
+        }
+
+        private void RemoveCache(CacheWidget cacheWidget)
+        {
+            var removed = ListPool<Type>.Get();
+            removed.Add(cacheWidget.Widget.GetType());
+            
+            
+            if (cacheWidget.Widget is IWidgetContainer widgetContainer)
+            {
+                foreach (var widgetType in widgetContainer.GetWidgetTypes())
+                {
+                    var manifestAccess = new WidgetShowManifest<TLayer, T>.AccessManifest<TManifest>(
+                        m_Container.Instantiate<TManifest>(widgetType, false), m_Container);
+
+                    var cacheSubItem = GetCacheWidget(manifestAccess);
+                    if (cacheSubItem == null) continue;
+                    removed.Add(cacheSubItem.Widget.GetType());
+                }
+            }
+
+            foreach (var iter in cacheWidget.CallbackHandlers)
+            {
+                iter.RemoveHandler();
+            }
+                
+            foreach (var iter in removed)
+            {
+                m_CacheWidget.Remove(iter);
+            }
+        }
+        
+        private void Show(CacheWidget cacheWidget)
+        {
+            if (cacheWidget == null) return;
+            foreach (var iter in cacheWidget.CallbackHandlers)
+            {
+                iter.AddHandler();
+            }
+            ShowElements(true, cacheWidget.Elements);
+        }
+
+        private void Hide(CacheWidget cacheWidget)
+        {
+            if (cacheWidget == null) return;
+            ShowElements(false, cacheWidget.Elements);
+            foreach (var iter in cacheWidget.CallbackHandlers)
+            {
+                iter.RemoveHandler();
             }
         }
 
-        private IWidget Create(Type widgetType)
+        protected abstract void ShowElement(bool show, T element);
+        
+        private void ShowElements(bool show, IEnumerable<T> elements)
         {
-            return (IWidget)m_Container.Instantiate(widgetType);
+            foreach (var element in elements)
+            {
+                if (element == null)
+                    continue;
+
+                ShowElement(show, element);
+            }
         }
 
         private class CacheWidget
         {
             public IWidget Widget;
-            public VisualElement Root;
-            public VisualElement Element;
+            public T[] Elements;
+            public CallbackHandler[] CallbackHandlers;
         }
     }
 }

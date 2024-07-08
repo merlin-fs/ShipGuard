@@ -120,9 +120,9 @@ namespace Reflex.Core
             return Construct<T>();
         }
 
-        public T Instantiate<T>(IEnumerable<object> extraArgs)
+        public T Instantiate<T>(params object[] arguments)
         {
-            return Construct<T>(extraArgs);
+            return Construct<T>(arguments);
         }
 
         public object Instantiate(Type concreteType)
@@ -130,9 +130,9 @@ namespace Reflex.Core
             return Construct(concreteType);
         }
 
-        public object Instantiate(Type concreteType, IEnumerable<object> extraArgs)
+        public object Instantiate(Type concreteType, params object[] arguments)
         {
-            return Construct(concreteType, extraArgs);
+            return Construct(concreteType, arguments);
         }
 
         public TContract Resolve<TContract>()

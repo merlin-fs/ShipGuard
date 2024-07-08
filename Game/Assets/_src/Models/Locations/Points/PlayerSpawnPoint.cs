@@ -14,13 +14,14 @@ namespace Game.Model.Locations
         public bool Enabled { get; set; } 
         public RefLink<Def> RefLink { get; private set; }
 
-        public void SetDef(RefLink<Def> link)
+        public void SetDef(ref RefLink<Def> link)
         {
             RefLink = link;
         }
 
         public void AddComponentData(Entity entity, IDefinableContext context)
         {
+            context.AddComponentData(entity, this);
             context.AddComponentData(entity, new Spawn.ViewAttachTag());
             context.AddComponentData(entity, new LocationTag());
             
@@ -28,15 +29,10 @@ namespace Game.Model.Locations
             context.AddComponentData(entity, new TUserStorageDataTag());
         }
 
-        public void RemoveComponentData(Entity entity, IDefinableContext context)
-        {
-            
-        }
-        
         [Serializable]
-        public class Def : IDef<PlayerSpawnPoint>
+        public class Def : IDef
         {
-            
+            public int GetTypeIndexDefinable() => ((ComponentType)typeof(PlayerSpawnPoint)).TypeIndex;
         }
     }
 }

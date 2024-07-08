@@ -1,19 +1,18 @@
-using System;
-using System.Collections.Generic;
 using Common.UI;
 
-using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 namespace Game.UI
 {
     public class GameUI : UIWidgetContainer
     {
-        public override IEnumerable<Type> GetWidgetTypes()
+        public override void RegistrySubItems(RegistryContainer container)
         {
-            yield return null;
-            //yield return typeof(LogicActivate);
-            //yield return typeof(SaveMediator);
-            //yield return typeof(ToolbarEnvironmentMediator);
+            container.Add<MainMenuButton>();
+        }
+
+        public override void Bind(Binder<VisualElement> binder)
+        {
         }
     }
 }

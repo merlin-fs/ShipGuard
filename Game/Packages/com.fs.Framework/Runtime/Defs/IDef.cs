@@ -1,9 +1,7 @@
 ﻿namespace Common.Defs
 {
-    public interface IDef {}
-
-    public interface IDef<T> : IDef
-        where T : IDefinable
+    public interface IDef
     {
+        int GetTypeIndexDefinable();
     }
 }

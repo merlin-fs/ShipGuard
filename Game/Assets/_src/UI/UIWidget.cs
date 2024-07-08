@@ -6,18 +6,12 @@ using UnityEngine.UIElements;
 
 namespace Game.UI
 {
-    public abstract class UIWidget: IWidgetNoData
+    public abstract class UIVisualElementWidget: IWidgetNoData<VisualElement>
     {
         [Inject] private WidgetConfig m_WidgetConfig;
-        protected VisualElement RootVisualElement { get; private set; }
-        
-        public void Bind(VisualElement rootVisualElement)
-        {
-            RootVisualElement = rootVisualElement;
-            Bind();
-        }
-        protected abstract void Bind();
-        
+
+        public abstract void Bind(Binder<VisualElement> binder);
+
         public VisualTreeAsset GetTemplate()
         {
             m_WidgetConfig.TryGetTemplate(GetType(), out var template);

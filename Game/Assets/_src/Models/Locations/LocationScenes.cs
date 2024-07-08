@@ -6,25 +6,31 @@ using Game.Core.Contexts;
 
 using UnityEngine.AddressableAssets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.Model.Locations
 {
+    [Serializable]
+    public class LocationSceneItem
+    {
+        [field:SerializeField] public string Name { get; private set; }
+        [field:SerializeField] public AssetReference SceneReference { get; private set; }
+        [field:SerializeField] public LoadSceneMode LoadSceneMode { get; private set; }
+    }
+    
     public class LocationScenes : ScriptableBindConfig
     {
-        [SerializeField] private LocationItem[] locations;
+        [SerializeField] private LocationSceneItem[] locations;
 
-        private Dictionary<string, LocationItem> m_Locations;
-
-        public IEnumerable<AssetReference> Scenes => m_Locations.Values.Select(iter => iter.Scene);
-
-        public bool TryGetSceneLocation(string name, out AssetReference sceneRef)
-        {
-            sceneRef = default;
-            if (!m_Locations.TryGetValue(name, out var item)) return false;
-            sceneRef = item.Scene;
-            return true;
-        }
+        private Dictionary<string, LocationSceneItem> m_Locations;
         
+        public IEnumerable<AssetReference> Scenes => m_Locations.Values.Select(iter => iter.SceneReference);
+
+        public bool TryGetSceneLocation(string locationName, out LocationSceneItem sceneItem)
+        {
+            return m_Locations.TryGetValue(locationName, out sceneItem);
+        }
+
         private void Awake()
         {
             m_Locations = BuildDictionary();
@@ -35,16 +41,9 @@ namespace Game.Model.Locations
             m_Locations = BuildDictionary();
         }
 
-        private Dictionary<string, LocationItem> BuildDictionary()
+        private Dictionary<string, LocationSceneItem> BuildDictionary()
         {
-            return locations?.ToDictionary(iter => iter.Name, iter => iter) ?? new ();
-        }
-        
-        [Serializable]
-        private struct LocationItem
-        {
-            public AssetReference Scene;
-            public string Name;
+            return locations?.ToDictionary(iter => iter.Name, iter => iter) ?? new();
         }
     }
 }

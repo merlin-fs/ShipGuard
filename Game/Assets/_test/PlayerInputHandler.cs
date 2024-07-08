@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 
 using Common.Core;
 
 using Game.Core.Inputs;
+using Game.Views;
 
 using Reflex.Attributes;
 
@@ -17,19 +19,19 @@ namespace Game
     {
         [Inject] private IPlayerInputs m_PlayerInputs;
 
-        private test_MoveComponent m_MoveComponent;
+        private ViewMoveComponent m_MoveComponent;
         private float _startTime;
         
-        private void Awake()
-        {
-            m_MoveComponent = GetComponent<test_MoveComponent>();
-        }
-
         public void Initialization(IContainer container)
         {
             m_PlayerInputs.MoveAction.started += SetMoveVector; 
             m_PlayerInputs.MoveAction.performed += SetMoveVector;
             m_PlayerInputs.MoveAction.canceled += SetMoveVector;
+        }
+
+        public void SetUnitView(IView view)
+        {
+            m_MoveComponent = view.GetComponents<ViewMoveComponent>().First();
         }
         
         private void SetMoveVector(InputAction.CallbackContext callbackContext)
@@ -43,7 +45,6 @@ namespace Game
 
             var velocity = (callbackContext.time - _startTime) * 0.02f;
             m_MoveComponent.SetVelocity((float)velocity);
-            
         }
     }
 }

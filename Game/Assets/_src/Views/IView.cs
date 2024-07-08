@@ -4,11 +4,13 @@ using Common.Core;
 
 using Game.Model;
 
+using Unity.Entities;
+
 using UnityEngine;
 
 namespace Game.Views
 {
-    public interface IView : ICastObject
+    public interface IView : ICastObject, IComponentData
     {
         Transform Transform { get; }
         IEnumerable<T> GetComponents<T>()

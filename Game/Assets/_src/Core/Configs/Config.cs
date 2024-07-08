@@ -1,5 +1,7 @@
 using Common.Core;
 
+using Game.Views;
+
 using Unity.Entities;
 
 namespace Game.Core.Defs
@@ -18,12 +20,14 @@ namespace Game.Core.Defs
         {
             m_ID = id;
         }
-        void IConfig.Configure(Entity root, IDefinableContext context)
+        void IConfig.Configure(Entity entity, EntityManager manager, IDefinableContext context)
         {
-            m_Prefab = root;
-            Configure(m_Prefab, context);
+            m_Prefab = entity;
+            Configure(m_Prefab, manager, context);
         }
 
-        protected abstract void Configure(Entity root, IDefinableContext context);
+        protected abstract void Configure(Entity root, EntityManager manager, IDefinableContext context);
+        public abstract ComponentTypeSet GetComponentTypeSet();
+        public virtual void Configure(IView view, Entity entity, EntityManager manager) { }
     }
 }

@@ -30,51 +30,17 @@ namespace Game.Core.Spawns
                 return this;
             }
         }
-        
-        public Container CreateContext(Entity entity, IConfig config, EntityCommandBuffer ecb)//, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab> children
+
+        public IView CreateView(Entity entity, IConfig config, EntityManager entityManager, EntityCommandBuffer ecb)
         {
-            if (config is not IViewPrefab viewPrefab) 
-                throw new NotImplementedException($"IViewPrefab {config.ID} NotImplemented");
-                
-            var prefab = viewPrefab.GetViewPrefab();
-            if (!prefab) throw new ArgumentNullException($"ViewPrefab {config.ID} not assigned");
-                
-            var newContext = m_Container.Scope(builder =>
-            {
-                builder.AddSingleton(container =>
-                {
-                    var inst = m_Factory.Instantiate(prefab, entity, container);
-                    return inst;
-                });
-            });
-                
-            
-            ecb.AddComponent(entity, new HybridTransform.ContainerReference{ Value = newContext });
+            var inst = m_Factory.Instantiate(config, entity, entityManager, m_Container);
+
+            ecb.AddComponent(entity, new HybridTransform.ViewReference{ Value = inst });
             ecb.AddComponent<LocalTransform>(entity);
             ecb.AddComponent<LocalToWorld>(entity);
-            return newContext;
 
-            //AddChildPrefab(newContext, children);
-            //initialization spawn prefab
-            //m_Pool.Get().SetContext(newContext);
-        }
-        
-        public Container CreateContext(Entity entity, IView view, EntityCommandBuffer ecb, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab> children)
-        {
-            var newContext = m_Container.Scope(builder =>
-            {
-                builder.AddSingleton(container => view);
-            });
-                
+            return inst;
             
-            ecb.AddComponent(entity, new HybridTransform.ContainerReference{ Value = newContext });
-            ecb.AddComponent<LocalTransform>(entity);
-            ecb.AddComponent<LocalToWorld>(entity);
-            return newContext;
-
-            //AddChildPrefab(newContext, children);
-            //initialization spawn prefab
-            //m_Pool.Get().SetContext(newContext);
         }
     }
 }
