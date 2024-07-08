@@ -21,7 +21,12 @@ namespace Game.UI
 
         public void Bind(Binder<VisualElement> binder)
         {
-            var progressBar = binder.Element.Q<ProgressBar>("progress");
+            Bind(binder.Element);
+        }
+
+        public void Bind(VisualElement root)
+        {
+            var progressBar = root.Q<ProgressBar>("progress");
             progressBar.value = m_LoadingManager.Progress.Value;
             progressBar.schedule.Execute(() => progressBar.value = m_LoadingManager.Progress.Value).Every(10);
         }

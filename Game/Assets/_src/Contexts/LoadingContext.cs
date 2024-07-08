@@ -13,8 +13,7 @@ namespace Game.Core.Contexts
         private void Awake()
         {
             var widget = new UI.Loading(m_LoadingManager);
-            //TODO: !!!
-            //widget.Bind(loadingUI.rootVisualElement);
+            widget.Bind(loadingUI.rootVisualElement);
         }
     }
 }
