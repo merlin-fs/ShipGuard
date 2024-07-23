@@ -16,14 +16,14 @@ namespace Game.Views
     {
 #if UNITY_EDITOR
         [SerializeField]
-        private PlayerSpawnPointConfig configPoint;
+        private PointConfig configPoint;
 #endif
         [SerializeField]
         private ObjectID configId;
         public ObjectID ConfigId => configId; 
         public Transform Transform => transform;
         
-        protected IGameEntity GameEntity { get; private set; } 
+        public IGameEntity GameEntity { get; private set; } 
 
         T ICastObject.Cast<T>() => GetComponent<T>();
         IEnumerable<T> IView.GetComponents<T>()

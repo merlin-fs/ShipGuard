@@ -1,4 +1,8 @@
 using System;
+
+using Game.Core.Spawns;
+using Game.Model;
+
 using Unity.Entities;
 
 using Game.Model.Stats;
@@ -12,6 +16,9 @@ namespace Game.Core.Defs
         protected override void Configure(Entity entity, EntityManager manager, IDefinableContext context)
         {
             context.AddBuffer<PrefabInfo.BakedInnerPathPrefab>(entity);
+            context.AddComponentData(entity, new ConfigInfo{ ConfigId = ID });
+            context.AddComponentData(entity, new Spawn());
+            
             ConfigureStats(entity, context);
             ConfigureChildren(entity, manager, context);
         }

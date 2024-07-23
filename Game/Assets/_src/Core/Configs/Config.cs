@@ -22,7 +22,6 @@ namespace Game.Core.Defs
         }
         void IConfig.Configure(Entity entity, EntityManager manager, IDefinableContext context)
         {
-            m_Prefab = entity;
             Configure(m_Prefab, manager, context);
         }
 

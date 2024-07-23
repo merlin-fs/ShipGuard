@@ -4,12 +4,21 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace Common.Defs
 {
-    public struct RefLink<T>
+    [StructLayout(LayoutKind.Sequential)]
+    public readonly struct RefLink
     {
-        private GCHandle m_RefHandle;
+        private readonly GCHandle m_RefHandle;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public readonly struct RefLink<T>
+    {
+        private readonly GCHandle m_RefHandle;
         public T Value => (T)m_RefHandle.Target;
         private RefLink(GCHandle handle) => m_RefHandle = handle;
+        
         public static RefLink<T> Copy<TT>(RefLink<TT> link) => new(link.m_RefHandle);
+        
         public unsafe static RefLink<T> From(T value)
         {
             UnsafeUtility.PinGCObjectAndGetAddress(value, out var gsHandle);

@@ -5,10 +5,6 @@ using Common.Core.Loading;
 
 using Game.UI;
 
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
-
 namespace Game.Core.Loading
 {
     public class CommandCloseLocation : ICommandProgress, ICommandNewContainer
@@ -19,9 +15,10 @@ namespace Game.Core.Loading
         {
             m_CommandContainer = new CommandContainer(container)
                 .Add(new CommandUiShow<UI.Loading>(UILayer.Loading).AsItem())
-                .Add(new CommandSaveStorage($"{Application.persistentDataPath}/saveData.test").AsItem())
+                .Add(new CommandSaveStorage().AsItem())
                 .Add(new CommandCloseSceneLocation().AsItem())
-                .Add(new CommandUiHide<UI.Loading>().AsItem(1));
+                .Add(new CommandDestroyPlayer().AsItem(1))
+                .Add(new CommandUiHide<UI.Loading>().AsItem(3));
         }
             
         public Task Execute()

@@ -18,6 +18,7 @@ namespace Game.Core.Spawns
             {
                 m_Query = SystemAPI.QueryBuilder()
                     .WithAll<Spawn.PostTag>()
+                    .WithNone<WaitSpawnTag>()
                     .Build();
                 state.RequireForUpdate(m_Query);
             }

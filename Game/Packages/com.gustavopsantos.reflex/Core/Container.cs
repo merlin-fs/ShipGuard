@@ -18,7 +18,7 @@ namespace Reflex.Core
         private readonly DisposableCollection _disposables;
 
         public string Name { get; }
-        internal Container Parent { get; }
+        public Container Parent { get; }
         internal List<Container> Children { get; } = new();
         internal Dictionary<Type, List<IResolver>> ResolversByContract { get; }
         

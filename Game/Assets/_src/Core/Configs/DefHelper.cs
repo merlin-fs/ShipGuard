@@ -8,8 +8,11 @@ using Common.Defs;
 
 using Game.Views;
 
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using Unity.VisualScripting;
+
+using UnityEngine;
 
 namespace Game.Core.Defs
 {
@@ -25,34 +28,25 @@ namespace Game.Core.Defs
             private readonly delegate* <void*, Entity, IDefinableContext, void> m_RemoveComponentMethodPtr;
             private readonly delegate* <void*, IView, Entity, void> m_InitializationViewMethodPtr;
             
-            private readonly object m_Link;
-            private readonly byte[] m_AddrLink;
+            private readonly RefLink m_Link;
+            private readonly void* m_AddrLink;
 
             public ConstructorDefinable(MethodBase setDefMethod, 
                 MethodBase addMethod, MethodBase removeMethod, 
                 MethodBase initializationViewMethod, object link)
             {
-                m_AddrLink = new byte[16];
-                
                 m_SetDefMethodPtr = (delegate* <void*, void*, void>)setDefMethod.MethodHandle.GetFunctionPointer();
                 
                 m_AddComponentMethodPtr = (delegate* <void*, Entity, IDefinableContext, void>)(addMethod?.MethodHandle.GetFunctionPointer() ?? IntPtr.Zero);
                 m_RemoveComponentMethodPtr = (delegate* <void*, Entity, IDefinableContext, void>)(removeMethod?.MethodHandle.GetFunctionPointer() ?? IntPtr.Zero);
                 m_InitializationViewMethodPtr = (delegate* <void*, IView, Entity, void>)(initializationViewMethod?.MethodHandle.GetFunctionPointer() ?? IntPtr.Zero);
-                
-                m_Link = link;
-                IntPtr ptr = Marshal.AllocHGlobal(16);
-                Marshal.StructureToPtr(m_Link, ptr, false);
-                Marshal.Copy(ptr, m_AddrLink, 0, 16);
-                Marshal.FreeHGlobal(ptr);
+                m_Link = UnsafeUtility.As<object, RefLink>(ref link);
+                m_AddrLink = UnsafeUtility.AddressOf(ref m_Link);
             }
 
             public void FillDefinable(void* data)
             {
-                fixed(void* ptr = m_AddrLink)
-                {
-                    m_SetDefMethodPtr(data, ptr);
-                }
+                m_SetDefMethodPtr(data, m_AddrLink);
             }
 
             public void AddComponentData(void* data, Entity entity, IDefinableContext context)

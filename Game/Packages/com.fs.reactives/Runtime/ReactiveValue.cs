@@ -69,7 +69,11 @@ namespace Reactives
         {
             var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var typeIndex = TypeManager.GetTypeIndex<T>();
+#if ENABLE_UNITY_COLLECTIONS_CHECKS
             m_Value = new RefRW<T>(manager.GetCheckedEntityDataAccess()->GetComponentDataRW_AsBytePointer(entity, typeIndex), AtomicSafetyHandle.Create());
+#else
+            m_Value = new RefRW<T>(manager.GetCheckedEntityDataAccess()->GetComponentDataRW_AsBytePointer(entity, typeIndex));
+#endif
             m_Entity = entity;
         }
 

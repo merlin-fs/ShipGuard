@@ -30,7 +30,7 @@ namespace Game.Core.Defs
         IEnumerable<ChildConfig> Childs { get; }
     }
 
-    public abstract class ScriptableConfig : ScriptableIdentifiable, IConfig, IViewPrefab
+    public abstract class ScriptableConfig : ScriptableIdentifiable, IConfig, IViewPrefab, IConfigWritable
     {
         [field: SerializeField]
         public AssetReferenceGameObject ReferencePrefab { get; private set; }
@@ -46,6 +46,7 @@ namespace Game.Core.Defs
             return m_ViewPrefab;
         }
         private Entity m_Prefab;
+        private IConfigWritable m_ConfigWritableImplementation;
 
         public Entity EntityPrefab => m_Prefab;
 
@@ -57,12 +58,21 @@ namespace Game.Core.Defs
         
         void IConfig.Configure(Entity root, EntityManager manager, IDefinableContext context)
         {
-            m_Prefab = root;
             Configure(root, manager, context);
         }
 
         protected abstract void Configure(Entity entity, EntityManager manager, IDefinableContext context);
         public abstract ComponentTypeSet GetComponentTypeSet();
         public virtual void Configure(IView view, Entity entity, EntityManager manager) { }
+        public void SetEntityPrefab(Entity entity)
+        {
+            m_Prefab = entity;
+        }
     }
+
+    public interface IConfigWritable : IConfig
+    {
+        void SetEntityPrefab(Entity entity);
+    }
+    
 }

@@ -2,6 +2,7 @@ using Common.Core;
 
 using Game.Core.Repositories;
 using Game.Core.Spawns;
+using Game.Storages;
 
 using Reflex.Attributes;
 
@@ -13,7 +14,6 @@ namespace Game.Model.Units
     {
         [Inject] private GameEntityRepository m_GameEntityRepository;
         [Inject] private ConfigRepository m_ConfigRepository;
-        [Inject] private Spawner m_Spawner;
         private EntityManager m_EntityManager;
 
         public UnitManager()
@@ -32,15 +32,20 @@ namespace Game.Model.Units
                 .CreateCommandBuffer();
 
             var playerConfig = m_ConfigRepository.FindByID("Player");
-            //*
-            m_Spawner.Setup(ecb)
-                //.WhereCondition(gameEntity => gameEntity.)
+            using var _ = Spawner.Setup(ecb, playerConfig)
+                .WhereCondition(gameEntity => m_GameEntityRepository.FindByID(gameEntity.ID) == null)
+                .WithStorage<StorageUser>()
                 .WithNewView()
-                .WithConfig(playerConfig)
                 .WithLocationPoint(spawnPointId);
-            //.WithEvent(gameEntity => )
+        }
 
-            /**/
+        public void DestroyPlayer()
+        {
+            var ecb = m_EntityManager.World.GetOrCreateSystemManaged<GameSpawnSystemCommandBufferSystem>()
+                .CreateCommandBuffer();
+
+            var playerConfig = m_ConfigRepository.FindByID("Player") as UnitConfig;
+            Spawner.Destroy(ecb, m_GameEntityRepository.FindByID(playerConfig.UnitID));
         }
     }
 }

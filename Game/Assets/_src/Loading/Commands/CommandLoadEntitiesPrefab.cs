@@ -38,9 +38,10 @@ namespace Game.Core.Loading
                 {
                     var entity = manager.CreateEntity();
                     manager.AddComponent(entity, config.GetComponentTypeSet());
-                    
                     context.AddComponentData(entity, new Prefab{});
+                    
                     config.Configure(entity, worldUnmanaged.EntityManager, context);
+                    (config as IConfigWritable)?.SetEntityPrefab(entity);
                 }
             }).AsTask();
         }

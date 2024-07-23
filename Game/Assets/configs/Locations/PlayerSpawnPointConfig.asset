@@ -18,3 +18,5 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  Value:
+    storeType: Game.Model.Locations.PlayerSpawnPoint

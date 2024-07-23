@@ -2,6 +2,7 @@ using System;
 
 using Common.Core;
 
+using Game.Core.HybridTransforms;
 using Game.Core.Repositories;
 using Game.Model;
 using Game.Model.Locations;
@@ -13,13 +14,14 @@ namespace Game.Core.Spawns
 {
     [DisableAutoCreation]
     [UpdateInGroup(typeof(GameSpawnSystemGroup))]
-    [UpdateBefore(typeof(Spawn.System))]
+    [UpdateAfter(typeof(Spawn.System))]
     public partial struct LocationSpawnSystem : ISystem, ISystemStartStop
     {
         private static GameEntityRepository m_GameEntityRepository;
         private static LocationViewRepository m_LocationViewRepository;
 
         private static Action<EntityCommandBuffer> m_OnInitialization;
+        private static Action<EntityCommandBuffer> m_OnFinalization;
         
         public void Inject(IContainer container)
         {
@@ -33,18 +35,18 @@ namespace Game.Core.Spawns
             var ecb = system.CreateCommandBuffer(state.WorldUnmanaged);
             
             foreach (var (gameEntity, entity) in SystemAPI.Query<GameEntity>()
-                         .WithAll<LocationTag, Spawn.PostTag, Spawn.ViewAttachTag>()
+                         .WithAll<LocationTag, Spawn.PostTag>()
+                         .WithNone<Spawn.WaitSpawnTag>()
                          .WithEntityAccess())
             {
                 var view = m_LocationViewRepository.FindByID(gameEntity.ID);
                 view.Initialization(gameEntity);
-                m_GameEntityRepository.Insert(gameEntity.ID, gameEntity);
-                
-                ecb.RemoveComponent<Spawn.ViewAttachTag>(entity);
+                //!!!ecb.AddComponent(entity, new HybridTransform.ViewReference{ Value = view });
             }
 
             foreach (var (transform, link, entity) in SystemAPI.Query<RefRW<LocalTransform>, LocationLink>()
                          .WithAll<Spawn.PostTag>()
+                         .WithNone<Spawn.WaitSpawnTag>()
                          .WithEntityAccess())
             {
                 var view = m_LocationViewRepository.FindByID(link.LocationId);
@@ -53,11 +55,16 @@ namespace Game.Core.Spawns
             }
         }
 
-        public void AddInitialization(Action<EntityCommandBuffer> onInitialization)
+        public void SetInitializationEvent(Action<EntityCommandBuffer> onInitialization)
         {
             m_OnInitialization = onInitialization;
         }
-        
+
+        public void SetFinalizationEvent(Action<EntityCommandBuffer> onFinalization)
+        {
+            m_OnFinalization = onFinalization;
+        }
+
         public void OnStartRunning(ref SystemState state)
         {
             if (m_OnInitialization == null) return;
@@ -69,7 +76,11 @@ namespace Game.Core.Spawns
 
         public void OnStopRunning(ref SystemState state)
         {
+            if (m_OnFinalization == null) return;
             
+            var system = SystemAPI.GetSingleton<EndInitializationEntityCommandBufferSystem.Singleton>();
+            var ecb = system.CreateCommandBuffer(World.DefaultGameObjectInjectionWorld.Unmanaged);
+            m_OnFinalization.Invoke(ecb);
         }
     }
 }

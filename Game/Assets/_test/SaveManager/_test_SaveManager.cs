@@ -12,9 +12,6 @@ using Debug = UnityEngine.Debug;
 
 namespace Game
 {
-    public struct TUserStorageDataTag: IComponentData, IStorageData{}
-
-
     public struct StoreModel : IComponentData, IStorageData
     {
         
@@ -45,7 +42,6 @@ namespace Game
 
             var type = entityManager.CreateArchetype(
                 new ComponentType(typeof(TestStorageData)),
-                new ComponentType(typeof(TUserStorageDataTag)),
                 new ComponentType(typeof(Unity.Transforms.LocalToWorld)),
                 new ComponentType(typeof(Game.Core.Spawns.Spawn.ViewTag))
                 );
@@ -87,7 +83,7 @@ namespace Game
             EntityQuery query = entityManager.CreateEntityQuery(
                 new EntityQueryDesc
                 {
-                    All = new ComponentType[] {ComponentType.ReadWrite<TUserStorageDataTag>()}, 
+                    All = new ComponentType[] {ComponentType.ReadWrite<IStorageData>()}, 
                     Options = EntityQueryOptions.Default
                 }
             );

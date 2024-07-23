@@ -1,18 +1,15 @@
-
-using Common.Core.Loading;
-
 using Game.Core.Camera;
 using Game.Core.Inputs;
 using Game.Core.Spawns;
 using Game.Model.Locations;
 using Game.Model.Units;
+using Game.Storages;
 using Game.UI;
 
 using Reflex.Attributes;
 using Reflex.Core;
 
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 
 namespace Game.Core.Contexts
@@ -33,9 +30,16 @@ namespace Game.Core.Contexts
             
             containerBuilder.AddSingleton(playerInputHandler);
             containerBuilder.AddSingleton(c => c.Construct<LocationManager>(locationScenes));
-            containerBuilder.AddSingleton(c => c.Construct<SerializeManager>());
+            
+            containerBuilder.AddSingleton(c =>
+            {
+                var storageManager = c.Construct<StorageManager>();
+                storageManager.SetContainerEndpoint<StorageUser>(new LocalStorageUserEndpoint(Application.persistentDataPath));
+                return storageManager;
+            });
+            
+            containerBuilder.AddSingleton<Spawn.IViewFactory>(c => spawnViewFactory);
 
-            containerBuilder.AddTransient(c => c.Construct<Spawner>(spawnViewFactory));
             containerBuilder.AddSingleton<IPlayerInputs>(c => c.Construct<PlayerInputs>(playerInputAsset));
             containerBuilder.AddSingleton<UnitManager>(c => c.Construct<UnitManager>());
             

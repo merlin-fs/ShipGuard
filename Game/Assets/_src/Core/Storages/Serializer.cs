@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Game.Core.Spawns;
 
@@ -7,38 +7,41 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.Serialization;
 
-namespace Game
+namespace Game.Storages
 {
-    public class SerializeManager
+    public class Serializer: IDisposable
     {
-        private List<ComponentTypeSet> m_AddedComponents;
-        private EntityQuery? m_Query;
-        private World m_SerializationWorld;
-            
-        public SerializeManager()
-        {
-            m_SerializationWorld = new World("Serialization World", WorldFlags.Staging | WorldFlags.Streaming);// WorldFlags.Streaming
+        private readonly List<ComponentTypeSet> m_AddedComponents;
+        private EntityQuery m_Query;
+        private readonly World m_SerializationWorld;
 
-            m_AddedComponents = new List<ComponentTypeSet>();
-            m_AddedComponents.Add(new ComponentTypeSet(typeof(Spawn), typeof(Spawn.WithDataTag)));
+        public static Serializer Setup<T>()
+            where T : IStorageContainerType
+        {
+            return new Serializer(typeof(T));
         }
 
-        private void NeedQuery()
+        public static Serializer Setup(Type storageContainerType)
         {
-            if (m_Query.HasValue) return;
+            return new Serializer(storageContainerType);
+        }
+        
+        private Serializer(Type storageContainerType)
+        {
+            m_SerializationWorld = new World(storageContainerType.Name, WorldFlags.Staging | WorldFlags.Streaming);
 
+            m_AddedComponents = new List<ComponentTypeSet>();
+            m_AddedComponents.Add(new ComponentTypeSet(typeof(Spawn), typeof(Spawn.WithDataTag), typeof(Spawn.WaitSpawnTag)));
             m_Query = World.DefaultGameObjectInjectionWorld.EntityManager.CreateEntityQuery(
                 new EntityQueryDesc {
-                    All = new ComponentType[] {ComponentType.ReadWrite<TUserStorageDataTag>()},
+                    All = new ComponentType[] { storageContainerType },
                     Options = EntityQueryOptions.Default
                 });
         }
-        
+
         public void SerializeWorld(World world, BinaryWriter writer)
         {
-            NeedQuery();
-            
-            var entities = m_Query!.Value.ToEntityArray(Allocator.Temp);
+            var entities = m_Query.ToEntityArray(Allocator.Temp);
 
             m_SerializationWorld.EntityManager.DestroyEntity(m_SerializationWorld.EntityManager.UniversalQuery);
             m_SerializationWorld.EntityManager.CopyEntitiesFrom(world.EntityManager, 
@@ -54,7 +57,6 @@ namespace Game
 
         public void DeserializeWorld(World world, BinaryReader reader)
         {
-            NeedQuery();
             var transactionSerialization = m_SerializationWorld.EntityManager.BeginExclusiveEntityTransaction();
             try
             {
@@ -65,8 +67,13 @@ namespace Game
             {
                 m_SerializationWorld.EntityManager.EndExclusiveEntityTransaction();
             }
-            world.EntityManager.DestroyEntity(m_Query!.Value);
+            world.EntityManager.DestroyEntity(m_Query);
             world.EntityManager.MoveEntitiesFrom(m_SerializationWorld.EntityManager);
+        }
+
+        public void Dispose()
+        {
+            m_SerializationWorld?.Dispose();
         }
     }
 }

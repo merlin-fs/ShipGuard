@@ -28,9 +28,6 @@ namespace Game.Model.Units
             context.AddComponentData(entity, this);
             context.AddComponentData(entity, new Move());
             context.AddComponentData(entity, new Spawn.ViewTag());
-            
-            //TODO: доробити StorageData
-            context.AddComponentData(entity, new TUserStorageDataTag());
         }
 
         public void InitializationView(IView view, Entity entity)

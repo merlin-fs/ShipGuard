@@ -19,14 +19,12 @@ namespace Game
         [SerializeField] private Transform target;
 
         [Inject] private CameraController m_CameraController;
-        [Inject] private Spawner m_Spawner;
         [Inject] private ConfigRepository m_ConfigRepository;
 
         private GameEntityRepository m_GameEntityRepository;
         
         public void Initialization(IContainer container)
         {
-            
             m_GameEntityRepository = container.Resolve<GameEntityRepository>();
 
             var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -34,14 +32,10 @@ namespace Game
                 .CreateCommandBuffer();
 
             var playerConfig = m_ConfigRepository.FindByID("Player");
-            
-            //*
-            m_Spawner.Setup(ecb)
-                //.WhereCondition(gameEntity => gameEntity.)
+
+            using var _ = Spawner.Setup(ecb, playerConfig)
                 .WithNewView()
-                .WithConfig(playerConfig)
                 .WithPosition(float3.zero);
-                /**/
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Common.Core;
 
+using Game.Core.HybridTransforms;
 using Game.Core.Repositories;
 using Game.Model;
 
@@ -13,25 +14,30 @@ using Game.Views;
 using Reflex.Attributes;
 
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
+
+using UnityEngine;
 
 namespace Game.Core.Spawns
 {
     public partial struct Spawn
     {
         [UpdateInGroup(typeof(GameSpawnSystemGroup))]
-        [UpdateBefore(typeof(CleanupSystem))]
+        [UpdateAfter(typeof(Spawn.System))]
         public partial struct SpawnViewSystem : ISystem
         {
             [Inject] private static ConfigRepository m_Repository;
-            [Inject] private static Spawner m_Spawner;
-            [Inject] private static IContainer m_Container;
+            [Inject] private static Container m_Container;
+            [Inject] private static IViewFactory m_ViewFactory;
             
             private EntityQuery m_Query;
 
             public void OnCreate(ref SystemState state)
             {
                 m_Query = SystemAPI.QueryBuilder()
-                    .WithAll<Spawn>()
+                    .WithAll<Spawn.PostTag>()
+                    .WithNone<WaitSpawnTag>()
                     .Build();
                 state.RequireForUpdate(m_Query);
             }
@@ -45,13 +51,18 @@ namespace Game.Core.Spawns
                 
                 //New view
                 foreach (var (configInfo, gameEntity, entity) in SystemAPI.Query<ConfigInfo, GameEntity>()//, children, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab>
-                             .WithAll<ViewTag, Spawn>()
+                             .WithAll<ViewTag, Spawn.PostTag>()
+                             .WithNone<WaitSpawnTag>()
                              .WithEntityAccess())
                 {
+                    Debug.Log($"[Spawn] New view {entity} {configInfo.ConfigId} : {gameEntity.ID}");
                     var config = m_Repository.FindByID(configInfo.ConfigId);
                     if (config == null) throw new ArgumentNullException($"Prefab {configInfo.ConfigId} not found");
 
-                    var view = m_Spawner.CreateView(entity, config, state.EntityManager, ecb);
+                    var view = m_ViewFactory.Instantiate(config, entity, state.EntityManager, m_Container);
+                    ecb.AddComponent(entity, new HybridTransform.ViewReference{ Value = view });
+                    ecb.AddComponent<LocalTransform>(entity);
+                    ecb.AddComponent<LocalToWorld>(entity);
 
                     view.Initialization(gameEntity);
                     ecb.RemoveComponent<ViewTag>(entity);

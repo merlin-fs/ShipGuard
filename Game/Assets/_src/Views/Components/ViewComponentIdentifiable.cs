@@ -13,6 +13,7 @@ namespace Game.Views
 #if UNITY_EDITOR
         private void OnValidate()
         {
+            if (Application.isPlaying) return;
             uuid = uuid.GetUid("locus", GetInstanceID(), out var change);
             if (change) UnityEditor.EditorUtility.SetDirty(this);
         }

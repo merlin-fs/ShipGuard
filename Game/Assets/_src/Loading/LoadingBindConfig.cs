@@ -22,7 +22,6 @@ namespace Game.Core.Loading
                 new CommandLoadPrefabRepositories("defs").AsItem(),
                 //2
                 new CommandLoadScene(mainSceneRef).AsItem(),
-                
                 //3
                 new CommandUiShow<UI.Loading>(UILayer.Loading).AsItem(2),
                 //4

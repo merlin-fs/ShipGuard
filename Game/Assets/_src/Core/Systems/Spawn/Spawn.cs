@@ -18,10 +18,10 @@ namespace Game.Core.Spawns
         public bool DontCreate;
         
         public struct ViewTag : IComponentData{}
-        public struct ViewAttachTag : IComponentData {}
         public struct WithDataTag : IComponentData {}
-        
+        public struct WaitSpawnTag : IComponentData {}
         public struct PostTag : IComponentData {}
+        public struct DestroyTag : IComponentData {}
 
         public class Event : IComponentData
         {

@@ -19,8 +19,10 @@ namespace Game.Core.Loading
         {
             m_CommandContainer = new CommandContainer(container)
                 .Add(new CommandUiShow<UI.Loading>(UILayer.Loading).AsItem())
-                .Add(new CommandLoadStorage($"{Application.persistentDataPath}/saveData.test").AsItem())
+                .Add(new CommandLoadStorage(locationName).AsItem())
                 .Add(new CommandLoadSceneLocation(locationName).AsItem())
+                
+                .Add(new CommandSpawnActivate().AsItem(1, 2))
                 .Add(new CommandUiHide<UI.Loading>().AsItem(1))
                 .Add(new CommandSpawnPlayer().AsItem(2));
         }

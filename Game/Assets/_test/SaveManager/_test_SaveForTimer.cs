@@ -1,5 +1,7 @@
 using System.Diagnostics;
 
+using Game.Storages;
+
 using Reflex.Attributes;
 
 using Unity.Entities;
@@ -13,16 +15,16 @@ namespace Game
 {
     public class _test_SaveForTimer : MonoBehaviour
     {
-        [Inject] private SerializeManager m_SerializeManager;
+        [Inject] private StorageManager m_StorageManager;
 
         private float m_Time = 0;
 
         void Update()
         {
             return;
+            /*
             m_Time += Time.deltaTime;
             if (!(m_Time > 10)) return;
-            
             var stopwatch = Stopwatch.StartNew();
             using (var writer = new StreamBinaryWriter($"{Application.persistentDataPath}/saveData.test"))
             {
@@ -30,6 +32,7 @@ namespace Game
             }
             Debug.Log($"SerializeWorld : {stopwatch.Elapsed}");
             m_Time = 0;
+            */
         }
     }
 }

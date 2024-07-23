@@ -6,18 +6,17 @@ using Common.Core.Loading;
 
 using Cysharp.Threading.Tasks;
 
+using Reflex.Core;
 using Reflex.Attributes;
-
-using UnityEngine;
 
 namespace Game.Core.Loading
 {
     public class CommandCloseSceneLocation : ICommandProgress, ICommandNewContainer, IProgress<float>
     {
         [Inject] private LocationManager m_LocationManager;
+        [Inject] private Container m_Container;
 
         private float m_Progress;
-        private IContainer m_Container;
 
         public CommandCloseSceneLocation(){}
 
@@ -36,6 +35,7 @@ namespace Game.Core.Loading
             return UniTask.RunOnThreadPool(async () =>
             {
                 await UniTask.SwitchToMainThread();
+                m_Container = m_Container.Parent;
                 await m_LocationManager.CloseCurrentLocation(null);
             }).AsTask();
         }

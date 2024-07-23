@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a9e7a85ac141344baaba859c899ac7, type: 3}
+  m_Name: Warrior
+  m_EditorClassIdentifier: 
+  <ReferencePrefab>k__BackingField:
+    m_AssetGUID: ab4a4b41f2403bb45a73a2c124373e9e
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  Value:
+    storeType: Game.Model.Units.Unit
+    Parts: []
+    Speed:
+      rid: 8038461867876679898
+    Health:
+      rid: 8038461867876679899
+  uuid:
+    m_FirstHalf: 5063503042182737493
+    m_SecondHalf: 3837684023523234125
+  references:
+    version: 2
+    RefIds:
+    - rid: 8038461867876679898
+      type: {class: StaticValue, ns: Game.Model.Stats, asm: Assembly-CSharp}
+      data:
+        Value: 10
+    - rid: 8038461867876679899
+      type: {class: StaticValue, ns: Game.Model.Stats, asm: Assembly-CSharp}
+      data:
+        Value: 100

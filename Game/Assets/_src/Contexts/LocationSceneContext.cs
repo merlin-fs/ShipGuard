@@ -21,7 +21,6 @@ namespace Game.Core.Contexts
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
             containerBuilder.AddSingleton(c => c.Construct<LocationViewRepository>());
-            containerBuilder.AddSingleton(c => c.Construct<GameEntityRepository>());
         }
 
         public void Initialization(IContainer container)
@@ -32,11 +31,19 @@ namespace Game.Core.Contexts
                     m_LocationSpawnSystem);
             system.Inject(container);
             
-            system.AddInitialization(ecb =>
+            system.SetInitializationEvent(ecb =>
             {
                 foreach (var root in m_LocationManager.CurrentLocationRoots)
                 {
-                    root.Spawn(ecb);
+                    root.SpawnLocationItems(ecb);
+                }
+            });
+
+            system.SetFinalizationEvent(ecb =>
+            {
+                foreach (var root in m_LocationManager.CurrentLocationRoots)
+                {
+                    root.DestroyLocationItems(ecb);
                 }
             });
 

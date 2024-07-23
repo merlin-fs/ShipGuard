@@ -47,16 +47,22 @@ namespace Game.Model.Units
         private void Reset()
         {
             uuid = default;
-            uuid = uuid.GetUid("Player", GetInstanceID(), out var change);
-            if (change) UnityEditor.EditorUtility.SetDirty(this);
+            GenerateUuid();
         }
 
         private void OnValidate()
         {
-            uuid = uuid.GetUid("Player", GetInstanceID(), out var change);
-            if (change) UnityEditor.EditorUtility.SetDirty(this);
+            if (Application.isPlaying) return;
+            GenerateUuid();
         }
 
+        private void GenerateUuid()
+        {
+            var prefix = TypeManager.GetType(Value.GetTypeIndexDefinable()).Name;
+            uuid = uuid.GetUid(prefix, GetInstanceID(), out var change);
+            if (change) UnityEditor.EditorUtility.SetDirty(this);
+        }
+        
         private void OnDestroy()
         {
             if(!Application.isPlaying) uuid.Remove();

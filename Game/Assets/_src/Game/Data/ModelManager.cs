@@ -1,11 +1,4 @@
-
 using Unity.Entities;
-using Unity.Entities.Serialization;
-using Unity.Scenes;
-
-using UnityEditor.Overlays;
-
-using UnityEngine;
 
 namespace Game.Model.Datas
 {

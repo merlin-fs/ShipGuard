@@ -3,6 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
+using UnityEngine;
+using UnityEngine.Assertions;
+
 namespace Common.Repositories
 {
     using Core;
@@ -59,7 +62,8 @@ namespace Common.Repositories
 
         public void Insert(TID id, TAttr entity)
         {
-            m_Items.TryAdd(id, entity);
+            var result = m_Items.TryAdd(id, entity);
+            Assert.IsTrue(result, $"[Repo: {typeof(TAttr)}] Insert duplicate {id}");
         }
 
         public void Insert(params (TID, TAttr)[] entities)

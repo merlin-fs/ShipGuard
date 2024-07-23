@@ -27,8 +27,6 @@ namespace Game.Model.Units
         {
             context.AddComponentData(entity, new Move());
             context.AddComponentData(entity, new Spawn.ViewTag());
-            //TODO: доробити StorageData
-            context.AddComponentData(entity, new TUserStorageDataTag());
         }
         #endregion
         

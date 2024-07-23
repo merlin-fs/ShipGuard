@@ -1,57 +1,101 @@
+using System;
+using System.Pool;
+
+using Common.Core;
+
 using Game.Core.Defs;
 using Game.Model;
-
-using Reflex.Attributes;
-using Reflex.Core;
+using Game.Model.Locations;
 
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
+
+using Game.Storages;
+using Game.Views;
 
 namespace Game.Core.Spawns
 {
-    public partial class Spawner
+    public class Spawner: IDisposable
     {
-        [Inject] private Container m_Container;
-        private readonly Spawn.IViewFactory m_Factory;
+        private static readonly ObjectPool<Spawner> m_Pool = new(_ => new Spawner());
         
-        private readonly EntityArchetype m_EntityArchetype;
+        private Entity m_Entity;
+        private EntityCommandBuffer m_Ecb;
+        
+        private Spawner(){}
 
-        public Builder Setup(EntityCommandBuffer ecb)
+        public static Spawner Setup(EntityCommandBuffer ecb, IConfig config)
         {
-            return new Builder(this, ecb);
+            var builder = m_Pool.Get();
+            builder.m_Ecb = ecb;
+            builder.m_Entity = ecb.Instantiate(config.EntityPrefab);
+            return builder;
         }
-        
-        /*
-        public Builder Spawn(IConfig config, EntityCommandBuffer ecb)
-        {
-            m_Config = config;
-            m_Ecb = ecb;
-            m_Entity = CreateEntity();
-            Debug.Log($"[Spawner] spawn: {config.ID} ({m_Entity})");
-            return m_Builder;
-        }
-        */
 
-        /*
-        public Builder Spawn(Entity entity, IConfig config, EntityCommandBuffer ecb)
+        public void Dispose()
         {
-            m_Config = config;
-            m_Ecb = ecb;
-            m_Entity = entity;
-            
-            config.Configure(m_Entity, new CommandBufferContext(ecb));
-            
-            Debug.Log($"[Spawner] spawn: {config.ID} ({m_Entity})");
-            return m_Builder;
+            m_Pool.Release(this);
         }
-        */
-        
-        public Spawner(Spawn.IViewFactory viewFactory)
+
+        public static void Destroy(EntityCommandBuffer ecb, IGameEntity gameEntity)
         {
-            m_Factory = viewFactory;
-            m_EntityArchetype = World.DefaultGameObjectInjectionWorld.EntityManager
-                .CreateArchetype(
-                    typeof(Spawn), typeof(GameEntity)
-                    );
+            ecb.AddComponent<Spawn.DestroyTag>(gameEntity.Entity);
+        }
+
+        public static void RemoveWaitTag()
+        {
+            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            var ecb = entityManager.WorldUnmanaged.EntityManager.World.GetOrCreateSystemManaged<GameSpawnSystemCommandBufferSystem>()
+                .CreateCommandBuffer();
+            ecb.RemoveComponent<Spawn.WaitSpawnTag>(entityManager.UniversalQuery, EntityQueryCaptureMode.AtPlayback);
+        }
+        
+        public Spawner WithNewView()
+        {
+            m_Ecb.AddComponent<Spawn.ViewTag>(m_Entity);
+            return this;
+        }
+
+        public Spawner WithStorage<T>()
+            where T : unmanaged, IStorageContainerType, IComponentData 
+        {
+            m_Ecb.AddComponent<T>(m_Entity);
+            return this;
+        }
+        
+        public Spawner WithId(Uuid id)
+        {
+            m_Ecb.AddComponent(m_Entity, new GameEntity(id, Entity.Null));
+            return this;
+        }
+
+        public Spawner WhereCondition(Func<GameEntity, bool> condition)
+        {
+            m_Ecb.AddComponent(m_Entity, new Spawn.Condition{ Value = condition });
+            return this;
+        }
+
+        public Spawner WithPosition(float3 value)
+        {
+            m_Ecb.AddComponent(m_Entity, new LocalTransform{ Position = value });
+            return this;
+        }
+
+        public Spawner WithLocationPoint(Uuid locationPointId)
+        {
+            m_Ecb.AddComponent(m_Entity, new LocationLink{ LocationId = locationPointId });
+            return this;
+        }
+        
+        public Spawner WithEvent(Action<GameEntity> onDone)
+        {
+            m_Ecb.AddComponent<Spawn.Event>(m_Entity,
+                new Spawn.Event()
+                {
+                    Callback = onDone,
+                });
+            return this;
         }
     }
 }

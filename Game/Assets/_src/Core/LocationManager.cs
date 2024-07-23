@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Common.Core;
-
 using Game.Core.Contexts;
 using Game.Model.Locations;
+
+using JetBrains.Annotations;
 
 using Reflex.Attributes;
 using Reflex.Core;
@@ -44,7 +44,11 @@ namespace Game
             {
                 using var pooledObject1 = ListPool<GameObject>.Get(out var rootGameObjects);
                 handle.Result.Scene.GetRootGameObjects(rootGameObjects);
-                m_CurrentLocation = new LocationInfo {SceneInstance = handle.Result};
+                m_CurrentLocation = new LocationInfo 
+                {
+                    SceneInstance = handle.Result,
+                    Item = locationItem,
+                };
 
                 foreach (var root in rootGameObjects)
                 {
@@ -84,15 +88,29 @@ namespace Game
             var task = Addressables.UnloadSceneAsync(m_CurrentLocation.SceneInstance, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
             task.Completed += handle =>
             {
+                m_CurrentLocation = null;
                 onCompleted?.Invoke();
             };
             return task.Task;
         }
         
-        public IEnumerable<LocationRoot> CurrentLocationRoots => m_CurrentLocation.LocationRoots;
+        [CanBeNull]
+        public LocationSceneItem CurrentLocation => m_CurrentLocation?.Item;
+
+        [CanBeNull]
+        public LocationSceneItem GetLocationItem(string locationName)
+        {
+            return !m_LocationScenes.TryGetSceneLocation(locationName, out var locationItem)
+                ? null
+                : locationItem;
+        }
+        
+        [CanBeNull]
+        public IEnumerable<LocationRoot> CurrentLocationRoots => m_CurrentLocation?.LocationRoots;
 
         private class LocationInfo
         {
+            public LocationSceneItem Item;
             public SceneInstance SceneInstance;
             public List<LocationRoot> LocationRoots = new();
         }
