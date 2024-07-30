@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: bc8d3625a86a04347a254c153ddd1dc7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Demo_tile_tjunc_1b.prefab
+  uploadId: 434913

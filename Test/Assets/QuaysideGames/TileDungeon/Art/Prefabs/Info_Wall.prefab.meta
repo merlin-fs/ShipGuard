@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 50c9d11a23e21bc4198a866f393d447e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Info_Wall.prefab
+  uploadId: 434913

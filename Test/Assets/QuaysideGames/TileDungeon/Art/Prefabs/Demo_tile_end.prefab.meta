@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a639e04444dd4e84c844cad67d14a70e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Demo_tile_end.prefab
+  uploadId: 434913

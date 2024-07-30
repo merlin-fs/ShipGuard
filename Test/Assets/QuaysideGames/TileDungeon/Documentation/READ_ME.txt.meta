@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c40bb574cb4697a41983095bc02572da
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Documentation/READ_ME.txt
+  uploadId: 434913

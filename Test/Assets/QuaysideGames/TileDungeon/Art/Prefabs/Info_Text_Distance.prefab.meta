@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2bb2ef6d377b72046946a43a7a9c949e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Info_Text_Distance.prefab
+  uploadId: 434913

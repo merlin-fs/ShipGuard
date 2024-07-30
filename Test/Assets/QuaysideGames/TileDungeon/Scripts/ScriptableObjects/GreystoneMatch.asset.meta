@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c0552355062d9ba4989f0be374292c5d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Scripts/ScriptableObjects/GreystoneMatch.asset
+  uploadId: 434913

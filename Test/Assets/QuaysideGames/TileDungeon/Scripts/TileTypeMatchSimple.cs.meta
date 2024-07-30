@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 49bbfc4ea9eeab24982726ca09d3c78a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Scripts/TileTypeMatchSimple.cs
+  uploadId: 434913

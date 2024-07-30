@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bb40b37d5308ceb4eb06cadbc5ecf220
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Materials/Key_mesh_baked.mat
+  uploadId: 434913

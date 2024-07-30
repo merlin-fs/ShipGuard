@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2153ab25b86fb544cb5a875cad33ed1b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Stone_Floorv2.prefab
+  uploadId: 434913

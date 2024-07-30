@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 38a0bb2b780948a42862b846e8823108
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Demo_Floor.prefab
+  uploadId: 434913

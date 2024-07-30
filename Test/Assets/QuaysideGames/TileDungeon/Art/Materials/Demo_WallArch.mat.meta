@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2887acd9ce3479746869c639df663d70
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Materials/Demo_WallArch.mat
+  uploadId: 434913

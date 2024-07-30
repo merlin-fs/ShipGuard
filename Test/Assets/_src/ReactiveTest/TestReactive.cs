@@ -29,11 +29,12 @@ namespace TestReactives
 
         private int m_Count;
 
+/*
         public struct StoreModelWritable : IReactiveWritable<StoreModel>
         {
-            public ref StoreModel Value => 
+            //public ref StoreModel Value => 
         }
-
+*/
         private void Awake()
         {
             var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -57,7 +58,7 @@ namespace TestReactives
             var storeModel = m_StoreModel;
             m_StoreModel.Subscribe(() => counterText.text = $"Tap count: {storeModel.Value.ID}, call: {++m_Count}");
 
-            using (var write = m_StoreModel.Writable<>())
+            using (var write = m_StoreModel.Writable())
             {
                 write.Value.ID = 10;
                 write.Value.ID = 20;

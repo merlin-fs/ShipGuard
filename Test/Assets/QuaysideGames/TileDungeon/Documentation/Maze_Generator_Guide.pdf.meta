@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 25d6257c0fd848d4e866f6dfa02f618c
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Documentation/Maze_Generator_Guide.pdf
+  uploadId: 434913

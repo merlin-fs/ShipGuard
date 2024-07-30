@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 98b1ffe47ece5144b8a99ca9f85b7a31
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Stone_Pillarv2.prefab
+  uploadId: 434913

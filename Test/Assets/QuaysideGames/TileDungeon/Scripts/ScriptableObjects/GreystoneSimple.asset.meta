@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 22853bbc21748a84596ec2a0dc03661c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Scripts/ScriptableObjects/GreystoneSimple.asset
+  uploadId: 434913

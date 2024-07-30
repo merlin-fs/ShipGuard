@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 63bfdaed9c8926747b3f1487729a1fb3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Demo_tile_corner_0.prefab
+  uploadId: 434913

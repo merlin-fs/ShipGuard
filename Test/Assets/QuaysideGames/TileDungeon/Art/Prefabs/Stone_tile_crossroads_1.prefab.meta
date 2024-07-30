@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 535f96e35b78d1e429b4484ed5943e58
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Stone_tile_crossroads_1.prefab
+  uploadId: 434913

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0e17ca02169e0e14a89f3a33c0c53544
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Materials/Demo_DividerArch.mat
+  uploadId: 434913

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1c62663c20008244aa366aa22ddefdae
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Stone_tile_corner_1.prefab
+  uploadId: 434913

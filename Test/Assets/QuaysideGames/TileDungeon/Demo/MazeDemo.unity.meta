@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 05071c90c97ba4146a55089845ac0806
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Demo/MazeDemo.unity
+  uploadId: 434913

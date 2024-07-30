@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9c6101b29254e0e4896c398977281dd3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Demo_tile_crossroads_1.prefab
+  uploadId: 434913

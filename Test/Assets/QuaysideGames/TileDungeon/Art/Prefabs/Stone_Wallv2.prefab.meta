@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cc2c64bff49ba35408b9d0ad337c3ae0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Stone_Wallv2.prefab
+  uploadId: 434913

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 746b927d708f8594ca696881ce677d39
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Stone_tile_straight.prefab
+  uploadId: 434913

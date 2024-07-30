@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 854c9c4f8a69bb340967d8207db3d5bf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Materials/LockedDoor.mat
+  uploadId: 434913

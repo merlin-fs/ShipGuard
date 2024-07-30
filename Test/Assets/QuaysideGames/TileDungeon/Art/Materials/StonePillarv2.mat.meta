@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: be17ec8314058484d87c90a8eac77d01
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Materials/StonePillarv2.mat
+  uploadId: 434913

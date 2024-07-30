@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e27539d385c6a6c43868174e7cce5fcb
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Info_FakeKey.prefab
+  uploadId: 434913

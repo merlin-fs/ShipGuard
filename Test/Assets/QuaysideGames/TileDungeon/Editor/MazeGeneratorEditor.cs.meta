@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b0c7d9805c8d2f441b72fc11b98c2e76
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Editor/MazeGeneratorEditor.cs
+  uploadId: 434913

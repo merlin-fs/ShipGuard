@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 46f19e66772b74f4d8e280693e522448
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194192
+  packageName: Dungeon Tiles Generator
+  packageVersion: 1.0.0
+  assetPath: Assets/QuaysideGames/TileDungeon/Art/Prefabs/Stone_tile_tjunc_2.prefab
+  uploadId: 434913
