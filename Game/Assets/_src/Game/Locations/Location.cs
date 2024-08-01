@@ -8,7 +8,7 @@ namespace Game.Model.Locations
 
     public struct LocationTag : IComponentData {}
 
-    public struct LocationLink : IComponentData
+    public struct LocationLink : IComponentData, IStorageData
     {
         public Uuid LocationId;
     }

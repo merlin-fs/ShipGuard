@@ -8,7 +8,7 @@ using Unity.Entities;
 
 using Reflex.Attributes;
 
-using Unity.Assertions;
+using Unity.Transforms;
 
 using UnityEngine;
 
@@ -43,11 +43,10 @@ namespace Game.Core.Spawns
                     .CreateCommandBuffer(state.WorldUnmanaged);
 
                 foreach (var (spawn, gameEntity, condition, entity) in SystemAPI.Query<RefRW<Spawn>, GameEntity, Condition>()
-                             //.WithNone<WaitSpawnTag>()
                              .WithEntityAccess())
                 {
                     spawn.ValueRW.DontCreate = !condition.Value.Invoke(gameEntity);
-                    Debug.Log($"[Spawn] Condition {entity}, {gameEntity.ID} : {spawn.ValueRO.DontCreate}");
+                    Debug.Log($"<color=green>[Spawn]</color> Condition {entity}, {gameEntity.ID} : {!spawn.ValueRO.DontCreate}");
                     if (spawn.ValueRO.DontCreate)
                     {
                         ecb.DestroyEntity(entity); 
@@ -57,14 +56,13 @@ namespace Game.Core.Spawns
                 //With Config
                 foreach (var (spawn, configInfo, entity) in SystemAPI.Query<Spawn, ConfigInfo>()
                              .WithAll<WithDataTag>()
-                             //.WithNone<WaitSpawnTag>()
                              .WithEntityAccess())
                 {
                     if (spawn.DontCreate) continue;
                         
-                    Debug.Log($"[Spawn] WithConfig {entity} : {configInfo.ConfigId}");
+                    Debug.Log($"<color=green>[Spawn]</color> Setup config {entity} : {configInfo.ConfigId}");
                     var config = m_Repository.FindByID(configInfo.ConfigId);
-                    if (config == null) throw new ArgumentNullException($"Prefab {configInfo.ConfigId} not found");
+                    if (config == null) throw new ArgumentNullException($"Config {configInfo.ConfigId} not found");
                     config.Configure(entity, state.EntityManager, new CommandBufferContext(ecb));
                 }
 
@@ -74,17 +72,17 @@ namespace Game.Core.Spawns
                 {
                     if (spawn.DontCreate) continue;
 
-                    Debug.Log($"[Spawn] Init GameEntity {entity} : {gameEntity.ValueRO.ID}");
+                    Debug.Log($"<color=green>[Spawn]</color> Init GameEntity {entity} : {gameEntity.ValueRO.ID}");
                     gameEntity.ValueRW.Initialization(entity);
                     m_GameEntityRepository.Insert(gameEntity.ValueRO.ID, gameEntity.ValueRO);
                     postEcb.AddComponent<Spawn.PostTag>(entity);
                     ecb.RemoveComponent<Spawn>(entity);
                 }
-
+                
                 foreach (var (eventDone, gameEntity, entity) in SystemAPI.Query<Event, GameEntity>().WithAll<Spawn>()
                              .WithEntityAccess())
                 {
-                    Debug.Log($"[Spawn] Event {entity} : {gameEntity.ID}");
+                    Debug.Log($"<color=green>[Spawn]</color> Event {entity} : {gameEntity.ID}");
                     eventDone.Callback.Invoke(gameEntity);
                     ecb.RemoveComponent<Event>(entity);
                 }

@@ -46,7 +46,6 @@ namespace Game.Core.Defs
             return m_ViewPrefab;
         }
         private Entity m_Prefab;
-        private IConfigWritable m_ConfigWritableImplementation;
 
         public Entity EntityPrefab => m_Prefab;
 
@@ -70,7 +69,7 @@ namespace Game.Core.Defs
         }
     }
 
-    public interface IConfigWritable : IConfig
+    public interface IConfigWritable 
     {
         void SetEntityPrefab(Entity entity);
     }

@@ -41,9 +41,7 @@ namespace Game.Storages
 
         public void SerializeWorld(World world, BinaryWriter writer)
         {
-            var entities = m_Query.ToEntityArray(Allocator.Temp);
-
-            m_SerializationWorld.EntityManager.DestroyEntity(m_SerializationWorld.EntityManager.UniversalQuery);
+            using var entities = m_Query.ToEntityArray(Allocator.Temp);
             m_SerializationWorld.EntityManager.CopyEntitiesFrom(world.EntityManager, 
                 entities, CopyArchetype.Storage, entities);
 
@@ -60,20 +58,24 @@ namespace Game.Storages
             var transactionSerialization = m_SerializationWorld.EntityManager.BeginExclusiveEntityTransaction();
             try
             {
-                transactionSerialization.EntityManager.DestroyEntity(transactionSerialization.EntityManager.UniversalQuery);
                 SerializeUtility.DeserializeWorld(transactionSerialization, reader);
             }
             finally
             {
                 m_SerializationWorld.EntityManager.EndExclusiveEntityTransaction();
             }
-            world.EntityManager.DestroyEntity(m_Query);
-            world.EntityManager.MoveEntitiesFrom(m_SerializationWorld.EntityManager);
+            //world.EntityManager.CopyEntitiesFrom(m_SerializationWorld.EntityManager);
+            using var entities = m_SerializationWorld.EntityManager.UniversalQuery.ToEntityArray(Allocator.Temp);
+
+            world.EntityManager.CopyEntitiesFrom(m_SerializationWorld.EntityManager, 
+                entities, CopyArchetype.Original, entities);
+            
+            //!!world.EntityManager.MoveEntitiesFrom(m_SerializationWorld.EntityManager);
         }
 
         public void Dispose()
         {
-            m_SerializationWorld?.Dispose();
+            //m_SerializationWorld?.Dispose();
         }
     }
 }

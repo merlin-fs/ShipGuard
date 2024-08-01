@@ -35,6 +35,7 @@ namespace Game.Model.Units
             using var _ = Spawner.Setup(ecb, playerConfig)
                 .WhereCondition(gameEntity => m_GameEntityRepository.FindByID(gameEntity.ID) == null)
                 .WithStorage<StorageUser>()
+                .WithId((playerConfig as UnitConfig).UnitID)
                 .WithNewView()
                 .WithLocationPoint(spawnPointId);
         }

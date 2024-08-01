@@ -45,15 +45,6 @@ namespace Game.Core.Spawns
                     UnityEngine.Object.Destroy(viewReference.Value.Transform.gameObject);
                 }
 
-                /*
-                var gameEntities = new NativeArray<GameEntity>(m_Query.CalculateEntityCount(), Allocator.Temp);
-                m_Query.CopyFromComponentDataArray(gameEntities);
-                m_GameEntityRepository.Remove(gameEntities.GetEnumerator().as);
-                
-                ecb.DestroyEntity(entity);
-                gameEntities
-                */
-
                 //Remove entity
                 foreach (var (gameEntity, entity) in SystemAPI.Query<GameEntity>()
                              .WithAll<DestroyTag>()

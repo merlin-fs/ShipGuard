@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - defs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b113bbedba8caa141a37b81605d388de
+    m_Address: EnemySpawnPointConfig.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - defs
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b552c2ca9b2a33849bc7809168af6756
     m_Address: PlayerSpawnPointConfig
     m_ReadOnly: 0

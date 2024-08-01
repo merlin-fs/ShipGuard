@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 using Common.Core;
 
 using Game.Core.Repositories;
@@ -27,8 +24,10 @@ namespace Game.Model.Locations
             foreach (var iter in GetComponentsInChildren<ViewLocation>(true))
             {
                 var identifiable = iter.GetComponent<ViewComponentIdentifiable>();
+                var configuration = iter.GetComponent<SetupConfigComponent>();
+                
                 m_LocationViewRepository.Insert(identifiable.ID, iter);
-                var config = m_ConfigRepository.FindByID(iter.ConfigId);
+                var config = m_ConfigRepository.FindByID(configuration.ConfigId);
 
                 using var _ = Spawner.Setup(ecb, config)
                     .WhereCondition(gameEntity => m_GameEntityRepository.FindByID(gameEntity.ID) == null)

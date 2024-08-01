@@ -1,3 +1,5 @@
+using System;
+
 using Common.Defs;
 
 using Game.Core.Defs;
@@ -6,6 +8,7 @@ using Unity.Entities;
 
 namespace Game.Model.Locations
 {
+    [Serializable]
     public struct PlayerSpawnPoint : ILocationItem, IDefinable<PointConfig.Def>, IComponentData, IDefinableCallback
     {
         public bool Enabled { get; set; } 

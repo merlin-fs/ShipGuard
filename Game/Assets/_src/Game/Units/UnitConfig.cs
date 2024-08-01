@@ -24,7 +24,6 @@ namespace Game.Model.Units
         {
             base.Configure(prefab, manager, context);
             Value.AddComponentData(prefab, manager, context);
-            context.AddComponentData(prefab, new GameEntity(uuid, Entity.Null));
         }
 
         IEnumerable<ChildConfig> IConfigContainer.Childs => Value.Parts;

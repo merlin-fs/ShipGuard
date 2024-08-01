@@ -10,6 +10,8 @@ using Game.Core.Defs;
 using Game.Core.Spawns;
 using Game.Views;
 
+using Unity.Transforms;
+
 namespace Game.Model.Units
 {
     [Serializable]
@@ -28,6 +30,8 @@ namespace Game.Model.Units
             context.AddComponentData(entity, this);
             context.AddComponentData(entity, new Move());
             context.AddComponentData(entity, new Spawn.ViewTag());
+            context.AddComponentData(entity, new LocalTransform());
+            context.AddComponentData(entity, new LocalToWorld());
         }
 
         public void InitializationView(IView view, Entity entity)

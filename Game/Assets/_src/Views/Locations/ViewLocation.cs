@@ -10,22 +10,11 @@ using UnityEngine;
 namespace Game.Views
 {
     public class ViewLocation : MonoBehaviour, IView
-#if UNITY_EDITOR
-        , ISerializationCallbackReceiver
-#endif
     {
-#if UNITY_EDITOR
-        [SerializeField]
-        private PointConfig configPoint;
-#endif
-        [SerializeField]
-        private ObjectID configId;
-        public ObjectID ConfigId => configId; 
         public Transform Transform => transform;
-        
-        public IGameEntity GameEntity { get; private set; } 
-
+        public IGameEntity GameEntity { get; private set; }
         T ICastObject.Cast<T>() => GetComponent<T>();
+
         IEnumerable<T> IView.GetComponents<T>()
         {
             return GetComponents<T>();
@@ -37,16 +26,5 @@ namespace Game.Views
         {
             GameEntity = entity;
         }
-        #region ISerializationCallbackReceiver
-#if UNITY_EDITOR
-        public void OnBeforeSerialize()
-        {
-            if (!configPoint) return;
-            configId = configPoint.ID;
-        }
-
-        public void OnAfterDeserialize() {}
-#endif
-        #endregion
     }
 }

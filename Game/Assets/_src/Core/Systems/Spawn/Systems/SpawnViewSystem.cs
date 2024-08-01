@@ -55,14 +55,12 @@ namespace Game.Core.Spawns
                              .WithNone<WaitSpawnTag>()
                              .WithEntityAccess())
                 {
-                    Debug.Log($"[Spawn] New view {entity} {configInfo.ConfigId} : {gameEntity.ID}");
+                    Debug.Log($"<color=green>[Spawn]</color> New view {entity} {configInfo.ConfigId} : {gameEntity.ID}");
                     var config = m_Repository.FindByID(configInfo.ConfigId);
                     if (config == null) throw new ArgumentNullException($"Prefab {configInfo.ConfigId} not found");
 
                     var view = m_ViewFactory.Instantiate(config, entity, state.EntityManager, m_Container);
                     ecb.AddComponent(entity, new HybridTransform.ViewReference{ Value = view });
-                    ecb.AddComponent<LocalTransform>(entity);
-                    ecb.AddComponent<LocalToWorld>(entity);
 
                     view.Initialization(gameEntity);
                     ecb.RemoveComponent<ViewTag>(entity);

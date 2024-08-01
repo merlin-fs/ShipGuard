@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Units
   m_GUID: 017b391da6a32404e9f46d59e652cd9f
   m_SerializeEntries:
+  - m_GUID: 5eb0b43a113deae4da1b2992d18bf769
+    m_Address: Assets/Prefabs/PA_Warrior.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7cc0742b993556f4da05b76780e231dc
     m_Address: Assets/Prefabs/Female A Variant.prefab
     m_ReadOnly: 0

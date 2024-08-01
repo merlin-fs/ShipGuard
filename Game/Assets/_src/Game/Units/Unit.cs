@@ -10,6 +10,8 @@ using Game.Core.Defs;
 using Game.Core.Spawns;
 using Game.Model.Stats;
 
+using Unity.Transforms;
+
 namespace Game.Model.Units
 {
     [Serializable]
@@ -25,8 +27,11 @@ namespace Game.Model.Units
         #region IDefineableCallback
         void IDefinableCallback.AddComponentData(Entity entity, IDefinableContext context)
         {
+            context.AddComponentData(entity, this);
             context.AddComponentData(entity, new Move());
             context.AddComponentData(entity, new Spawn.ViewTag());
+            context.AddComponentData(entity, new LocalTransform());
+            context.AddComponentData(entity, new LocalToWorld());
         }
         #endregion
         
