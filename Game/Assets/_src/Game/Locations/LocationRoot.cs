@@ -16,23 +16,29 @@ namespace Game.Model.Locations
     public class LocationRoot : MonoBehaviour, IInitialization
     {
         [Inject] private LocationViewRepository m_LocationViewRepository;
-        [Inject] private GameEntityRepository m_GameEntityRepository;
+        [Inject] private GameUniqueEntityRepository m_GameUniqueEntityRepository;
         [Inject] private ConfigRepository m_ConfigRepository;
 
         public void SpawnLocationItems(EntityCommandBuffer ecb)
         {
+            var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            
             foreach (var iter in GetComponentsInChildren<ViewLocation>(true))
             {
                 var identifiable = iter.GetComponent<ViewComponentIdentifiable>();
-                var configuration = iter.GetComponent<SetupConfigComponent>();
-                
                 m_LocationViewRepository.Insert(identifiable.ID, iter);
+                if (m_GameUniqueEntityRepository.FindByID(identifiable.ID) != null) 
+                    continue;
+                
+                var configuration = iter.GetComponent<SetupConfigComponent>();
                 var config = m_ConfigRepository.FindByID(configuration.ConfigId);
 
-                using var _ = Spawner.Setup(ecb, config)
-                    .WhereCondition(gameEntity => m_GameEntityRepository.FindByID(gameEntity.ID) == null)
-                    .WithId(identifiable.ID)
-                    .WithStorage<StorageLocation>();
+                using var _ = Spawner.SetupUnique(ecb, config, identifiable.ID)
+                    .WithStorage<StorageLocation>()
+                    .WithCallback(spawnPointEntity =>
+                    {
+                        configuration.SetupPrepareData(ecb, spawnPointEntity);
+                    });
             }
         }
 
@@ -41,7 +47,7 @@ namespace Game.Model.Locations
             foreach (var iter in m_LocationViewRepository.Find())
             {
                 if (iter is not ViewLocation viewLocation) continue;
-                Spawner.Destroy(ecb, viewLocation.GameEntity);
+                Spawner.DestroyEntityOnly(ecb, viewLocation.GameEntity);
             }
         }
 

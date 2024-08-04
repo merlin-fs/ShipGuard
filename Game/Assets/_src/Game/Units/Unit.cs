@@ -7,6 +7,7 @@ using Common.Defs;
 
 using Game.Core;
 using Game.Core.Defs;
+using Game.Core.HybridTransforms;
 using Game.Core.Spawns;
 using Game.Model.Stats;
 
@@ -25,11 +26,11 @@ namespace Game.Model.Units
         }
         
         #region IDefineableCallback
-        void IDefinableCallback.AddComponentData(Entity entity, IDefinableContext context)
+        public void AddComponentData(Entity entity, IDefinableContext context)
         {
             context.AddComponentData(entity, this);
             context.AddComponentData(entity, new Move());
-            context.AddComponentData(entity, new Spawn.ViewTag());
+            context.AddComponent<HybridTransform.ReferenceView>(entity);
             context.AddComponentData(entity, new LocalTransform());
             context.AddComponentData(entity, new LocalToWorld());
         }

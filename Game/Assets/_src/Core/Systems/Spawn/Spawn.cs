@@ -14,23 +14,13 @@ namespace Game.Core.Spawns
 {
     public partial struct Spawn : IComponentData, IStorageData
     {
-        public Entity NewEntity;
-        public bool DontCreate;
-        
-        public struct ViewTag : IComponentData{}
         public struct WithDataTag : IComponentData {}
         public struct WaitSpawnTag : IComponentData {}
         public struct PostTag : IComponentData {}
         public struct DestroyTag : IComponentData {}
-
         public class Event : IComponentData
         {
             public Action<GameEntity> Callback;
-        }
-
-        public class Condition : IComponentData
-        {
-            public Func<GameEntity, bool> Value;
         }
    }
 }

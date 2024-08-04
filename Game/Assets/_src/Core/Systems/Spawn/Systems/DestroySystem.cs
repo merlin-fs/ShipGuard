@@ -1,6 +1,4 @@
-﻿using Common.Core;
-
-using Game.Core.HybridTransforms;
+﻿using Game.Core.HybridTransforms;
 using Game.Core.Repositories;
 using Game.Model;
 
@@ -8,7 +6,7 @@ using Unity.Entities;
 
 using Reflex.Attributes;
 
-using Unity.Collections;
+using Unity.Transforms;
 
 namespace Game.Core.Spawns
 {
@@ -20,7 +18,7 @@ namespace Game.Core.Spawns
             private static string m_PrefabType;
             
             [Inject] private static ConfigRepository m_Repository;
-            [Inject] private static GameEntityRepository m_GameEntityRepository;
+            [Inject] private static GameUniqueEntityRepository m_GameUniqueEntityRepository;
             
             private EntityQuery m_Query; 
             
@@ -39,18 +37,32 @@ namespace Game.Core.Spawns
                     .CreateCommandBuffer(state.WorldUnmanaged);
 
                 //Destroy view
-                foreach (var viewReference in SystemAPI.Query<HybridTransform.ViewReference>()
+                foreach (var viewReference in SystemAPI.Query<HybridTransform.ReferenceView>()
                              .WithAll<DestroyTag>())
                 {
                     UnityEngine.Object.Destroy(viewReference.Value.Transform.gameObject);
                 }
 
-                //Remove entity
-                foreach (var (gameEntity, entity) in SystemAPI.Query<GameEntity>()
+                // Destroy children
+                foreach (var children in SystemAPI.Query<DynamicBuffer<Child>>()
+                             .WithAll<DestroyTag>())
+                {
+                    ecb.AddComponent<DestroyTag>(children.AsNativeArray().Reinterpret<Entity>());
+                }
+
+                //Remove uniqueEntity
+                foreach (var (uniqueEntity, entity) in SystemAPI.Query<UniqueEntity>()
                              .WithAll<DestroyTag>()
                              .WithEntityAccess())
                 {
-                    m_GameEntityRepository.Remove(gameEntity.ID);
+                    m_GameUniqueEntityRepository.Remove(uniqueEntity.ID);
+                    ecb.DestroyEntity(entity);
+                }
+
+                //Destroy Entity
+                foreach (var (_, entity) in SystemAPI.Query<DestroyTag>()
+                             .WithEntityAccess())
+                {
                     ecb.DestroyEntity(entity);
                 }
             }

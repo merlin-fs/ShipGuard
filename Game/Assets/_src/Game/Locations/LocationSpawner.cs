@@ -17,15 +17,13 @@ namespace Game.Core.Spawns
     [UpdateAfter(typeof(Spawn.System))]
     public partial struct LocationSpawnSystem : ISystem, ISystemStartStop
     {
-        private static GameEntityRepository m_GameEntityRepository;
         private static LocationViewRepository m_LocationViewRepository;
 
         private static Action<EntityCommandBuffer> m_OnInitialization;
         private static Action<EntityCommandBuffer> m_OnFinalization;
-        
+
         public void Inject(IContainer container)
         {
-            m_GameEntityRepository = container.Resolve<GameEntityRepository>();
             m_LocationViewRepository = container.Resolve<LocationViewRepository>();
         }
 
@@ -34,24 +32,18 @@ namespace Game.Core.Spawns
             var system = SystemAPI.GetSingleton<EndInitializationEntityCommandBufferSystem.Singleton>();
             var ecb = system.CreateCommandBuffer(state.WorldUnmanaged);
             
-            foreach (var (gameEntity, entity) in SystemAPI.Query<GameEntity>()
+            foreach (var (transform, gameEntity, uniqueEntity, entity) in SystemAPI.Query<RefRW<LocalTransform>, GameEntity, UniqueEntity>()
                          .WithAll<LocationTag, Spawn.PostTag>()
                          .WithNone<Spawn.WaitSpawnTag>()
                          .WithEntityAccess())
             {
-                var view = m_LocationViewRepository.FindByID(gameEntity.ID);
+                var view = m_LocationViewRepository.FindByID(uniqueEntity.ID);
                 view.Initialization(gameEntity);
-                //!!!ecb.AddComponent(entity, new HybridTransform.ViewReference{ Value = view });
-            }
-
-            foreach (var (transform, link, entity) in SystemAPI.Query<RefRW<LocalTransform>, LocationLink>()
-                         .WithAll<Spawn.PostTag>()
-                         .WithNone<Spawn.WaitSpawnTag>()
-                         .WithEntityAccess())
-            {
-                var view = m_LocationViewRepository.FindByID(link.LocationId);
+                
                 transform.ValueRW.Position = view.Transform.position;
                 transform.ValueRW.Rotation = view.Transform.rotation;
+
+                ecb.AddComponent(entity, new HybridTransform.ReferenceView{ Value = view });
             }
         }
 

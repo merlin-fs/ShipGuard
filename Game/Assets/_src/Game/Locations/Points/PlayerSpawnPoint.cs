@@ -5,6 +5,7 @@ using Common.Defs;
 using Game.Core.Defs;
 
 using Unity.Entities;
+using Unity.Transforms;
 
 namespace Game.Model.Locations
 {
@@ -23,6 +24,8 @@ namespace Game.Model.Locations
         {
             context.AddComponentData(entity, this);
             context.AddComponentData(entity, new LocationTag());
+            context.AddComponentData(entity, new LocalTransform());
+            context.AddComponentData(entity, new LocalToWorld());
         }
     }
 }

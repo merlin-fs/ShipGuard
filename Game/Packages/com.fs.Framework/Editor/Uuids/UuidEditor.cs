@@ -9,7 +9,6 @@ using UnityEngine.UIElements;
 
 namespace UnityEditor.Inspector
 {
-
     [CustomPropertyDrawer(typeof(Uuid), true)]
     public class UuidDrawer : PropertyDrawer
     {

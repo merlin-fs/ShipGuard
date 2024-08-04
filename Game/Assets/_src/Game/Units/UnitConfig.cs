@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Common.Core;
+﻿using System.Collections.Generic;
 
 using Unity.Entities;
 using UnityEngine;
@@ -16,9 +13,6 @@ namespace Game.Model.Units
     public class UnitConfig: GameObjectConfig, IConfigContainer, IConfigStats
     {
         public Unit.Def Value = new();
-        
-        [SerializeField] private Uuid uuid = default;
-        public Uuid UnitID => uuid;
 
         protected override void Configure(Entity prefab, EntityManager manager, IDefinableContext context)
         {
@@ -39,34 +33,6 @@ namespace Game.Model.Units
             Value.InitializationView(view, entity, manager);
         }
 
-        public override ComponentTypeSet GetComponentTypeSet() => new ComponentTypeSet(ComponentType.FromTypeIndex(Value.GetTypeIndexDefinable()));
-
-        #region UNITY_EDITOR
-#if UNITY_EDITOR
-        private void Reset()
-        {
-            uuid = default;
-            GenerateUuid();
-        }
-
-        private void OnValidate()
-        {
-            if (Application.isPlaying) return;
-            GenerateUuid();
-        }
-
-        private void GenerateUuid()
-        {
-            var prefix = TypeManager.GetType(Value.GetTypeIndexDefinable()).Name;
-            uuid = uuid.GetUid(prefix, GetInstanceID(), out var change);
-            if (change) UnityEditor.EditorUtility.SetDirty(this);
-        }
-        
-        private void OnDestroy()
-        {
-            if(!Application.isPlaying) uuid.Remove();
-        }
-#endif
-        #endregion
+        public override ComponentTypeSet GetComponentTypeSet() => new (ComponentType.FromTypeIndex(Value.GetTypeIndexDefinable()));
     }
 }

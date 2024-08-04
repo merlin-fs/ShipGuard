@@ -7,6 +7,7 @@ using Common.Core.Loading;
 using Cysharp.Threading.Tasks;
 
 using Game.Core.Repositories;
+using Game.Model;
 using Game.Model.Locations;
 using Game.Model.Units;
 using Game.Views;
@@ -21,7 +22,7 @@ namespace Game.Core.Loading
     {
         [Inject] private UnitManager m_UnitManager;
         [Inject] private LocationViewRepository m_LocationViewRepository;
-        [Inject] private GameEntityRepository m_GameEntityRepository;
+        [Inject] private GameUniqueEntityRepository m_GameUniqueEntityRepository;
 
         public Task Execute()
         {
@@ -30,8 +31,9 @@ namespace Game.Core.Loading
                 await UniTask.SwitchToMainThread();
 
                 var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager.WorldUnmanaged.EntityManager;
-                var locationPointGameEntity = m_GameEntityRepository.Find(iter => entityManager.HasComponent<PlayerSpawnPoint>(iter.Entity.Entity)).First();
-                var locationPointId = locationPointGameEntity.ID;
+                var locationPointGameEntity = m_GameUniqueEntityRepository.Find(iter => entityManager.HasComponent<PlayerSpawnPoint>(iter.Entity.Entity)).First();
+                var uniqueEntity = entityManager.GetComponentData<UniqueEntity>(locationPointGameEntity.Entity);
+                var locationPointId = uniqueEntity.ID;
                 
                 m_UnitManager.SpawnPlayer(locationPointId);
             }).AsTask();

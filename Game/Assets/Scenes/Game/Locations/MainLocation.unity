@@ -404,9 +404,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eeadc2318e96d14d94ddd21a8612a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configPoint: {fileID: 11400000, guid: b113bbedba8caa141a37b81605d388de, type: 2}
+  config: {fileID: 11400000, guid: b113bbedba8caa141a37b81605d388de, type: 2}
   configId:
-    m_ID:
+    id:
       utf8LengthInBytes: 21
       bytes:
         offset0000:
@@ -475,14 +475,83 @@ MonoBehaviour:
         byte0060: 0
         byte0061: 0
   m_PrepareData:
-    rid: 8038462027885969742
+    rid: 6739928268001247233
   references:
     version: 2
     RefIds:
-    - rid: 8038462027885969742
+    - rid: 6739928268001247233
       type: {class: MobSpawnPoint, ns: Game.Model.Locations, asm: Assembly-CSharp}
       data:
-        <Enabled>k__BackingField: 0
+        m_MobConfigId:
+          id:
+            utf8LengthInBytes: 7
+            bytes:
+              offset0000:
+                byte0000: 87
+                byte0001: 97
+                byte0002: 114
+                byte0003: 114
+                byte0004: 105
+                byte0005: 111
+                byte0006: 114
+                byte0007: 0
+                byte0008: 0
+                byte0009: 0
+                byte0010: 0
+                byte0011: 0
+                byte0012: 0
+                byte0013: 0
+                byte0014: 0
+                byte0015: 0
+              offset0016:
+                byte0000: 0
+                byte0001: 0
+                byte0002: 0
+                byte0003: 0
+                byte0004: 0
+                byte0005: 0
+                byte0006: 0
+                byte0007: 0
+                byte0008: 0
+                byte0009: 0
+                byte0010: 0
+                byte0011: 0
+                byte0012: 0
+                byte0013: 0
+                byte0014: 0
+                byte0015: 0
+              offset0032:
+                byte0000: 0
+                byte0001: 0
+                byte0002: 0
+                byte0003: 0
+                byte0004: 0
+                byte0005: 0
+                byte0006: 0
+                byte0007: 0
+                byte0008: 0
+                byte0009: 0
+                byte0010: 0
+                byte0011: 0
+                byte0012: 0
+                byte0013: 0
+                byte0014: 0
+                byte0015: 0
+              byte0048: 0
+              byte0049: 0
+              byte0050: 0
+              byte0051: 0
+              byte0052: 0
+              byte0053: 0
+              byte0054: 0
+              byte0055: 0
+              byte0056: 0
+              byte0057: 0
+              byte0058: 0
+              byte0059: 0
+              byte0060: 0
+              byte0061: 0
+        Count: 1
 --- !u!1 &778454605
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,9 +1309,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eeadc2318e96d14d94ddd21a8612a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configPoint: {fileID: 11400000, guid: b552c2ca9b2a33849bc7809168af6756, type: 2}
+  config: {fileID: 11400000, guid: b552c2ca9b2a33849bc7809168af6756, type: 2}
   configId:
-    m_ID:
+    id:
       utf8LengthInBytes: 22
       bytes:
         offset0000:
@@ -1311,13 +1380,12 @@ MonoBehaviour:
         byte0060: 0
         byte0061: 0
   m_PrepareData:
-    rid: 8038462027885969740
+    rid: -2
   references:
     version: 2
     RefIds:
-    - rid: 8038462027885969740
-      type: {class: PlayerSpawnPoint, ns: Game.Model.Locations, asm: Assembly-CSharp}
-      data: 
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ namespace Game.Core.Spawns
 {
     public partial struct Spawn
     {
-        [UpdateInGroup(typeof(GameSpawnSystemGroup), OrderLast = true)]
+        [UpdateInGroup(typeof(GameEndSystemGroup), OrderLast = true)]
         public partial struct CleanupSystem : ISystem
         {
             EntityQuery m_Query;
@@ -25,7 +25,7 @@ namespace Game.Core.Spawns
 
             public void OnUpdate(ref SystemState state)
             {
-                var system = SystemAPI.GetSingleton<EndInitializationEntityCommandBufferSystem.Singleton>();
+                var system = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
                 var ecb = system.CreateCommandBuffer(state.WorldUnmanaged);
                 ecb.RemoveComponent<Spawn.PostTag>(m_Query, EntityQueryCaptureMode.AtPlayback);
             }

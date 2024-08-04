@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using Game.Core.HybridTransforms;
+
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.Serialization;
@@ -43,7 +45,7 @@ namespace Game
             var type = entityManager.CreateArchetype(
                 new ComponentType(typeof(TestStorageData)),
                 new ComponentType(typeof(Unity.Transforms.LocalToWorld)),
-                new ComponentType(typeof(Game.Core.Spawns.Spawn.ViewTag))
+                new ComponentType(typeof(HybridTransform.ReferenceView))
                 );
 
             var serializeWorld = new World("Serialization World", WorldFlags.Staging | WorldFlags.Streaming);// WorldFlags.Streaming

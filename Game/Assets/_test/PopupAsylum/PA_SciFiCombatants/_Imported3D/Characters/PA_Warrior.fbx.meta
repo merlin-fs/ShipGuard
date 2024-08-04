@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: cc633396b5f95da4b916357a5508ee4f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 15159
+  packageName: PA SciFi Enemies and Vehicles
+  packageVersion: 1
+  assetPath: Assets/PopupAsylum/PA_SciFiCombatants/_Imported3D/Characters/PA_Warrior.fbx
+  uploadId: 3343
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -418,8 +425,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -434,7 +441,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 1
     - serializedVersion: 16
       name: PA_WarriorAttack_Clip
       takeName: Take 001
@@ -626,10 +633,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 15159
-  packageName: PA SciFi Enemies and Vehicles
-  packageVersion: 1
-  assetPath: Assets/PopupAsylum/PA_SciFiCombatants/_Imported3D/Characters/PA_Warrior.fbx
-  uploadId: 3343

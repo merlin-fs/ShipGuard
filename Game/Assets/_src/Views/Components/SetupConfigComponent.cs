@@ -1,6 +1,10 @@
 using Common.Core;
 
-using Game.Model.Locations;
+using Game.Core;
+using Game.Core.Defs;
+using Game.Core.Repositories;
+
+using Reflex.Attributes;
 
 using Unity.Entities;
 
@@ -8,45 +12,46 @@ using UnityEngine;
 
 namespace Game.Views
 {
-    public class SetupConfigComponent : MonoBehaviour, IViewComponent
-#if UNITY_EDITOR
-        , ISerializationCallbackReceiver
-#endif
+    public class SetupConfigComponent : MonoBehaviourEditorProperties, IViewComponent
     {
+        [Inject] private IContainer m_Container;
+        
+        #region editor
 #if UNITY_EDITOR
-        [SerializeField] private PointConfig configPoint;
-#endif
-        [SerializeField, HideInInspector] private ObjectID configId;
-
-        [SerializeField, SerializeReference] 
-        private ILocationItem m_PrepareData;
-
-        public ObjectID ConfigId => configId;
-
-        public void Initialization(IView view)
+        [SerializeField] private GameObjectConfigWithDef config;
+        protected override void OnEditorSerialize()
         {
-            //throw new System.NotImplementedException();
-        }
-
-        #region ISerializationCallbackReceiver
-
-#if UNITY_EDITOR
-        public void OnBeforeSerialize()
-        {
-            if (!configPoint) return;
-            configId = configPoint.ID;
-            var type = ComponentType.FromTypeIndex(configPoint.Value.GetTypeIndexDefinable()).GetManagedType();
+            // ReSharper disable once Unity.NoNullPropagation
+            var type = config?.DefType;
+            if (type == null)
+            {
+                m_PrepareData = null;
+                return;
+            }
+            configId = config.ID;
             if (m_PrepareData == null || m_PrepareData.GetType() != type)
             {
-                m_PrepareData = System.Activator.CreateInstance(type) as ILocationItem;
+                m_PrepareData = System.Activator.CreateInstance(type) as IInitializationComponentData;
             }
-                 
         }
-
-        public void OnAfterDeserialize() { }
 #endif
-
         #endregion
+        
+        [SerializeField, HideInInspector] private ObjectID configId;
+
+        [SerializeReference] 
+        private IInitializationComponentData m_PrepareData;
+
+        public ObjectID ConfigId => configId;
+        
+        public void SetupPrepareData(EntityCommandBuffer ecb, Entity spawnPointEntity)
+        {
+            m_PrepareData?.Initialization(m_Container, ecb, spawnPointEntity);
+        }
+        
+        public void Initialization(IView view)
+        {
+        }
     }
 }
 

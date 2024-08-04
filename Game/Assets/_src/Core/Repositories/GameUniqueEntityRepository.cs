@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Game.Core.Repositories
 {
-    public class GameEntityRepository: Repository<Uuid, IGameEntity, GameEntityRepository.Attribute>
+    public class GameUniqueEntityRepository: Repository<Uuid, IGameEntity, GameUniqueEntityRepository.Attribute>
     {
         public class Attribute : IEntityAttributes<IGameEntity>
         {

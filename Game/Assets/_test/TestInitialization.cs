@@ -21,11 +21,11 @@ namespace Game
         [Inject] private CameraController m_CameraController;
         [Inject] private ConfigRepository m_ConfigRepository;
 
-        private GameEntityRepository m_GameEntityRepository;
+        private GameUniqueEntityRepository m_GameUniqueEntityRepository;
         
         public void Initialization(IContainer container)
         {
-            m_GameEntityRepository = container.Resolve<GameEntityRepository>();
+            m_GameUniqueEntityRepository = container.Resolve<GameUniqueEntityRepository>();
 
             var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var ecb = manager.World.GetOrCreateSystemManaged<GameSpawnSystemCommandBufferSystem>()
@@ -34,7 +34,6 @@ namespace Game
             var playerConfig = m_ConfigRepository.FindByID("Player");
 
             using var _ = Spawner.Setup(ecb, playerConfig)
-                .WithNewView()
                 .WithPosition(float3.zero);
         }
     }

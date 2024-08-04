@@ -51,19 +51,18 @@ namespace Game.Core.Spawns
                 
                 //New view
                 foreach (var (configInfo, gameEntity, entity) in SystemAPI.Query<ConfigInfo, GameEntity>()//, children, DynamicBuffer<PrefabInfo.BakedInnerPathPrefab>
-                             .WithAll<ViewTag, Spawn.PostTag>()
+                             .WithAll<PostTag, HybridTransform.ReferenceView>()
                              .WithNone<WaitSpawnTag>()
                              .WithEntityAccess())
                 {
-                    Debug.Log($"<color=green>[Spawn]</color> New view {entity} {configInfo.ConfigId} : {gameEntity.ID}");
+                    Debug.Log($"<color=green>[Spawn]</color> New view {entity} {configInfo.ConfigId}");
                     var config = m_Repository.FindByID(configInfo.ConfigId);
                     if (config == null) throw new ArgumentNullException($"Prefab {configInfo.ConfigId} not found");
 
                     var view = m_ViewFactory.Instantiate(config, entity, state.EntityManager, m_Container);
-                    ecb.AddComponent(entity, new HybridTransform.ViewReference{ Value = view });
+                    ecb.AddComponent(entity, new HybridTransform.ReferenceView{ Value = view });
 
                     view.Initialization(gameEntity);
-                    ecb.RemoveComponent<ViewTag>(entity);
                 }
             }
         }

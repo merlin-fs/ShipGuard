@@ -62,6 +62,12 @@ namespace Game.Core.Defs
             m_Manager.AddComponentData<T>(entity, data);
         }
 
+        public void AddComponent<T>(Entity entity) 
+            where T : class, IComponentData
+        {
+            m_Manager.AddComponent<T>(entity);
+        }
+
         public void RemoveComponent<T>(Entity entity)
             where T : unmanaged, IComponentData
         {
@@ -140,6 +146,12 @@ namespace Game.Core.Defs
             where T : unmanaged, IComponentData
         {
             m_Manager.AddComponent<T>(entity, data);
+        }
+
+        public void AddComponent<T>(Entity entity) 
+            where T : class, IComponentData
+        {
+            m_Manager.AddComponent<T>(entity);
         }
 
         public void RemoveComponent<T>(Entity entity)
@@ -222,6 +234,12 @@ namespace Game.Core.Defs
             where T : unmanaged, IComponentData
         {
             m_Manager.AddComponent<T>(m_SortKey, entity, data);
+        }
+
+        public void AddComponent<T>(Entity entity) 
+            where T : class, IComponentData
+        {
+            m_Manager.AddComponent(m_SortKey, entity, typeof(T));
         }
 
         public void RemoveComponent<T>(Entity entity)

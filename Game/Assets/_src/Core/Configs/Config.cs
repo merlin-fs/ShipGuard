@@ -8,9 +8,9 @@ namespace Game.Core.Defs
 {
     using Core;
 
-    public abstract class Config : IConfig, IIdentifiable<ObjectID>
+    public abstract class Config : IConfig
     {
-        private ObjectID m_ID;
+        private readonly ObjectID m_ID;
         private Entity m_Prefab;
 
         public ObjectID ID => m_ID;

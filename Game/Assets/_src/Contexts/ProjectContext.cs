@@ -18,7 +18,7 @@ namespace Game.Core.Contexts
         public void InstallBindings(ContainerBuilder containerBuilder)
         {
             containerBuilder.AddSingleton(c => c.Construct<ConfigRepository>());
-            containerBuilder.AddSingleton(c => c.Construct<GameEntityRepository>());
+            containerBuilder.AddSingleton(c => c.Construct<GameUniqueEntityRepository>());
             
             containerBuilder.AddSingleton<ILoadingManager>(c => c.Construct<LoadingManager>());
 
