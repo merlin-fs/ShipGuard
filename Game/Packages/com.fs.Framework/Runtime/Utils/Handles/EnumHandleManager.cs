@@ -7,6 +7,8 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 
+using UnityEngine;
+
 namespace Game.Core
 {
     public class EnumHandleAttribute: Attribute{}
@@ -18,6 +20,13 @@ namespace Game.Core
     
     public readonly partial struct EnumHandle
     {
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Initialization()
+        {
+            Manager.Initialize();            
+        }
+        
         public readonly struct Manager
         {
             private static bool m_IsInit = false;

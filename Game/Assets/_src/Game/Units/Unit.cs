@@ -5,10 +5,10 @@ using UnityEngine;
 
 using Common.Defs;
 
+using Game.AI.GOAP;
 using Game.Core;
 using Game.Core.Defs;
 using Game.Core.HybridTransforms;
-using Game.Core.Spawns;
 using Game.Model.Stats;
 
 using Unity.Transforms;
@@ -16,7 +16,7 @@ using Unity.Transforms;
 namespace Game.Model.Units
 {
     [Serializable]
-    public struct Unit : IUnit, IDefinable<Unit.Def>, IComponentData, IDefinableCallback
+    public struct Unit : IUnit, IDefinable<Unit.Def>, Logic.IStateData, IComponentData, IDefinableCallback
     {
         public RefLink<Def> RefLink { get; private set; }
 
@@ -33,6 +33,7 @@ namespace Game.Model.Units
             context.AddComponent<HybridTransform.ReferenceView>(entity);
             context.AddComponentData(entity, new LocalTransform());
             context.AddComponentData(entity, new LocalToWorld());
+            context.AddComponentData(entity, new Target.UseFinderTag());
         }
         #endregion
         
@@ -45,6 +46,7 @@ namespace Game.Model.Units
 
         #region Stats
         public struct Speed: IStat { }
+        public struct AggroRange: IStat { }
         #endregion
 
         [Serializable]

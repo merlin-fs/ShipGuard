@@ -8,7 +8,7 @@ namespace Game.Views
 {
     public class ViewUnit : MonoBehaviour, IView
     {
-        protected IGameEntity GameEntity { get; private set; }
+        public IGameEntity GameEntity { get; private set; }
         public Transform Transform => transform;
 
         IEnumerable<T> IView.GetComponents<T>()

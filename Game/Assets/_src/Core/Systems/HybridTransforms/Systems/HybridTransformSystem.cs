@@ -38,6 +38,7 @@ namespace Game.Core.HybridTransforms
                 foreach (var (transform, referenceView) in SystemAPI
                              .Query<RefRO<LocalToWorld>, ReferenceView>()
                              .WithAll<ReferenceView>()
+                             .WithNone<ViewToEntityTag>()
                              .WithChangeFilter<LocalToWorld>())
                 {
                     if (referenceView == null) continue;

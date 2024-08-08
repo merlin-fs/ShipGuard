@@ -18,24 +18,27 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  Value:
+  value:
     storeType: Game.Model.Units.Unit
     Parts: []
     Speed:
-      rid: 8038461867876679898
+      rid: 6739928310759293104
     Health:
-      rid: 8038461867876679899
-  uuid:
-    m_FirstHalf: 5063503042182737493
-    m_SecondHalf: 3837684023523234125
+      rid: 6739928310759293105
+  logic:
+    logicInst:
+      rid: 6739928310759293101
   references:
     version: 2
     RefIds:
-    - rid: 8038461867876679898
+    - rid: 6739928310759293101
+      type: {class: LogicPA_Warior, ns: Game.Model.AI, asm: Assembly-CSharp}
+      data: 
+    - rid: 6739928310759293104
       type: {class: StaticValue, ns: Game.Model.Stats, asm: Assembly-CSharp}
       data:
         Value: 10
-    - rid: 8038461867876679899
+    - rid: 6739928310759293105
       type: {class: StaticValue, ns: Game.Model.Stats, asm: Assembly-CSharp}
       data:
         Value: 100

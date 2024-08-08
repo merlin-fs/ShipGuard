@@ -18,24 +18,26 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  Value:
+  value:
     storeType: Game.Model.Units.Player
     Parts: []
     Speed:
-      rid: 4602785640009433171
+      rid: 6739928310759293106
     Health:
-      rid: 4602785640009433172
-  uuid:
-    m_FirstHalf: 3762807402519424080
-    m_SecondHalf: 3769287725727298377
+      rid: 6739928310759293107
+  logic:
+    logicInst:
+      rid: -2
   references:
     version: 2
     RefIds:
-    - rid: 4602785640009433171
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6739928310759293106
       type: {class: StaticValue, ns: Game.Model.Stats, asm: Assembly-CSharp}
       data:
         Value: 10
-    - rid: 4602785640009433172
+    - rid: 6739928310759293107
       type: {class: StaticValue, ns: Game.Model.Stats, asm: Assembly-CSharp}
       data:
         Value: 100

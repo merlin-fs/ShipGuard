@@ -60,7 +60,7 @@ namespace Game.Core.Defs
             Configure(root, manager, context);
         }
 
-        protected abstract void Configure(Entity entity, EntityManager manager, IDefinableContext context);
+        public abstract void Configure(Entity entity, EntityManager manager, IDefinableContext context);
         public abstract ComponentTypeSet GetComponentTypeSet();
         public virtual void Configure(IView view, Entity entity, EntityManager manager) { }
         public void SetEntityPrefab(Entity entity)

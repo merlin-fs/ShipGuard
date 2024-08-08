@@ -14,9 +14,9 @@ namespace Game.Core
             return Manager.GetHandle(value);
         }
 
-        public static EnumHandle FromObject(object value)
+        public static EnumHandle FromObjectEnum(object value)
         {
-            return Manager.GetHandle(value);
+            return Manager.FromEnum(value);
         }
 
         public EnumHandle(int id) => m_ID = id;   

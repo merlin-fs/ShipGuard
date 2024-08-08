@@ -19,6 +19,7 @@ namespace Game.Core.Contexts
         {
             containerBuilder.AddSingleton(c => c.Construct<ConfigRepository>());
             containerBuilder.AddSingleton(c => c.Construct<GameUniqueEntityRepository>());
+            containerBuilder.AddSingleton(c => c.Construct<InteractionViewRepository>());
             
             containerBuilder.AddSingleton<ILoadingManager>(c => c.Construct<LoadingManager>());
 

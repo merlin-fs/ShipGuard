@@ -13,7 +13,7 @@ namespace Game.Model.Locations
 {
     public class PointConfig: GameObjectConfigWithDef<PointConfig.Def>
     {
-        protected override void Configure(Entity prefab, EntityManager manager, IDefinableContext context)
+        public override void Configure(Entity prefab, EntityManager manager, IDefinableContext context)
         {
             base.Configure(prefab, manager, context);
             Value.AddComponentData(prefab, manager, context);

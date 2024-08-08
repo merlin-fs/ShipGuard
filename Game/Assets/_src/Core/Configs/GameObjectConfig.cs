@@ -13,7 +13,7 @@ namespace Game.Core.Defs
 {
     public abstract class GameObjectConfig : ScriptableConfig
     {
-        protected override void Configure(Entity entity, EntityManager manager, IDefinableContext context)
+        public override void Configure(Entity entity, EntityManager manager, IDefinableContext context)
         {
             context.AddBuffer<PrefabInfo.BakedInnerPathPrefab>(entity);
             context.AddComponentData(entity, new ConfigInfo{ ConfigId = ID });

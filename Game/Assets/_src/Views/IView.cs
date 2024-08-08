@@ -12,6 +12,7 @@ namespace Game.Views
 {
     public interface IView : ICastObject, IComponentData
     {
+        IGameEntity GameEntity { get; }
         Transform Transform { get; }
         IEnumerable<T> GetComponents<T>()
             where T : IViewComponent;
